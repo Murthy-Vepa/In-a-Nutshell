@@ -1,3 +1,5 @@
-# Tech-Bytes
+# Tech In a Nutshell
 
-![Cosmos DB](/CosmosDB - In a Nutshell.html)
+Azure Cosmos DB
+Azure API Management
+GitHub SpecKit

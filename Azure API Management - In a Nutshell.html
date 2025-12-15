@@ -1,0 +1,4059 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Azure API Management - In a Nutshell</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='9' y1='16.82' x2='9' y2='1.18'%3E%3Cstop offset='0' stop-color='%23198ab3'/%3E%3Cstop offset='0.09' stop-color='%231f9dc4'/%3E%3Cstop offset='0.24' stop-color='%2328b5d9'/%3E%3Cstop offset='0.4' stop-color='%232dc6e9'/%3E%3Cstop offset='0.57' stop-color='%2331d1f2'/%3E%3Cstop offset='0.78' stop-color='%2332d4f5'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='8.36' y1='11.35' x2='8.36' y2='14.46'%3E%3Cstop offset='0' stop-color='%23c69aeb'/%3E%3Cstop offset='1' stop-color='%236f4bb2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M14.18,5.89A4.85,4.85,0,0,0,9.23,1.18,5,5,0,0,0,4.48,4.47,4.61,4.61,0,0,0,.5,9,4.67,4.67,0,0,0,5.29,13.5a3,3,0,0,0,.42,0h1.2a1.47,1.47,0,0,1-.11-.56v0A1.51,1.51,0,0,1,7,12.21H5.6l-.31,0A3.41,3.41,0,0,1,1.77,9,3.33,3.33,0,0,1,4.68,5.73l.76-.12.25-.73A3.73,3.73,0,0,1,9.23,2.45,3.6,3.6,0,0,1,12.91,5.9V7L14,7.15a2.59,2.59,0,0,1,2.26,2.49,2.63,2.63,0,0,1-2.62,2.54h-.15l-.08,0h-1A3.92,3.92,0,0,0,8.54,9a.64.64,0,1,0,0,1.27,2.65,2.65,0,0,1,0,5.29.64.64,0,1,0,0,1.27,3.92,3.92,0,0,0,3.87-3.34h1.05a.64.64,0,0,0,.2,0A3.91,3.91,0,0,0,17.5,9.64,3.86,3.86,0,0,0,14.18,5.89Z' fill='url(%23a)'/%3E%3Crect x='6.8' y='11.35' width='3.12' height='3.12' rx='1.54' fill='url(%23b)'/%3E%3C/svg%3E" />
+<meta name="description" content="A comprehensive guide to Azure API Management." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --border: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-fg: #0f172a;
+      --code-bg: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
+      --focus: #10b981;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+      --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    
+    /* Apply theme colors to Bootstrap elements */
+    body { background-color: var(--bg); color: var(--fg); }
+    .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+    .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+    .navbar-toggler-icon { 
+      filter: invert(1);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn-outline-secondary { border-color: var(--border) !important; color: var(--fg) !important; }
+    .btn-outline-secondary:hover { background-color: var(--accent-light) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+    
+    /* Sidebar - Modern Design */
+    nav.sidebar { 
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%); 
+      border-right: none !important; 
+      overflow-y: auto; 
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      padding-top: 0;
+    }
+    
+    .menu-header {  
+      background: linear-gradient(135deg, #b3b7bf 0%, #84878c 100%);
+      font-weight: bold; 
+      padding: 1.25rem 1.25rem; 
+      letter-spacing: 0px; 
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-bottom: 2px solid #6b7280;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: #1f2937;
+      text-shadow: none;
+      margin: 0;
+      text-transform: none;
+    }
+    .menu-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    .menu-header:hover::before {
+      left: 100%;
+    }
+    .menu-header::after {
+      content: '📋';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      opacity: 0.9;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+    
+    .toc { 
+      list-style: none; 
+      padding: 0rem 0; 
+      margin: 0; 
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.02) 0%, transparent 100%);
+    }
+    .toc li { margin: 0; }
+    .list-group-item { 
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0; 
+      margin: 0.25rem 0.75rem; 
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+    }
+    .list-group-item a { 
+      color: #1f2937; 
+      text-decoration: none; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 0.4rem; 
+      border-left: 3px solid transparent; 
+      padding: 0.85rem 1.25rem; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .list-group-item a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+    }
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::before {
+      transform: scaleY(1);
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Badge styling */
+    .badge { font-size: 0.8rem; padding: 0.15rem 0.4rem; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; border-radius: 0.25rem; font-style: normal; line-height: 1.2; opacity: 0.9; }
+    .badge { background: var(--accent); color: white; border: none; font-size: 0.6rem; padding: 0.25rem 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 0.5rem; margin-right: 0.35rem; }
+    .list-group-item a:hover .badge { opacity: 1; background: var(--accent); color: white; }
+    .list-group-item a.active .badge { background: rgba(255, 255, 255, 0.3); color: white; border-color: rgba(255, 255, 255, 0.6); font-weight: 600; opacity: 1; }
+        
+    /* Content */
+    .content { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+    section { display: none !important; margin-bottom: 2rem; }
+    section.active { display: block !important; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0 0.25rem 0; letter-spacing: -0.5px; color: var(--fg); display: block; border: none; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: var(--fg); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 1rem 0 0.5rem 0; }
+    h4 { font-size: 0.8rem; color: var(--fg); font-weight: 600; margin: 0.75rem 0 0.4rem 0; }
+    p { margin: 1rem 0; line-height: 1.65; color: var(--fg); }
+    ul, ol { margin: 1rem 0; padding-left: 2rem; }
+    li { margin: 0.5rem 0; color: var(--fg); }
+    
+    code { background: var(--code-bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; font-size: 0.9em; color: var(--accent); border-radius: 0.5rem; }
+    pre { background: var(--code-bg); border: 0px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow: auto; box-shadow: var(--shadow-sm); margin: 1rem 0; }
+    pre code { padding: 0; background: transparent; border: none; color: var(--fg); }
+    
+    .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0.5rem; box-shadow: var(--shadow-sm); font-weight: 500; color: var(--fg); }
+    
+    /* Table styling */
+    .table { color: var(--fg); }
+    .table thead th { background: var(--accent-light); color: var(--accent); border-color: var(--border); font-weight: 600; }
+    .table tbody td { border-color: var(--border); }
+    .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.02); }
+    .table-striped tbody tr:hover { background-color: var(--accent-light); }
+    
+    /* Controls/Pagination */
+    .controls { opacity: 0.4; position: fixed; bottom: 5px; right: 30px; width: auto; z-index: 1000; background: transparent; display: flex; align-items: center; justify-content: center; gap: 0rem; padding: 0; min-height: 40px; }
+    @media (max-width: 991px) {
+      .controls { bottom: 5px; right: 30px; }
+      .menu-header { color: var(--focus); }
+    }
+    .controls:hover { opacity: 1; }
+    
+    .page-indicator { color: var(--accent); font-weight: 600; font-size: 0.875rem; }
+    .btn-group .btn { margin: 0px 2px; padding: 0.2rem 0.5rem; background: var(--accent); color: white; border-color: var(--accent); font-size: 1rem; font-weight: bold; }
+    .btn-group .btn:hover { background: var(--accent); }
+    .btn-group .btn + .btn { margin-left: -1px; }
+    
+    /* Mobile/Offcanvas */
+    .offcanvas { background: var(--bg) !important; }
+    .offcanvas-header { border-bottom: 1px solid var(--border); }
+    .offcanvas-title { color: var(--fg); font-weight: 600; }
+    .btn-close { color: var(--fg); }
+    
+    /* Scrollbar */
+    nav.sidebar::-webkit-scrollbar { width: 6px; }
+    nav.sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+    nav.sidebar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 3px; }
+    nav.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+    
+    /* Mermaid Diagrams */
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      position: relative;
+    }
+    .mermaid.rendered {
+      min-height: auto;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      min-height: 300px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+    .mermaid.zoomed {
+      overflow: auto;
+      cursor: grab;
+    }
+    .mermaid.zoomed:active {
+      cursor: grabbing;
+    }
+    .mermaid svg text {
+      font-size: 14px !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+    
+    /* Mermaid title styling */
+    .mermaid svg text, .diagram-modal-content svg text {
+      font-size: 1rem !important;
+      font-weight: bold !important;
+      fill: var(--fg) !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+
+    .mermaid svg *
+    {
+        color: #333;
+    }
+
+    .mermaid[data-processed="true"] {
+      min-height: auto;
+    }
+    
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+    
+    /* Zoom controls */
+    .zoom-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .mermaid:hover .zoom-controls {
+      opacity: 1;
+    }
+    .zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+
+    /* Modal for diagram zoom */
+    .diagram-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .diagram-modal.active {
+      display: flex;
+    }
+    .diagram-modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 0;
+      padding: 3rem 3rem 3rem 3rem;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .diagram-modal-content svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .modal-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+      z-index: 10000;
+    }
+    .modal-close:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+    .modal-zoom-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10000;
+      padding: 0rem;
+      border-radius: 0.4rem;
+    }
+    .modal-zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .modal-zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+    
+    /* Utilities */
+    .search { height: 0; overflow: hidden; padding: 0 !important; }
+    .search input { display: none; }
+    .min-vh-100 { min-height: 100vh; }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: static; width: auto; height: auto; padding: 0.4rem 0.6rem; background: var(--accent); color: white; border-radius: 0.4rem; }
+    
+    /* Override Bootstrap defaults for theme */
+    a { color: var(--accent); }
+    a:hover { color: var(--accent); text-decoration: underline; }
+    
+    /* Responsive - keep sidebar visible on desktop, offcanvas on mobile */
+    @media (max-width: 991px) {
+      nav.sidebar { display: none; }
+      #main { width: 100%; }
+      .row { --bs-gutter-x: 0; }
+    }
+    
+    /* Layout - prevent unnecessary scrolling */
+    html, body { height: 100%; margin: 0; }
+    #appContainer { display: flex; flex-direction: column; height: calc(100vh - 60px); }
+    #mainRow { flex: 1; overflow: hidden; display: flex; }
+    nav.sidebar { overflow-y: auto; max-height: 100%; position: relative; padding-bottom: 0px; }
+    #main { overflow: hidden; display: flex; flex-direction: column; height: 100%; -webkit-tap-highlight-color: transparent; outline: none; border: none; }
+    #main:focus { outline: none; }
+    .content { overflow-y: auto; flex: 1; width: 100%; min-height: 0; padding: 0rem 1rem 0rem 1.5rem; }
+    
+    /* Contact Info */
+    .contact-info {
+      font-weight: 400 !important;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      margin: 0;
+      opacity: 0.5;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .contact-info:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+    @media (max-width: 991px) {
+      .navbar-brand {
+        font-size: 1rem !important;
+        flex: 1;
+      }
+      .contact-info {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 0.9rem !important;
+      }
+      .contact-info {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+
+    .list-style-none {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* JSON Syntax Highlighting */
+    pre code.language-json {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-json .json-key {
+      color: #0451a5;
+      font-weight: 500;
+    }
+
+    pre code.language-json .json-string {
+      color: #a31515;
+    }
+
+    pre code.language-json .json-number {
+      color: #098658;
+    }
+
+    pre code.language-json .json-boolean {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-null {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-punctuation {
+      color: #333;
+    }
+
+    /* SQL Syntax Highlighting */
+    pre code.language-sql {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-sql .sql-keyword {
+      color: #0000ff;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    pre code.language-sql .sql-string {
+      color: #a31515;
+    }
+
+    pre code.language-sql .sql-number {
+      color: #098658;
+    }
+
+    pre code.language-sql .sql-comment {
+      color: #008000;
+      font-style: italic;
+    }
+
+    pre code.language-sql .sql-function {
+      color: #795e26;
+      font-weight: 500;
+    }
+
+    pre code.language-sql .sql-operator {
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Language Label for Code Blocks */
+    pre[data-language]::before {
+      content: attr(data-language);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.75em;
+      color: #6a737d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Enhanced pre/code styling for syntax highlighted blocks */
+    pre.syntax-highlighted {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+      margin: 1rem 0;
+    }
+
+    pre.syntax-highlighted code {
+      background: transparent;
+      padding: 0;
+      border: none;
+      color: var(--fg);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+  </style>
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid with proper configuration
+    document.addEventListener('DOMContentLoaded', function() {
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'loose',
+        logLevel: 'error',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      // Render all diagrams
+      renderMermaidDiagrams();
+    });
+    
+    async function renderMermaidDiagrams() {
+      const diagrams = document.querySelectorAll('.mermaid');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.textContent.trim();
+        
+        // Store original code
+        if (!diagram.hasAttribute('data-original-code')) {
+          diagram.setAttribute('data-original-code', code);
+        }
+        
+        try {
+          const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+          diagram.innerHTML = svg;
+          diagram.setAttribute('data-processed', 'true');
+          
+          // Add zoom controls
+          addZoomControls(diagram);
+        } catch (error) {
+          console.error('Mermaid rendering error for diagram ' + i + ':', error);
+          diagram.innerHTML = '<div style="color: red; padding: 1rem; border: 2px solid red; border-radius: 0.5rem;">Error rendering diagram: ' + error.message + '</div>';
+        }
+      }
+    }
+    
+    // Add zoom controls to mermaid diagrams
+    function addZoomControls(diagram) {
+      const controls = document.createElement('div');
+      controls.className = 'zoom-controls';
+      controls.innerHTML = `
+        <button class="zoom-btn" data-action="expand" title="Expand View">⛶</button>
+      `;
+      
+      diagram.style.position = 'relative';
+      diagram.insertBefore(controls, diagram.firstChild);
+      
+      // Expand to modal
+      controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.zoom-btn');
+        if (!btn) return;
+        
+        openDiagramModal(diagram);
+      });
+    }
+
+    // Open diagram in modal
+    function openDiagramModal(diagram) {
+      // Create modal if it doesn't exist
+      let modal = document.getElementById('diagram-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'diagram-modal';
+        modal.className = 'diagram-modal';
+        modal.innerHTML = `
+          <button class="modal-close" id="modal-close">×</button>
+          <div class="diagram-modal-content" id="modal-diagram-content"></div>
+          <div class="modal-zoom-controls">
+            <button class="modal-zoom-btn" data-action="zoom-in" title="Zoom In">+</button>
+            <button class="modal-zoom-btn" data-action="zoom-out" title="Zoom Out">−</button>
+            <button class="modal-zoom-btn" data-action="reset" title="Reset Zoom">⟲</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal handlers
+        modal.querySelector('#modal-close').addEventListener('click', closeDiagramModal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeDiagramModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeDiagramModal();
+          }
+        });
+        
+        // Zoom controls in modal
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        
+        modal.querySelector('.modal-zoom-controls').addEventListener('click', (e) => {
+          const btn = e.target.closest('.modal-zoom-btn');
+          if (!btn) return;
+          
+          const action = btn.dataset.action;
+          const svg = modal.querySelector('svg');
+          if (!svg) return;
+          
+          if (action === 'zoom-in') {
+            scale = Math.min(scale + 0.1, 5);
+          } else if (action === 'zoom-out') {
+            scale = Math.max(scale - 0.1, 0.5);
+          } else if (action === 'reset') {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+          }
+          
+          svg.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+        });
+      }
+      
+      // Clone diagram content
+      const svg = diagram.querySelector('svg');
+      if (svg) {
+        const content = modal.querySelector('#modal-diagram-content');
+        content.innerHTML = '';
+        const clonedSvg = svg.cloneNode(true);
+        clonedSvg.style.transform = 'scale(1)';
+        clonedSvg.style.maxWidth = '100%';
+        clonedSvg.style.height = 'auto';
+        content.appendChild(clonedSvg);
+      }
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDiagramModal() {
+      const modal = document.getElementById('diagram-modal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Re-render on theme change
+    window.rerenderMermaid = async function() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? 'base' : 'base',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      const diagrams = document.querySelectorAll('.mermaid[data-processed="true"]');
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.getAttribute('data-original-code');
+        
+        if (code) {
+          try {
+            const { svg } = await mermaid.render('mermaid-diagram-rerender-' + i + '-' + Date.now(), code);
+            diagram.innerHTML = svg;
+          } catch (error) {
+            console.error('Mermaid re-rendering error:', error);
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top" aria-label="Top bar">
+    <div class="container-fluid d-flex align-items-center">
+      <button class="navbar-toggler me-2" id="toggleSidebar" type="button" aria-label="Toggle sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+<span class="navbar-brand mb-0 h1 me-auto"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" style="vertical-align: middle; margin-right: 8px;"><defs><linearGradient id="nav-gradient-a" x1="9" y1="16.82" x2="9" y2="1.18"><stop offset="0" stop-color="#198ab3" /><stop offset="0.09" stop-color="#1f9dc4" /><stop offset="0.24" stop-color="#28b5d9" /><stop offset="0.4" stop-color="#2dc6e9" /><stop offset="0.57" stop-color="#31d1f2" /><stop offset="0.78" stop-color="#32d4f5" /></linearGradient><linearGradient id="nav-gradient-b" x1="8.36" y1="11.35" x2="8.36" y2="14.46"><stop offset="0" stop-color="#c69aeb" /><stop offset="1" stop-color="#6f4bb2" /></linearGradient></defs><path d="M14.18,5.89A4.85,4.85,0,0,0,9.23,1.18,5,5,0,0,0,4.48,4.47,4.61,4.61,0,0,0,.5,9,4.67,4.67,0,0,0,5.29,13.5a3,3,0,0,0,.42,0h1.2a1.47,1.47,0,0,1-.11-.56v0A1.51,1.51,0,0,1,7,12.21H5.6l-.31,0A3.41,3.41,0,0,1,1.77,9,3.33,3.33,0,0,1,4.68,5.73l.76-.12.25-.73A3.73,3.73,0,0,1,9.23,2.45,3.6,3.6,0,0,1,12.91,5.9V7L14,7.15a2.59,2.59,0,0,1,2.26,2.49,2.63,2.63,0,0,1-2.62,2.54h-.15l-.08,0h-1A3.92,3.92,0,0,0,8.54,9a.64.64,0,1,0,0,1.27,2.65,2.65,0,0,1,0,5.29.64.64,0,1,0,0,1.27,3.92,3.92,0,0,0,3.87-3.34h1.05a.64.64,0,0,0,.2,0A3.91,3.91,0,0,0,17.5,9.64,3.86,3.86,0,0,0,14.18,5.89Z" fill="url(#nav-gradient-a)" /><rect x="6.8" y="11.35" width="3.12" height="3.12" rx="1.54" fill="url(#nav-gradient-b)" /></svg> 
+    Azure API Management - In a Nutshell</span>
+<span class="contact-info mb-0">🤝 Curated by Murthy Vepa</span>
+    </div>      
+  </nav>
+
+  <div id="appContainer">
+    <div class="row g-0" id="mainRow">
+      <nav class="col-lg-3 border-end sidebar" id="sidebar" aria-label="Table of contents">
+        <div class="menu-header py-2">Contents</div>
+        <ul class="list-group list-group-flush toc" id="toc"></ul>
+      </nav>
+
+      <main id="main" class="col-lg-9 d-flex flex-column" tabindex="-1">
+        <div class="content" id="content">
+        <!-- Overview Section -->
+        <section id="overview" role="article">
+          <h1>What is Azure API Management?</h1>
+          <span class="badge">intro</span>
+          <span class="badge">overview</span>
+          <span class="badge">basics</span>
+          
+          <p>Azure API Management is a <strong>hybrid, multicloud management platform for APIs across all environments</strong>. As a platform-as-a-service, API Management supports the complete API lifecycle.</p>
+          
+          <div class="callout">
+            <strong>🎯 Core Purpose</strong><br />
+            APIs enable digital experiences, simplify application integration, underpin new digital products, and make data and services reusable and universally accessible. API Management helps organizations manage APIs as first-class assets throughout their lifecycle.
+          </div>
+
+          <h2>Common Scenarios</h2>
+          
+          <h3>🔓 Unlocking Legacy Assets</h3>
+          <p>APIs abstract and modernize legacy backends, making them accessible from new cloud services and modern applications without the risk, cost, and delays of migration.</p>
+
+          <h3>🔗 API-Centric App Integration</h3>
+          <p>APIs are easily consumable, standards-based mechanisms for exposing and accessing data, applications, and processes. They simplify and reduce the cost of app integration.</p>
+
+          <h3>📱 Multi-Channel User Experiences</h3>
+          <p>APIs enable user experiences such as web, mobile, wearable, or IoT applications. Reuse APIs to accelerate development and ROI.</p>
+
+          <h3>🤝 B2B Integration</h3>
+          <p>APIs exposed to partners and customers lower the barrier to integrate business processes and exchange data. With self-service discovery and onboarding, APIs are the primary tools for scaling B2B integration.</p>
+
+          <h2>Why API Management?</h2>
+          <ul>
+            <li><strong>Comprehensive API Platform</strong> - For different stakeholders and teams to produce and manage APIs</li>
+            <li><strong>Abstract Backend Complexity</strong> - Hide architecture diversity from API consumers</li>
+            <li><strong>Secure Exposure</strong> - Safely expose services hosted on and outside Azure</li>
+            <li><strong>Protection & Performance</strong> - Protect, accelerate, and observe APIs</li>
+            <li><strong>Discovery & Consumption</strong> - Enable API discovery by internal and external users</li>
+          </ul>
+        </section>
+
+        <!-- Key Components Section -->
+        <section id="key-components" role="article">
+          <h1>Key Components</h1>
+          <span class="badge">architecture</span>
+          <span class="badge">components</span>
+          <span class="badge">structure</span>
+          
+          <p>Azure API Management consists of three core components that work together to provide a complete API management solution:</p>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI", "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis" } } }%%
+graph TB
+    subgraph "API Consumers"
+        APP[Mobile/Web Apps]
+        DEV[Developers]
+        PARTNER[Partners]
+    end
+    
+    subgraph "API Management Components"
+        GATEWAY[API Gateway<br/>Data Plane]
+        MGMT[Management Plane<br/>Control Plane]
+        PORTAL[Developer Portal]
+    end
+    
+    subgraph "Backend Services"
+        AZURE[Azure Services]
+        ONPREM[On-Premises APIs]
+        CLOUD[Multi-Cloud APIs]
+    end
+    
+    APP --> GATEWAY
+    DEV --> PORTAL
+    PARTNER --> PORTAL
+    
+    PORTAL -.Discovery.-> GATEWAY
+    MGMT -.Configure.-> GATEWAY
+    MGMT -.Manage.-> PORTAL
+    
+    GATEWAY --> AZURE
+    GATEWAY --> ONPREM
+    GATEWAY --> CLOUD
+    
+    style GATEWAY fill:#3b82f6,color:#fff
+    style MGMT fill:#10b981,color:#fff
+    style PORTAL fill:#8b5cf6,color:#fff
+          </div>
+
+          <h2>1️⃣ API Gateway (Data Plane)</h2>
+          <p>The API gateway is the runtime component that handles all API traffic:</p>
+          <ul>
+            <li>✅ Accepts API calls and routes them to backend services</li>
+            <li>🔐 Verifies API keys, JWTs, and certificates</li>
+            <li>⚡ Enforces usage quotas and rate limits</li>
+            <li>🔄 Transforms requests and responses via policies</li>
+            <li>💾 Caches responses to improve latency</li>
+            <li>📊 Emits logs, metrics, and traces for monitoring</li>
+          </ul>
+
+          <h2>2️⃣ Management Plane (Control Plane)</h2>
+          <p>Provides full access to API Management service capabilities:</p>
+          <ul>
+            <li>⚙️ Provision and configure API Management settings</li>
+            <li>📝 Define or import API schemas (OpenAPI, WSDL, GraphQL, gRPC)</li>
+            <li>📦 Package APIs into products</li>
+            <li>🛡️ Set up policies like quotas or transformations</li>
+            <li>📈 Get insights from analytics</li>
+            <li>👥 Manage users and developers</li>
+          </ul>
+
+          <h2>3️⃣ Developer Portal</h2>
+          <p>An automatically generated, fully customizable website for API consumers:</p>
+          <ul>
+            <li>📚 Read API documentation</li>
+            <li>🧪 Test APIs via interactive console</li>
+            <li>🔑 Subscribe to get API keys</li>
+            <li>📊 Access usage analytics</li>
+            <li>⬇️ Download API definitions</li>
+            <li>🎨 Fully customizable look and feel</li>
+          </ul>
+        </section>
+
+        <!-- API Gateway & Types Section -->
+        <section id="gateway" role="article">
+          <h1>API Gateway & Types</h1>
+          <span class="badge">gateway</span>
+          <span class="badge">runtime</span>
+          <span class="badge">dataplane</span>
+          <span class="badge">managed</span>
+          <span class="badge">self-hosted</span>
+          <span class="badge">comparison</span>
+          
+          <p>The API gateway (also called <strong>data plane</strong> or <strong>runtime</strong>) is the service component responsible for proxying API requests, applying policies, and collecting telemetry.</p>
+
+          <h2>Gateway Responsibilities</h2>
+
+          <div class="mermaid">
+sequenceDiagram
+    participant Client
+    participant Gateway as API Gateway
+    participant Policy as Policy Engine
+    participant Cache
+    participant Backend
+    participant Monitor as Monitoring
+
+    Client->>Gateway: API Request
+    Gateway->>Gateway: Verify Credentials
+    Gateway->>Policy: Apply Inbound Policies
+    Policy->>Policy: Rate Limit Check
+    Policy->>Policy: Transform Request
+    
+    alt Cache Hit
+        Gateway->>Cache: Check Cache
+        Cache-->>Gateway: Cached Response
+    else Cache Miss
+        Gateway->>Backend: Forward Request
+        Backend-->>Gateway: Response
+        Gateway->>Cache: Store in Cache
+    end
+    
+    Gateway->>Policy: Apply Outbound Policies
+    Policy->>Policy: Transform Response
+    Gateway->>Monitor: Emit Telemetry
+    Gateway-->>Client: API Response
+          </div>
+
+          <h2>Core Functions</h2>
+          
+          <h3>🔒 Security & Authentication</h3>
+          <ul>
+            <li>Verify API keys and subscription keys</li>
+            <li>Validate JWT tokens and certificates</li>
+            <li>Enforce IP restrictions</li>
+            <li>OAuth 2.0 and OpenID Connect support</li>
+          </ul>
+
+          <h3>⚡ Rate Limiting & Quotas</h3>
+          <ul>
+            <li>Enforce usage quotas per subscription</li>
+            <li>Apply rate limits to prevent abuse</li>
+            <li>Throttle requests based on various criteria</li>
+            <li>Protect backend services from overload</li>
+          </ul>
+
+          <h3>🔄 Transformation & Routing</h3>
+          <ul>
+            <li>Transform request/response payloads</li>
+            <li>Convert between XML and JSON</li>
+            <li>Modify headers and query parameters</li>
+            <li>Route to different backend versions</li>
+          </ul>
+
+          <h3>💾 Caching</h3>
+          <ul>
+            <li>Built-in cache for improved latency</li>
+            <li>External Redis cache support</li>
+            <li>Configurable cache policies</li>
+            <li>Reduce load on backend services</li>
+          </ul>
+
+          <h3>📊 Observability</h3>
+          <ul>
+            <li>Emit detailed logs and metrics</li>
+            <li>Azure Monitor integration</li>
+            <li>Application Insights support</li>
+            <li>Request tracing and debugging</li>
+          </ul>
+
+          <div class="callout">
+            <strong>⚠️ Important Note</strong><br />
+            All requests to the API Management gateway, including those rejected by policy configurations, count toward configured rate limits, quotas, and billing limits.
+          </div>
+
+          <h2>Gateway Types</h2>
+          <p>API Management offers both <strong>managed</strong> and <strong>self-hosted</strong> gateway options to meet different deployment scenarios.</p>
+
+          <h3>Managed Gateway</h3>
+          <p>The default gateway component deployed in Azure for every API Management instance:</p>
+          
+          <h3>✅ Advantages</h3>
+          <ul>
+            <li>Fully managed by Microsoft in Azure</li>
+            <li>No infrastructure to maintain</li>
+            <li>Automatic updates and patches</li>
+            <li>High availability built-in</li>
+            <li>Multi-region deployment (Premium tier)</li>
+            <li>Azure Monitor integration</li>
+            <li>Defender for APIs protection</li>
+          </ul>
+
+          <h3>📊 Service Tiers</h3>
+          <ul>
+            <li><strong>Classic Tiers:</strong> Developer, Basic, Standard, Premium</li>
+            <li><strong>V2 Tiers:</strong> Basic v2, Standard v2, Premium v2</li>
+            <li><strong>Consumption:</strong> Serverless, pay-per-execution</li>
+          </ul>
+
+          <h2>Self-Hosted Gateway</h2>
+          <p>A containerized version of the managed gateway for hybrid and multi-cloud scenarios:</p>
+
+          <h3>✅ When to Use Self-Hosted</h3>
+          <ul>
+            <li>🏢 On-premises backends with low latency requirements</li>
+            <li>☁️ Multi-cloud deployments</li>
+            <li>📜 Regulatory compliance requiring data residency</li>
+            <li>🔐 Private network isolation needs</li>
+            <li>🌍 Edge locations closer to API consumers</li>
+          </ul>
+
+          <h3>📦 Deployment Options</h3>
+          <ul>
+            <li>Docker containers</li>
+            <li>Azure Kubernetes Service (AKS)</li>
+            <li>Kubernetes on-premises</li>
+            <li>Azure Arc-enabled Kubernetes</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis" } } }%%
+graph LR
+    subgraph Azure
+        APIM[API Management<br/>Service]
+        MGMT[Management Plane]
+        MANAGED[Managed Gateway]
+    end
+    
+    subgraph On-Premises
+        K8S[Kubernetes Cluster]
+        SELFHOSTED[Self-Hosted Gateway]
+        BACKEND1[Internal APIs]
+    end
+    
+    subgraph Other Cloud
+        AKS[AKS/K8s]
+        SELFHOSTED2[Self-Hosted Gateway]
+        BACKEND2[Cloud APIs]
+    end
+    
+    MGMT -.Config Sync.-> MANAGED
+    MGMT -.Config Sync.-> SELFHOSTED
+    MGMT -.Config Sync.-> SELFHOSTED2
+    
+    CLIENTS[API Clients] --> MANAGED
+    INTERNAL[Internal Users] --> SELFHOSTED
+    EXTERNAL[External Users] --> SELFHOSTED2
+    
+    MANAGED --> BACKEND1
+    SELFHOSTED --> BACKEND1
+    SELFHOSTED2 --> BACKEND2
+    
+    style APIM fill:#3b82f6,color:#fff
+    style SELFHOSTED fill:#10b981,color:#fff
+    style SELFHOSTED2 fill:#10b981,color:#fff
+          </div>
+
+          <h3>Comparison Matrix</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Managed Gateway</th>
+                <th>Self-Hosted Gateway</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Hosting</strong></td>
+                <td>Azure-managed</td>
+                <td>Customer-managed (K8s, Docker)</td>
+              </tr>
+              <tr>
+                <td><strong>Maintenance</strong></td>
+                <td>Automatic updates</td>
+                <td>Manual container updates</td>
+              </tr>
+              <tr>
+                <td><strong>Custom Domains</strong></td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>Built-in Cache</strong></td>
+                <td>✅ Yes (Classic tiers)</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>External Redis Cache</strong></td>
+                <td>✅ Yes (Premium, v2)</td>
+                <td>❌ No</td>
+              </tr>
+              <tr>
+                <td><strong>VNet Injection</strong></td>
+                <td>✅ Premium, Premium v2</td>
+                <td>✅ Yes (depends on deployment)</td>
+              </tr>
+              <tr>
+                <td><strong>Availability Zones</strong></td>
+                <td>✅ Premium, Premium v2</td>
+                <td>✅ Yes (depends on deployment)</td>
+              </tr>
+              <tr>
+                <td><strong>Multi-Region</strong></td>
+                <td>✅ Premium tier</td>
+                <td>✅ Yes (manual deployment)</td>
+              </tr>
+              <tr>
+                <td><strong>Defender for APIs</strong></td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+              </tr>
+              <tr>
+                <td><strong>GraphQL Support</strong></td>
+                <td>✅ Pass-through & Synthetic</td>
+                <td>✅ Pass-through only</td>
+              </tr>
+              <tr>
+                <td><strong>WebSocket</strong></td>
+                <td>✅ Yes (Classic, v2)</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>gRPC</strong></td>
+                <td>❌ No (v2 only)</td>
+                <td>❌ No</td>
+              </tr>
+              <tr>
+                <td><strong>Best For</strong></td>
+                <td>Azure-hosted APIs, Cloud-first</td>
+                <td>On-premises, Hybrid, Multi-cloud</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Scaling Considerations</h3>
+          
+          <h4>Managed Gateway Scaling</h4>
+          <ul>
+            <li><strong>Classic Tiers:</strong> Manual or autoscale units</li>
+            <li><strong>V2 Tiers:</strong> Manual or autoscale units</li>
+            <li><strong>Consumption:</strong> Automatic serverless scaling</li>
+            <li><strong>Premium:</strong> Multi-region capacity distribution</li>
+          </ul>
+
+          <h4>Self-Hosted Gateway Scaling</h4>
+          <ul>
+            <li>Kubernetes horizontal pod autoscaling (HPA)</li>
+            <li>Multiple replicas for high availability</li>
+            <li>Load balancing across instances</li>
+            <li>Custom scaling rules based on metrics</li>
+          </ul>
+        </section>
+
+        <!-- Management Plane & Developer Portal Section -->
+        <section id="management-dev-portal" role="article">
+          <h1>Management Plane & Developer Portal</h1>
+          <span class="badge">control</span>
+          <span class="badge">configuration</span>
+          <span class="badge">management</span>
+          <span class="badge">portal</span>
+          <span class="badge">documentation</span>
+          <span class="badge">onboarding</span>
+          
+          <p>API Management provides two key interfaces for managing and consuming APIs: the <strong>Management Plane</strong> (control plane) for administrators and the <strong>Developer Portal</strong> for API consumers.</p>
+
+          <h2>Management Plane (Control Plane)</h2>
+          <p>The management plane provides full access to API Management service capabilities through multiple interfaces.</p>
+
+          <h3>Access Methods</h3>
+          <ul>
+            <li>🌐 <strong>Azure Portal</strong> - Web-based GUI for all operations</li>
+            <li>⚡ <strong>Azure PowerShell</strong> - Scripting and automation</li>
+            <li>🖥️ <strong>Azure CLI</strong> - Command-line interface</li>
+            <li>🔧 <strong>Visual Studio Code Extension</strong> - IDE integration</li>
+            <li>📡 <strong>REST API</strong> - Programmatic access</li>
+            <li>📚 <strong>Client SDKs</strong> - .NET, Python, Java, JavaScript</li>
+          </ul>
+
+          <h3>Key Management Functions</h3>
+
+          <h4>1️⃣ Service Configuration</h4>
+          <ul>
+            <li>Configure service settings and policies</li>
+            <li>Set up custom domains and certificates</li>
+            <li>Configure networking (VNet, private endpoints)</li>
+            <li>Manage scaling and capacity</li>
+          </ul>
+
+          <h4>2️⃣ API Definitions</h4>
+          <ul>
+            <li><strong>Import from:</strong> OpenAPI, WSDL, WADL, OData</li>
+            <li><strong>Azure Services:</strong> Function Apps, Logic Apps, App Service</li>
+            <li><strong>Modern APIs:</strong> GraphQL, gRPC, WebSocket</li>
+            <li><strong>AI Services:</strong> Azure OpenAI models</li>
+          </ul>
+
+          <h4>3️⃣ Product Management</h4>
+          <ul>
+            <li>Create and configure products</li>
+            <li>Associate APIs with products</li>
+            <li>Set visibility and access controls</li>
+            <li>Configure subscription requirements</li>
+          </ul>
+
+          <h4>4️⃣ Policy Configuration</h4>
+          <ul>
+            <li>Define policies at multiple scopes</li>
+            <li>Configure rate limits and quotas</li>
+            <li>Set up transformations</li>
+            <li>Implement security policies</li>
+          </ul>
+
+          <h4>5️⃣ Analytics & Monitoring</h4>
+          <ul>
+            <li>View API usage analytics</li>
+            <li>Monitor performance metrics</li>
+            <li>Track subscription usage</li>
+            <li>Generate reports</li>
+          </ul>
+
+          <h4>6️⃣ User Management</h4>
+          <ul>
+            <li>Manage developer accounts</li>
+            <li>Configure authentication providers</li>
+            <li>Set up groups and permissions</li>
+            <li>Handle subscription approvals</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Pro Tip</strong><br />
+            Use Infrastructure as Code (IaC) tools like ARM templates, Bicep, or Terraform to manage API Management configurations consistently across environments.
+          </div>
+
+          <h2>Developer Portal</h2>
+          <p>The developer portal is an <strong>automatically generated, fully customizable website</strong> that serves as the primary interface for API consumers.</p>
+
+          <h3>For API Providers</h3>
+          <ul>
+            <li>🎨 Customize look and feel with visual editor</li>
+            <li>📝 Add custom content and pages</li>
+            <li>🏷️ Add branding and styling</li>
+            <li>🔧 Extend functionality with custom widgets</li>
+            <li>🌐 Self-host for complete control</li>
+            <li>📱 Responsive design out of the box</li>
+          </ul>
+
+          <h3>For API Consumers (Developers)</h3>
+
+          <h4>📚 API Discovery</h4>
+          <ul>
+            <li>Browse available APIs and products</li>
+            <li>Read comprehensive API documentation</li>
+            <li>View API schemas and operations</li>
+            <li>Understand usage policies and limits</li>
+          </ul>
+
+          <h4>🧪 Interactive Testing</h4>
+          <ul>
+            <li>Try APIs via interactive console</li>
+            <li>Test operations without writing code</li>
+            <li>View request/response examples</li>
+            <li>Debug API calls in real-time</li>
+          </ul>
+
+          <h4>🔑 Subscription Management</h4>
+          <ul>
+            <li>Create account and sign in</li>
+            <li>Subscribe to API products</li>
+            <li>Manage API keys and credentials</li>
+            <li>View subscription status</li>
+          </ul>
+
+          <h4>📊 Usage Analytics</h4>
+          <ul>
+            <li>Track API usage statistics</li>
+            <li>Monitor quota consumption</li>
+            <li>View rate limit status</li>
+            <li>Download usage reports</li>
+          </ul>
+
+          <h4>⬇️ API Definitions</h4>
+          <ul>
+            <li>Download OpenAPI specifications</li>
+            <li>Export API definitions</li>
+            <li>Generate client SDKs</li>
+            <li>Access code samples</li>
+          </ul>
+
+          <h3>Customization Options</h3>
+
+          <h4>Visual Editor</h4>
+          <ul>
+            <li>Drag-and-drop page builder</li>
+            <li>Pre-built widgets and components</li>
+            <li>Custom CSS styling</li>
+            <li>Theme management</li>
+          </ul>
+
+          <h4>Content Management</h4>
+          <ul>
+            <li>Create custom pages</li>
+            <li>Add markdown content</li>
+            <li>Upload media assets</li>
+            <li>Configure navigation</li>
+          </ul>
+
+          <h4>Authentication Integration</h4>
+          <ul>
+            <li>Microsoft Entra ID (Azure AD)</li>
+            <li>Azure AD B2C</li>
+            <li>OAuth 2.0 providers</li>
+            <li>Custom identity providers</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🌟 Key Benefit</strong><br />
+            The developer portal accelerates API adoption by providing a professional, self-service experience for developers. Good documentation and easy testing directly translate to faster API integration and fewer support tickets.
+          </div>
+
+          <h3>Self-Hosting Option</h3>
+          <p>For organizations requiring complete control:</p>
+          <ul>
+            <li>Host on your own infrastructure</li>
+            <li>Customize beyond standard options</li>
+            <li>Integrate with internal systems</li>
+            <li>Implement custom authentication flows</li>
+            <li>Open-source codebase on GitHub</li>
+          </ul>
+        </section>
+
+        <!-- Key Concepts Section -->
+        <section id="key-concepts" role="article">
+          <h1>Key Concepts</h1>
+          <span class="badge">apis</span>
+          <span class="badge">products</span>
+          <span class="badge">policies</span>
+          
+          <h2>APIs</h2>
+          <p>APIs are the foundation of an API Management service. Each API represents a set of operations available to developers.</p>
+
+          <h3>API Properties</h3>
+          <ul>
+            <li><strong>Backend URL:</strong> Reference to the backend service</li>
+            <li><strong>Operations:</strong> Map to backend operations</li>
+            <li><strong>Protocols:</strong> HTTP, HTTPS, WebSocket, gRPC</li>
+            <li><strong>Versioning:</strong> Version sets and schemes</li>
+            <li><strong>Revisions:</strong> Non-breaking changes tracking</li>
+          </ul>
+
+          <h3>Supported API Types</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Import Format</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>REST APIs</td>
+                <td>OpenAPI, Swagger</td>
+                <td>Standard HTTP APIs</td>
+              </tr>
+              <tr>
+                <td>SOAP APIs</td>
+                <td>WSDL</td>
+                <td>Legacy SOAP services</td>
+              </tr>
+              <tr>
+                <td>GraphQL</td>
+                <td>GraphQL Schema</td>
+                <td>Pass-through or Synthetic</td>
+              </tr>
+              <tr>
+                <td>WebSocket</td>
+                <td>Custom definition</td>
+                <td>Real-time bidirectional</td>
+              </tr>
+              <tr>
+                <td>gRPC</td>
+                <td>Proto files</td>
+                <td>High-performance RPC</td>
+              </tr>
+              <tr>
+                <td>OData</td>
+                <td>OData metadata</td>
+                <td>Queryable REST APIs</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Products</h2>
+          <p>Products are how APIs are surfaced to consumers. They package one or more APIs with usage terms.</p>
+
+          <h3>Product Types</h3>
+          <ul>
+            <li><strong>Open Products:</strong> No subscription required, freely accessible</li>
+            <li><strong>Protected Products:</strong> Require subscription and approval</li>
+          </ul>
+
+          <h3>Product Configuration</h3>
+          <ul>
+            <li>📦 Associate multiple APIs</li>
+            <li>📋 Define terms of use</li>
+            <li>⚙️ Configure product-level policies</li>
+            <li>👥 Set visibility to user groups</li>
+            <li>✅ Require subscription approval</li>
+            <li>📊 Track usage per product</li>
+          </ul>
+
+          <h2>Users and Groups</h2>
+          
+          <h3>Built-in Groups</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Group</th>
+                <th>Description</th>
+                <th>Permissions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Administrators</strong></td>
+                <td>Azure subscription admins</td>
+                <td>Full control over APIM</td>
+              </tr>
+              <tr>
+                <td><strong>Developers</strong></td>
+                <td>Authenticated portal users</td>
+                <td>Build apps, call APIs</td>
+              </tr>
+              <tr>
+                <td><strong>Guests</strong></td>
+                <td>Unauthenticated users</td>
+                <td>Read-only access</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Custom Groups</h3>
+          <ul>
+            <li>Create organization-specific groups</li>
+            <li>Map to Microsoft Entra groups</li>
+            <li>Control API product visibility</li>
+            <li>Manage partner access</li>
+          </ul>
+
+          <h2>Subscriptions</h2>
+          <p>Subscriptions provide access to protected APIs using subscription keys.</p>
+
+          <h3>Subscription Scopes</h3>
+          <ul>
+            <li><strong>All APIs:</strong> Access to every API in the instance</li>
+            <li><strong>Product:</strong> Access to all APIs in a specific product</li>
+            <li><strong>Single API:</strong> Access to one specific API</li>
+          </ul>
+
+          <h3>Subscription Keys</h3>
+          <ul>
+            <li>Primary and secondary keys for rotation</li>
+            <li>Pass in header or query parameter</li>
+            <li>Regenerate keys without downtime</li>
+            <li>Set expiration dates</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🔐 Security Tip</strong><br />
+            Use subscription keys as a first layer of security, but implement additional authentication (JWT, OAuth 2.0, certificates) for production APIs.
+          </div>
+
+          <h2>Backends</h2>
+          <p>Backends represent the actual services that your APIs forward requests to. They provide abstraction and reusability for backend configurations.</p>
+
+          <h3>Backend Configuration</h3>
+          <ul>
+            <li><strong>Service URL:</strong> Base URL of the backend service</li>
+            <li><strong>Protocol:</strong> HTTP/HTTPS, Service Fabric, Logic Apps</li>
+            <li><strong>Credentials:</strong> Certificate, header, or query-based authentication</li>
+            <li><strong>Proxy:</strong> Forward proxy configuration</li>
+            <li><strong>Connection Timeout:</strong> Request timeout settings</li>
+          </ul>
+
+          <h3>Backend Features</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Description</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Circuit Breaker</strong></td>
+                <td>Protect backend from overload</td>
+                <td>Stop requests to failing services</td>
+              </tr>
+              <tr>
+                <td><strong>Load Balancing</strong></td>
+                <td>Distribute across backend pool</td>
+                <td>High availability, performance</td>
+              </tr>
+              <tr>
+                <td><strong>TLS/SSL</strong></td>
+                <td>Secure backend connections</td>
+                <td>Mutual TLS authentication</td>
+              </tr>
+              <tr>
+                <td><strong>Service Fabric</strong></td>
+                <td>Native SF integration</td>
+                <td>Service resolution, partitioning</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>API Versioning & Revisions</h2>
+          
+          <h3>Versioning</h3>
+          <p>Versions allow you to publish <strong>breaking changes</strong> under different version identifiers while maintaining older versions.</p>
+          
+          <h4>Versioning Schemes</h4>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Scheme</th>
+                <th>Implementation</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Path</strong></td>
+                <td>Version in URL path</td>
+                <td><code>/v1/products</code>, <code>/v2/products</code></td>
+              </tr>
+              <tr>
+                <td><strong>Header</strong></td>
+                <td>Custom header</td>
+                <td><code>Api-Version: 2024-01-01</code></td>
+              </tr>
+              <tr>
+                <td><strong>Query String</strong></td>
+                <td>Query parameter</td>
+                <td><code>/products?api-version=2</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Revisions</h3>
+          <p>Revisions are for <strong>non-breaking changes</strong> and allow safe testing before making revisions current.</p>
+          
+          <ul>
+            <li>✅ Test changes without affecting consumers</li>
+            <li>📝 Track change history with descriptions</li>
+            <li>🔄 Switch between revisions instantly</li>
+            <li>↩️ Rollback to previous revision if needed</li>
+            <li>🔗 Access specific revision: <code>/api-name;rev=3/operation</code></li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Best Practice</strong><br />
+            Use <strong>versions</strong> for breaking changes (different contracts, removed fields) and <strong>revisions</strong> for non-breaking changes (bug fixes, added optional fields, performance improvements).
+          </div>
+
+          <h2>Named Values & Secrets</h2>
+          <p>Named values store configuration data that can be referenced in policies and across APIs, enabling environment-specific configurations.</p>
+
+          <h3>Named Value Types</h3>
+          <ul>
+            <li><strong>Plain:</strong> Regular configuration values (URLs, names, settings)</li>
+            <li><strong>Secret:</strong> Encrypted sensitive data (passwords, keys)</li>
+            <li><strong>Key Vault:</strong> References to Azure Key Vault secrets</li>
+          </ul>
+
+          <h3>Named Value Features</h3>
+          <ul>
+            <li>🔑 Reference in policies using <code>{{named-value-name}}</code></li>
+            <li>🏷️ Tag values for organization</li>
+            <li>🔒 Secrets are encrypted at rest</li>
+            <li>🔄 Key Vault values auto-refresh</li>
+            <li>🌍 Global availability across all APIs</li>
+            <li>📦 Use for environment-specific backends, keys, configuration</li>
+          </ul>
+
+          <h3>Example Usage in Policies</h3>
+          <pre><code>&lt;set-backend-service base-url="{{backend-url}}" /&gt;
+&lt;set-header name="X-API-Key" exists-action="override"&gt;
+  &lt;value&gt;{{api-key}}&lt;/value&gt;
+&lt;/set-header&gt;</code></pre>
+
+          <h2>Certificates</h2>
+          <p>Certificates enable secure communication and authentication between API Management and backend services.</p>
+
+          <h3>Certificate Use Cases</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Use Case</th>
+                <th>Description</th>
+                <th>Tier Requirement</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Custom Domain SSL</strong></td>
+                <td>Secure custom domain endpoints</td>
+                <td>All tiers</td>
+              </tr>
+              <tr>
+                <td><strong>Backend Authentication</strong></td>
+                <td>Client certificate to backend</td>
+                <td>All tiers</td>
+              </tr>
+              <tr>
+                <td><strong>Mutual TLS (mTLS)</strong></td>
+                <td>Client authenticates to gateway</td>
+                <td>Consumption, v2 tiers</td>
+              </tr>
+              <tr>
+                <td><strong>Backend Validation</strong></td>
+                <td>Validate backend certificates</td>
+                <td>All tiers</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Certificate Management</h3>
+          <ul>
+            <li>📤 Upload certificates (.pfx, .cer)</li>
+            <li>🔐 Store in Key Vault for better security</li>
+            <li>🔄 Auto-renewal with Key Vault integration</li>
+            <li>📋 Monitor expiration dates</li>
+            <li>⚙️ Configure in policies using <code>authentication-certificate</code></li>
+          </ul>
+
+          <h2>Rate Limiting vs Quotas</h2>
+          
+          <h3>Rate Limiting</h3>
+          <p><strong>Controls request velocity</strong> - how many requests per time window (seconds/minutes).</p>
+          <ul>
+            <li>⚡ <strong>Purpose:</strong> Prevent API abuse, protect backend</li>
+            <li>⏱️ <strong>Window:</strong> Short periods (per second, per minute)</li>
+            <li>🔄 <strong>Resets:</strong> Automatically after time window</li>
+            <li>🎯 <strong>Use For:</strong> Preventing burst traffic, DDoS protection</li>
+          </ul>
+
+          <h3>Quotas</h3>
+          <p><strong>Controls total usage</strong> - total requests over longer periods (day/week/month).</p>
+          <ul>
+            <li>📊 <strong>Purpose:</strong> Enforce subscription tiers, control costs</li>
+            <li>📅 <strong>Window:</strong> Long periods (per day, per month)</li>
+            <li>🔄 <strong>Resets:</strong> At period boundary</li>
+            <li>🎯 <strong>Use For:</strong> Subscription limits, monetization tiers</li>
+          </ul>
+
+          <h3>Combined Usage Example</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Rate Limit</th>
+                <th>Quota</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Free</strong></td>
+                <td>10 calls/minute</td>
+                <td>1,000 calls/month</td>
+              </tr>
+              <tr>
+                <td><strong>Basic</strong></td>
+                <td>100 calls/minute</td>
+                <td>100,000 calls/month</td>
+              </tr>
+              <tr>
+                <td><strong>Premium</strong></td>
+                <td>1,000 calls/minute</td>
+                <td>Unlimited</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>API Schemas</h2>
+          <p>Schemas define the structure of request and response payloads, enabling validation and contract enforcement.</p>
+
+          <h3>Schema Formats</h3>
+          <ul>
+            <li><strong>JSON Schema:</strong> Validate JSON payloads</li>
+            <li><strong>XML Schema (XSD):</strong> Validate XML payloads</li>
+            <li><strong>OpenAPI:</strong> Import from OpenAPI definitions</li>
+          </ul>
+
+          <h3>Schema Validation Benefits</h3>
+          <ul>
+            <li>✅ Enforce data contracts at gateway</li>
+            <li>🛡️ Block malformed requests before reaching backend</li>
+            <li>📝 Auto-generate documentation</li>
+            <li>🔍 Enable request/response validation policies</li>
+            <li>⚡ Reduce backend processing of invalid data</li>
+          </ul>
+
+          <h3>Validation Policies</h3>
+          <ul>
+            <li><code>validate-content</code> - Validate request/response body against schema</li>
+            <li><code>validate-headers</code> - Validate HTTP headers</li>
+            <li><code>validate-parameters</code> - Validate query/path parameters</li>
+            <li><code>validate-status-code</code> - Ensure expected status codes</li>
+          </ul>
+
+          <h2>Diagnostic Settings</h2>
+          <p>Diagnostics enable comprehensive monitoring and troubleshooting of your APIs.</p>
+
+          <h3>Logging Destinations</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Purpose</th>
+                <th>Data Retention</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Application Insights</strong></td>
+                <td>Real-time monitoring, queries</td>
+                <td>Configurable</td>
+              </tr>
+              <tr>
+                <td><strong>Event Hubs</strong></td>
+                <td>Stream to external systems</td>
+                <td>N/A (streaming)</td>
+              </tr>
+              <tr>
+                <td><strong>Log Analytics</strong></td>
+                <td>Azure Monitor integration</td>
+                <td>Configurable</td>
+              </tr>
+              <tr>
+                <td><strong>Storage Account</strong></td>
+                <td>Long-term archival</td>
+                <td>Configurable</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Diagnostic Data Types</h3>
+          <ul>
+            <li>📥 <strong>Request/Response:</strong> Full payload logging</li>
+            <li>⏱️ <strong>Performance:</strong> Latency, duration metrics</li>
+            <li>❌ <strong>Errors:</strong> Failed requests, exceptions</li>
+            <li>🔐 <strong>Authentication:</strong> Auth successes/failures</li>
+            <li>📊 <strong>Metrics:</strong> Capacity, throughput, health</li>
+          </ul>
+
+          <h3>Sampling & Performance</h3>
+          <ul>
+            <li>Configure sampling percentage to control volume</li>
+            <li>Different verbosity levels per API</li>
+            <li>PII masking for sensitive data</li>
+            <li>Minimize performance impact</li>
+          </ul>
+
+          <h2>Tags</h2>
+          <p>Tags provide flexible organization and categorization of APIs, products, and operations.</p>
+
+          <h3>Tag Use Cases</h3>
+          <ul>
+            <li>🏷️ <strong>Categorization:</strong> Group APIs by domain (finance, orders, users)</li>
+            <li>👥 <strong>Ownership:</strong> Tag by owning team</li>
+            <li>🌍 <strong>Region:</strong> Identify APIs by geographic region</li>
+            <li>📊 <strong>Reporting:</strong> Generate usage reports by tag</li>
+            <li>🎨 <strong>Portal Display:</strong> Organize Developer Portal navigation</li>
+          </ul>
+
+          <h3>Tag Features</h3>
+          <ul>
+            <li>Apply to APIs, operations, and products</li>
+            <li>Multiple tags per resource</li>
+            <li>Display in Developer Portal</li>
+            <li>Filter APIs by tags</li>
+            <li>Use in policies for conditional logic</li>
+          </ul>
+
+          <h2>Authorization Servers</h2>
+          <p>Authorization servers enable OAuth 2.0 flows for secure API access.</p>
+
+          <h3>Supported Grant Types</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Grant Type</th>
+                <th>Use Case</th>
+                <th>Client Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Authorization Code</strong></td>
+                <td>Web applications</td>
+                <td>Confidential</td>
+              </tr>
+              <tr>
+                <td><strong>Implicit</strong></td>
+                <td>Single-page apps (legacy)</td>
+                <td>Public</td>
+              </tr>
+              <tr>
+                <td><strong>Client Credentials</strong></td>
+                <td>Service-to-service</td>
+                <td>Confidential</td>
+              </tr>
+              <tr>
+                <td><strong>Resource Owner Password</strong></td>
+                <td>Trusted applications</td>
+                <td>Confidential</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Authorization Server Configuration</h3>
+          <ul>
+            <li>🔐 <strong>Authorization Endpoint:</strong> User login URL</li>
+            <li>🎫 <strong>Token Endpoint:</strong> Token exchange URL</li>
+            <li>🆔 <strong>Client Registration:</strong> Client ID and secret</li>
+            <li>🎯 <strong>Scopes:</strong> Define permission levels</li>
+            <li>🔄 <strong>Token Validation:</strong> JWT validation in policies</li>
+          </ul>
+
+          <h3>Integration with Identity Providers</h3>
+          <ul>
+            <li>Microsoft Entra ID (Azure AD)</li>
+            <li>Azure AD B2C</li>
+            <li>Custom OAuth 2.0 providers</li>
+            <li>OpenID Connect providers</li>
+          </ul>
+
+          <h2>API Import Options</h2>
+          <p>API Management provides multiple ways to import and integrate APIs from various sources.</p>
+
+          <h3>Import Sources</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Source</th>
+                <th>Method</th>
+                <th>Auto-Configuration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OpenAPI/Swagger</strong></td>
+                <td>Upload spec file or URL</td>
+                <td>Operations, schemas, examples</td>
+              </tr>
+              <tr>
+                <td><strong>WSDL</strong></td>
+                <td>Upload WSDL file</td>
+                <td>SOAP operations</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Function App</strong></td>
+                <td>Direct Azure integration</td>
+                <td>Auto-discover functions</td>
+              </tr>
+              <tr>
+                <td><strong>Logic App</strong></td>
+                <td>Direct Azure integration</td>
+                <td>Auto-configure trigger</td>
+              </tr>
+              <tr>
+                <td><strong>App Service</strong></td>
+                <td>Direct Azure integration</td>
+                <td>Import OpenAPI if available</td>
+              </tr>
+              <tr>
+                <td><strong>Service Fabric</strong></td>
+                <td>Backend integration</td>
+                <td>Service resolution</td>
+              </tr>
+              <tr>
+                <td><strong>Container Apps</strong></td>
+                <td>Backend URL</td>
+                <td>Manual configuration</td>
+              </tr>
+              <tr>
+                <td><strong>GraphQL</strong></td>
+                <td>GraphQL schema</td>
+                <td>Resolvers, mutations</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Import Benefits</h3>
+          <ul>
+            <li>⚡ <strong>Fast Onboarding:</strong> Quick API setup</li>
+            <li>🔄 <strong>Sync Updates:</strong> Re-import to update operations</li>
+            <li>📝 <strong>Auto-Documentation:</strong> Generate portal docs</li>
+            <li>✅ <strong>Validation:</strong> Test operations immediately</li>
+            <li>🛡️ <strong>Policies:</strong> Apply protection from day one</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Tip</strong><br />
+            When importing from Azure services (Functions, Logic Apps, App Service), API Management automatically configures authentication and backend settings, reducing manual configuration work.
+          </div>
+        </section>
+
+        <!-- Policies Section -->
+        <section id="policies" role="article">
+          <h1>Policies in Detail</h1>
+          <span class="badge">policies</span>
+          <span class="badge">transformation</span>
+          <span class="badge">security</span>
+          
+          <p>Policies are <strong>powerful collections of statements</strong> that modify API behavior through configuration. They execute sequentially on requests and responses.</p>
+
+          <h2>Policy Execution Flow</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 20 } } }%%
+graph LR
+    REQ[Incoming Request] --> INBOUND[Inbound Policies]
+    INBOUND --> BACKEND[Backend Policies]
+    BACKEND --> SERVICE[Backend Service]
+    SERVICE --> OUTBOUND[Outbound Policies]
+    OUTBOUND --> RESP[Response to Client]
+    INBOUND -.Error.-> ONERROR[On-Error Policies]
+    BACKEND -.Error.-> ONERROR
+    OUTBOUND -.Error.-> ONERROR
+    ONERROR --> ERROR[Error Response]
+    
+    style INBOUND fill:#3b82f6,color:#fff
+    style BACKEND fill:#10b981,color:#fff
+    style OUTBOUND fill:#8b5cf6,color:#fff
+    style ONERROR fill:#ef4444,color:#fff
+          </div>
+
+          <h2>Policy Scopes</h2>
+          <p>Policies can be applied at different levels:</p>
+          <ul>
+            <li><strong>Global:</strong> All APIs in the service</li>
+            <li><strong>Workspace:</strong> All APIs in a workspace</li>
+            <li><strong>Product:</strong> All APIs in a product</li>
+            <li><strong>API:</strong> All operations in an API</li>
+            <li><strong>Operation:</strong> Specific API operation</li>
+          </ul>
+
+          <h2>Common Policy Categories</h2>
+
+          <h3>1️⃣ Access Restriction Policies</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Policy</th>
+                <th>Purpose</th>
+                <th>Example Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>validate-jwt</code></td>
+                <td>Validate JWT tokens</td>
+                <td>OAuth 2.0 authentication</td>
+              </tr>
+              <tr>
+                <td><code>check-header</code></td>
+                <td>Require specific headers</td>
+                <td>API versioning, client validation</td>
+              </tr>
+              <tr>
+                <td><code>ip-filter</code></td>
+                <td>Allow/block IP addresses</td>
+                <td>Restrict to corporate IPs</td>
+              </tr>
+              <tr>
+                <td><code>rate-limit</code></td>
+                <td>Limit call rate per key</td>
+                <td>Prevent API abuse</td>
+              </tr>
+              <tr>
+                <td><code>quota</code></td>
+                <td>Usage quota per period</td>
+                <td>Subscription-based limits</td>
+              </tr>
+              <tr>
+                <td><code>restrict-caller-ips</code></td>
+                <td>IP allowlist/blocklist</td>
+                <td>Partner-specific access</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>2️⃣ Transformation Policies</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Policy</th>
+                <th>Purpose</th>
+                <th>Example Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>set-header</code></td>
+                <td>Add/modify headers</td>
+                <td>Add correlation ID</td>
+              </tr>
+              <tr>
+                <td><code>set-body</code></td>
+                <td>Modify request/response body</td>
+                <td>Transform payload format</td>
+              </tr>
+              <tr>
+                <td><code>json-to-xml</code></td>
+                <td>Convert JSON to XML</td>
+                <td>SOAP backend integration</td>
+              </tr>
+              <tr>
+                <td><code>xml-to-json</code></td>
+                <td>Convert XML to JSON</td>
+                <td>Modernize legacy APIs</td>
+              </tr>
+              <tr>
+                <td><code>find-and-replace</code></td>
+                <td>Replace text in body</td>
+                <td>URL rewriting</td>
+              </tr>
+              <tr>
+                <td><code>set-query-parameter</code></td>
+                <td>Add/modify query params</td>
+                <td>API key injection</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>3️⃣ Caching Policies</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Policy</th>
+                <th>Purpose</th>
+                <th>Example Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>cache-lookup</code></td>
+                <td>Check cache before backend</td>
+                <td>Improve response time</td>
+              </tr>
+              <tr>
+                <td><code>cache-store</code></td>
+                <td>Store response in cache</td>
+                <td>Reduce backend load</td>
+              </tr>
+              <tr>
+                <td><code>cache-remove</code></td>
+                <td>Invalidate cache entry</td>
+                <td>Force fresh data</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>4️⃣ Advanced Policies</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Policy</th>
+                <th>Purpose</th>
+                <th>Example Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>send-request</code></td>
+                <td>Make external HTTP calls</td>
+                <td>Token validation, enrichment</td>
+              </tr>
+              <tr>
+                <td><code>return-response</code></td>
+                <td>Return custom response</td>
+                <td>Mock APIs, error handling</td>
+              </tr>
+              <tr>
+                <td><code>choose</code></td>
+                <td>Conditional policy execution</td>
+                <td>A/B testing, routing</td>
+              </tr>
+              <tr>
+                <td><code>retry</code></td>
+                <td>Retry failed requests</td>
+                <td>Handle transient failures</td>
+              </tr>
+              <tr>
+                <td><code>forward-request</code></td>
+                <td>Forward to backend</td>
+                <td>Custom routing logic</td>
+              </tr>
+              <tr>
+                <td><code>set-variable</code></td>
+                <td>Store values in context</td>
+                <td>Share data across policies</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Policy Expressions</h2>
+          <p>Policy expressions are C# expressions that can be used as attribute or text values:</p>
+
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;set-header name="x-request-time" exists-action="override"&gt;
+    &lt;value&gt;@(DateTime.UtcNow.ToString()&gt;&lt;/value&gt;
+&lt;/set-header&gt;
+
+&lt;set-body&gt;@{
+    var response = context.Response.Body.As&lt;JObject&gt;();
+    response.Add("processedBy", "API Management");
+    return response.ToString();
+}&lt;/set-body&gt;</code></pre>
+
+          <h2>Common Policy Scenarios</h2>
+
+          <h3>🔐 JWT Validation with Microsoft Entra ID</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;validate-jwt header-name="Authorization"&gt;
+    &lt;openid-config url="https://login.microsoftonline.com/{tenant}/.well-known/openid-configuration" /&gt;
+    &lt;audiences&gt;
+        &lt;audience&gt;api://{client-id}&lt;/audience&gt;
+    &lt;/audiences&gt;
+    &lt;issuers&gt;
+        &lt;issuer&gt;https://sts.windows.net/{tenant}/&lt;/issuer&gt;
+    &lt;/issuers&gt;
+    &lt;required-claims&gt;
+        &lt;claim name="roles" match="any"&gt;
+            &lt;value&gt;Admin&lt;/value&gt;
+            &lt;value&gt;User&lt;/value&gt;
+        &lt;/claim&gt;
+    &lt;/required-claims&gt;
+&lt;/validate-jwt&gt;</code></pre>
+
+          <h3>⚡ Rate Limiting</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;rate-limit calls="100" renewal-period="60" /&gt;
+
+&lt;!-- Or rate limit by subscription key --&gt;
+&lt;rate-limit-by-key calls="100" 
+                     renewal-period="60" 
+                     counter-key="@(context.Subscription.Key)" /&gt;</code></pre>
+
+          <h3>🔄 Request Transformation</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;set-header name="X-Forwarded-For" exists-action="override"&gt;
+    &lt;value&gt;@(context.Request.IpAddress)&lt;/value&gt;
+&lt;/set-header&gt;
+
+&lt;set-query-parameter name="api-version" exists-action="override"&gt;
+    &lt;value&gt;2.0&lt;/value&gt;
+&lt;/set-query-parameter&gt;
+
+&lt;rewrite-uri template="/v2/{path}" copy-unmatched-params="true" /&gt;</code></pre>
+
+          <h3>💾 Response Caching</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;!-- Inbound --&gt;
+&lt;cache-lookup vary-by-developer="false" 
+              vary-by-developer-groups="false" 
+              downstream-caching-type="none" /&gt;
+
+&lt;!-- Outbound --&gt;
+&lt;cache-store duration="3600" /&gt;</code></pre>
+
+          <div class="callout">
+            <strong>💡 Pro Tip</strong><br />
+            Use the Azure Portal policy editor with IntelliSense, or leverage the VS Code extension for policy development. Test policies in lower environments before production deployment.
+          </div>
+        </section>
+
+        <!-- Workspaces Section -->
+        <section id="workspaces" role="article">
+          <h1>Workspaces & Federated Management</h1>
+          <span class="badge">workspaces</span>
+          <span class="badge">federated</span>
+          <span class="badge">teams</span>
+          
+          <p>Workspaces enable <strong>federated API management</strong>, allowing decentralized teams to manage their own APIs while maintaining centralized governance.</p>
+
+          <h2>What are Workspaces?</h2>
+          <p>Workspaces provide isolated environments within a single API Management instance for different teams or business units.</p>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 20 } } }%%
+graph TB
+    subgraph "API Management Service (Premium)"
+        PLATFORM[Platform Team<br/>Central Governance]
+        
+        subgraph "Workspace A"
+            WKS_A[Team A APIs]
+            GW_A[Workspace Gateway A]
+        end
+        
+        subgraph "Workspace B"
+            WKS_B[Team B APIs]
+            GW_B[Workspace Gateway B]
+        end
+        
+        subgraph "Global"
+            GLOBAL[Global APIs]
+            GLOBAL_GW[Global Gateway]
+        end
+        
+        PORTAL[Unified Developer Portal]
+    end
+    
+    PLATFORM -.Governs.-> WKS_A
+    PLATFORM -.Governs.-> WKS_B
+    PLATFORM -.Manages.-> GLOBAL
+    
+    CLIENTS_A[Team A Consumers] --> GW_A
+    CLIENTS_B[Team B Consumers] --> GW_B
+    
+    GW_A --> BACKEND_A[Team A Services]
+    GW_B --> BACKEND_B[Team B Services]
+    GLOBAL_GW --> SHARED[Shared Services]
+    
+    PORTAL --> GW_A
+    PORTAL --> GW_B
+    PORTAL --> GLOBAL_GW
+    
+    style PLATFORM fill:#10b981,color:#fff
+    style WKS_A fill:#3b82f6,color:#fff
+    style WKS_B fill:#8b5cf6,color:#fff
+          </div>
+
+          <h2>Key Benefits</h2>
+
+          <h3>For Decentralized Teams</h3>
+          <ul>
+            <li>🎯 <strong>Autonomy:</strong> Teams manage their own APIs independently</li>
+            <li>⚡ <strong>Agility:</strong> Faster API development and deployment</li>
+            <li>🔒 <strong>Isolation:</strong> Separate runtime and configuration per workspace</li>
+            <li>👥 <strong>RBAC:</strong> Team-specific access controls</li>
+            <li>📊 <strong>Dedicated Telemetry:</strong> Per-workspace monitoring</li>
+          </ul>
+
+          <h3>For Platform Teams</h3>
+          <ul>
+            <li>🏛️ <strong>Central Governance:</strong> Enforce policies and standards</li>
+            <li>👀 <strong>Visibility:</strong> Monitor all workspaces from central view</li>
+            <li>💰 <strong>Cost Efficiency:</strong> Share infrastructure across teams</li>
+            <li>🔍 <strong>Discovery:</strong> Unified developer portal for all APIs</li>
+            <li>📋 <strong>Compliance:</strong> Ensure regulatory requirements</li>
+          </ul>
+
+          <h2>Workspace Architecture</h2>
+
+          <h3>Components per Workspace</h3>
+          <ul>
+            <li>📦 <strong>APIs:</strong> Team-specific API definitions</li>
+            <li>🏷️ <strong>Products:</strong> Workspace-scoped products</li>
+            <li>🔑 <strong>Subscriptions:</strong> Isolated subscription management</li>
+            <li>🚪 <strong>Gateway:</strong> Dedicated workspace gateway</li>
+            <li>⚙️ <strong>Policies:</strong> Workspace-level policies</li>
+            <li>🔗 <strong>Backends:</strong> Team-specific backend configurations</li>
+          </ul>
+
+          <h3>Access Control</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Scope</th>
+                <th>Permissions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Service Administrator</strong></td>
+                <td>Entire APIM service</td>
+                <td>Full control, create workspaces</td>
+              </tr>
+              <tr>
+                <td><strong>Workspace Owner</strong></td>
+                <td>Specific workspace</td>
+                <td>Manage workspace resources</td>
+              </tr>
+              <tr>
+                <td><strong>Workspace Contributor</strong></td>
+                <td>Specific workspace</td>
+                <td>Create/edit APIs and products</td>
+              </tr>
+              <tr>
+                <td><strong>Workspace Reader</strong></td>
+                <td>Specific workspace</td>
+                <td>Read-only access</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Use Cases</h2>
+
+          <h3>1️⃣ Multi-Team Organizations</h3>
+          <p>Large organizations with multiple product teams:</p>
+          <ul>
+            <li>Each team gets a dedicated workspace</li>
+            <li>Teams deploy and manage APIs independently</li>
+            <li>Platform team enforces governance policies</li>
+            <li>Unified API discovery for all consumers</li>
+          </ul>
+
+          <h3>2️⃣ Business Unit Separation</h3>
+          <p>Different business units with distinct API portfolios:</p>
+          <ul>
+            <li>Separate billing and cost tracking</li>
+            <li>Independent SLA and monitoring</li>
+            <li>Business-specific policies and quotas</li>
+            <li>Isolated developer communities</li>
+          </ul>
+
+          <h3>3️⃣ Partner Ecosystems</h3>
+          <p>API platforms serving multiple partners:</p>
+          <ul>
+            <li>Dedicated workspace per partner</li>
+            <li>Partner-specific APIs and products</li>
+            <li>Isolated subscription keys</li>
+            <li>Custom rate limits per partner</li>
+          </ul>
+
+          <h2>Workspace Gateway</h2>
+          <p>Each workspace has its own dedicated gateway:</p>
+          <ul>
+            <li>🔒 <strong>Isolation:</strong> Traffic separated at runtime</li>
+            <li>📊 <strong>Monitoring:</strong> Per-workspace metrics and logs</li>
+            <li>⚡ <strong>Scaling:</strong> Independent capacity management</li>
+            <li>🌐 <strong>Custom Domains:</strong> Workspace-specific URLs</li>
+          </ul>
+
+          <h2>Best Practices</h2>
+
+          <h3>✅ Do's</h3>
+          <ul>
+            <li>✅ Define clear governance policies upfront</li>
+            <li>✅ Use Azure RBAC for access control</li>
+            <li>✅ Implement naming conventions for workspaces</li>
+            <li>✅ Set up centralized monitoring dashboard</li>
+            <li>✅ Document workspace ownership and responsibilities</li>
+            <li>✅ Establish API design standards across workspaces</li>
+          </ul>
+
+          <h3>❌ Don'ts</h3>
+          <ul>
+            <li>❌ Don't create workspaces for every small project</li>
+            <li>❌ Don't skip governance policies</li>
+            <li>❌ Don't allow uncontrolled workspace proliferation</li>
+            <li>❌ Don't ignore cost allocation and monitoring</li>
+          </ul>
+
+          <div class="callout">
+            <strong>📌 Availability</strong><br />
+            Workspaces are available in <strong>Premium</strong> and <strong>Premium v2</strong> tiers only. Plan your tier selection accordingly if you need workspace capabilities.
+          </div>
+        </section>
+
+        <!-- Integration Section -->
+        <section id="integration" role="article">
+          <h1>Azure Service Integration</h1>
+          <span class="badge">integration</span>
+          <span class="badge">azure</span>
+          <span class="badge">services</span>
+          
+          <p>API Management integrates seamlessly with many Azure services to create comprehensive enterprise solutions.</p>
+
+          <h2>Key Azure Service Integrations</h2>
+
+          <h3>🔍 API Discovery & Governance</h3>
+          <h4>Azure API Center</h4>
+          <ul>
+            <li>Build complete API inventory across the organization</li>
+            <li>Track APIs regardless of type, lifecycle, or location</li>
+            <li>Enable API discovery and reuse</li>
+            <li>Synchronize APIs from APIM to API Center automatically</li>
+          </ul>
+
+          <h3>🤖 AI-Powered Development</h3>
+          <h4>Azure Copilot</h4>
+          <ul>
+            <li>Author API Management policies with AI assistance</li>
+            <li>Explain existing policy configurations</li>
+            <li>Get recommendations for policy optimizations</li>
+            <li>Accelerate policy development</li>
+          </ul>
+
+          <h3>🔐 Security & Secrets</h3>
+          <h4>Azure Key Vault</h4>
+          <ul>
+            <li>Store API backend credentials securely</li>
+            <li>Manage SSL/TLS certificates</li>
+            <li>Rotate secrets without API downtime</li>
+            <li>Integrate with managed identities</li>
+          </ul>
+
+          <h4>Microsoft Entra ID (Azure AD)</h4>
+          <ul>
+            <li>Developer authentication in portal</li>
+            <li>JWT token validation in policies</li>
+            <li>OAuth 2.0 authorization flows</li>
+            <li>B2C for external user management</li>
+          </ul>
+
+          <h3>📊 Monitoring & Observability</h3>
+          <h4>Azure Monitor</h4>
+          <ul>
+            <li>Comprehensive metrics and logs</li>
+            <li>Alerting on SLA breaches</li>
+            <li>Capacity planning insights</li>
+            <li>Custom dashboards</li>
+          </ul>
+
+          <h4>Application Insights</h4>
+          <ul>
+            <li>End-to-end distributed tracing</li>
+            <li>Live metrics and performance</li>
+            <li>Custom telemetry</li>
+            <li>Troubleshooting and diagnostics</li>
+          </ul>
+
+          <h4>Event Hubs</h4>
+          <ul>
+            <li>Stream API logs for analysis</li>
+            <li>Integration with SIEM systems</li>
+            <li>Real-time event processing</li>
+            <li>Archive for compliance</li>
+          </ul>
+
+          <h3>🛡️ Advanced Security</h3>
+          <h4>Microsoft Defender for APIs</h4>
+          <ul>
+            <li>Runtime threat detection</li>
+            <li>API security posture management</li>
+            <li>Anomaly detection</li>
+            <li>Security recommendations</li>
+          </ul>
+
+          <h4>Azure DDoS Protection</h4>
+          <ul>
+            <li>Protection against volumetric attacks</li>
+            <li>Always-on traffic monitoring</li>
+            <li>Automatic mitigation</li>
+            <li>Cost protection</li>
+          </ul>
+
+          <h3>🌐 Networking</h3>
+          <h4>Virtual Networks</h4>
+          <ul>
+            <li>VNet integration for backend connectivity</li>
+            <li>VNet injection for full isolation</li>
+            <li>Private endpoints for inbound traffic</li>
+            <li>Service endpoints</li>
+          </ul>
+
+          <h4>Application Gateway</h4>
+          <ul>
+            <li>Layer 7 load balancing</li>
+            <li>WAF protection</li>
+            <li>SSL/TLS termination</li>
+            <li>Path-based routing</li>
+          </ul>
+
+          <h4>Azure Front Door</h4>
+          <ul>
+            <li>Global load balancing</li>
+            <li>CDN capabilities</li>
+            <li>DDoS protection</li>
+            <li>WAF at the edge</li>
+          </ul>
+
+          <h3>💾 Caching</h3>
+          <h4>Azure Cache for Redis / Azure Managed Redis</h4>
+          <ul>
+            <li>External cache for API responses</li>
+            <li>High-performance caching layer</li>
+            <li>Distributed cache across regions</li>
+            <li>Cache aside pattern support</li>
+          </ul>
+
+          <h3>⚡ Compute Integration</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Integration</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Azure Functions</strong></td>
+                <td>Direct import as API</td>
+                <td>Serverless APIs</td>
+              </tr>
+              <tr>
+                <td><strong>Logic Apps</strong></td>
+                <td>Direct import as API</td>
+                <td>Workflow-based APIs</td>
+              </tr>
+              <tr>
+                <td><strong>App Service</strong></td>
+                <td>Direct import as API</td>
+                <td>Web app APIs</td>
+              </tr>
+              <tr>
+                <td><strong>Container Apps</strong></td>
+                <td>Backend integration</td>
+                <td>Containerized microservices</td>
+              </tr>
+              <tr>
+                <td><strong>AKS</strong></td>
+                <td>Backend integration</td>
+                <td>Kubernetes-hosted APIs</td>
+              </tr>
+              <tr>
+                <td><strong>Service Fabric</strong></td>
+                <td>Backend integration</td>
+                <td>Microservices platform</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>🗄️ Data Services</h3>
+          <h4>Azure Cosmos DB</h4>
+          <ul>
+            <li>Direct CRUD operations via policies</li>
+            <li>No intermediate compute required</li>
+            <li>RESTful data access</li>
+            <li>Global distribution support</li>
+          </ul>
+
+          <h3>🤖 AI Services</h3>
+          <h4>Azure OpenAI</h4>
+          <ul>
+            <li>Expose AI models as APIs</li>
+            <li>Token-based rate limiting</li>
+            <li>Semantic caching for AI responses</li>
+            <li>Load balancing across deployments</li>
+          </ul>
+
+          <h2>Architecture Pattern: API Gateway with Azure Services</h2>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 40 } } }%%
+graph TB
+    subgraph External
+        CLIENT[API Consumers]
+    end
+    
+    subgraph Azure Front Door
+        AFD[Azure Front Door
+        Global Load Balancer]
+        WAF[Web Application Firewall]
+    end
+    
+    subgraph API Management
+        APIM[API Gateway]
+        POLICY[Policies]
+        CACHE[Cache]
+    end
+    
+    subgraph Authentication
+        ENTRA[Microsoft Entra ID]
+        KEYVAULT[Azure Key Vault]
+    end
+    
+    subgraph Backends
+        FUNCTIONS[Azure Functions]
+        AKS[AKS / Microservices]
+        COSMOSDB[Cosmos DB]
+        OPENAI[Azure OpenAI]
+    end
+    
+    subgraph Monitoring
+        MONITOR[Azure Monitor]
+        APPINSIGHTS[Application Insights]
+        DEFENDER[Defender for APIs]
+    end
+    
+    CLIENT --> AFD
+    AFD --> WAF
+    WAF --> APIM
+    APIM --> POLICY
+    POLICY --> CACHE
+    
+    POLICY -.Validate Token.-> ENTRA
+    POLICY -.Get Secrets.-> KEYVAULT
+    
+    APIM --> FUNCTIONS
+    APIM --> AKS
+    APIM --> COSMOSDB
+    APIM --> OPENAI
+    
+    APIM -.Telemetry.-> MONITOR
+    APIM -.Traces.-> APPINSIGHTS
+    APIM -.Security.-> DEFENDER
+    
+    style APIM fill:#3b82f6,color:#fff
+    style AFD fill:#10b981,color:#fff
+    style DEFENDER fill:#ef4444,color:#fff
+          </div>
+
+          <div class="callout">
+            <strong>🏗️ Well-Architected Framework</strong><br />
+            Follow the <a href="https://learn.microsoft.com/azure/well-architected/service-guides/api-management" target="_blank">Azure Well-Architected Framework guidance for API Management</a> to build reliable, secure, efficient, and cost-effective solutions.
+          </div>
+        </section>
+
+        <!-- Tutorials Section -->
+        <section id="tutorials" role="article">
+          <h1>Getting Started & Tutorials</h1>
+          <span class="badge">tutorials</span>
+          <span class="badge">quickstart</span>
+          <span class="badge">getting-started</span>
+          
+          <h2>Quick Start Path</h2>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 30 } } }%%
+graph LR
+    A[1. Create APIM
+    Instance] --> B[2. Import
+     API]
+    B --> C[3. Configure
+    Product]
+    C --> D[4. Apply
+    Policies]
+    D --> E[5. Test in
+    Portal]
+    E --> F[6. Publish &
+    Monitor]
+    
+    style A fill:#3b82f6,color:#fff
+    style B fill:#10b981,color:#fff
+    style C fill:#8b5cf6,color:#fff
+    style D fill:#f59e0b,color:#fff
+    style E fill:#ec4899,color:#fff
+    style F fill:#14b8a6,color:#fff
+          </div>
+
+          <h2>Step-by-Step Tutorials</h2>
+
+          <h3>1️⃣ Create an API Management Instance</h3>
+          
+          <h4>Using Azure Portal</h4>
+          <ol>
+            <li>Navigate to Azure Portal → Create a resource</li>
+            <li>Search for "API Management" and select it</li>
+            <li>Fill in the details:
+              <ul>
+                <li><strong>Subscription:</strong> Select your subscription</li>
+                <li><strong>Resource Group:</strong> Create new or use existing</li>
+                <li><strong>Region:</strong> Choose deployment region</li>
+                <li><strong>Resource Name:</strong> Unique name (e.g., contoso-apim)</li>
+                <li><strong>Organization Name:</strong> Your organization</li>
+                <li><strong>Admin Email:</strong> Notification email</li>
+                <li><strong>Pricing Tier:</strong> Developer for testing</li>
+              </ul>
+            </li>
+            <li>Review and create (takes 30-40 minutes)</li>
+          </ol>
+
+          <h4>Using Azure CLI</h4>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create resource group
+az group create --name apim-rg --location eastus
+
+# Create API Management instance
+az apim create \
+  --name contoso-apim \
+  --resource-group apim-rg \
+  --publisher-name "Contoso" \
+  --publisher-email "admin@contoso.com" \
+  --sku-name Developer</code></pre>
+
+          <h3>2️⃣ Import Your First API</h3>
+
+          <h4>Option A: Import from OpenAPI Specification</h4>
+          <ol>
+            <li>Go to your APIM instance → APIs</li>
+            <li>Click "+ Add API" → OpenAPI</li>
+            <li>Paste OpenAPI spec URL or upload file</li>
+            <li>Configure:
+              <ul>
+                <li><strong>Display name:</strong> User-friendly name</li>
+                <li><strong>Name:</strong> URL identifier</li>
+                <li><strong>API URL suffix:</strong> Path segment (e.g., /users)</li>
+              </ul>
+            </li>
+            <li>Click "Create"</li>
+          </ol>
+
+          <h4>Option B: Import Azure Function</h4>
+          <ol>
+            <li>Go to APIs → "+ Add API" → Function App</li>
+            <li>Click "Browse" and select your Function App</li>
+            <li>Select functions to import</li>
+            <li>Configure API settings</li>
+            <li>Click "Create"</li>
+          </ol>
+
+          <h4>Option C: Create Blank API Manually</h4>
+          <ol>
+            <li>Go to APIs → "+ Add API" → HTTP</li>
+            <li>Fill in basic information</li>
+            <li>Add operations manually:
+              <ul>
+                <li>Click "+ Add operation"</li>
+                <li>Define method, URL template, display name</li>
+                <li>Add request/response details</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h3>3️⃣ Create and Configure a Product</h3>
+          <ol>
+            <li>Go to Products → "+ Add"</li>
+            <li>Configure product:
+              <ul>
+                <li><strong>Display name:</strong> Product name</li>
+                <li><strong>Description:</strong> What the product offers</li>
+                <li><strong>Published:</strong> Check to make available</li>
+                <li><strong>Requires subscription:</strong> Check for protected access</li>
+                <li><strong>Requires approval:</strong> Admin approval needed</li>
+              </ul>
+            </li>
+            <li>Add APIs to the product</li>
+            <li>Configure policies (optional)</li>
+            <li>Set access control (groups)</li>
+          </ol>
+
+          <h3>4️⃣ Apply Common Policies</h3>
+
+          <h4>Add Rate Limiting</h4>
+          <ol>
+            <li>Go to your API → Design → All operations</li>
+            <li>In Inbound processing, click "+ Add policy"</li>
+            <li>Select "Limit call rate"</li>
+            <li>Configure: 100 calls per 60 seconds</li>
+            <li>Save</li>
+          </ol>
+
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;rate-limit calls="100" renewal-period="60" /&gt;
+        &lt;base /&gt;
+    &lt;/inbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h4>Add CORS Policy</h4>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;cors allow-credentials="false"&gt;
+            &lt;allowed-origins&gt;
+                &lt;origin&gt;https://contoso.com&lt;/origin&gt;
+            &lt;/allowed-origins&gt;
+            &lt;allowed-methods&gt;
+                &lt;method&gt;GET&lt;/method&gt;
+                &lt;method&gt;POST&lt;/method&gt;
+            &lt;/allowed-methods&gt;
+            &lt;allowed-headers&gt;
+                &lt;header&gt;*&lt;/header&gt;
+            &lt;/allowed-headers&gt;
+        &lt;/cors&gt;
+    &lt;/inbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h4>Add JWT Validation</h4>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;validate-jwt header-name="Authorization" failed-validation-httpcode="401"&gt;
+            &lt;openid-config url="https://login.microsoftonline.com/{tenant}/.well-known/openid-configuration" /&gt;
+            &lt;audiences&gt;
+                &lt;audience&gt;api://your-api-id&lt;/audience&gt;
+            &lt;/audiences&gt;
+        &lt;/validate-jwt&gt;
+    &lt;/inbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h3>5️⃣ Test Your API</h3>
+
+          <h4>Using Azure Portal</h4>
+          <ol>
+            <li>Go to your API → Test tab</li>
+            <li>Select an operation</li>
+            <li>Fill in parameters (if needed)</li>
+            <li>Add headers (subscription key auto-added)</li>
+            <li>Click "Send"</li>
+            <li>Review request/response</li>
+          </ol>
+
+          <h4>Using Developer Portal</h4>
+          <ol>
+            <li>Navigate to Developer Portal (link in overview)</li>
+            <li>Sign in or sign up</li>
+            <li>Browse APIs → Select your API</li>
+            <li>Try it → Select operation</li>
+            <li>Fill parameters and send</li>
+          </ol>
+
+          <h4>Using curl</h4>
+          <pre class="syntax-highlighted" data-language="bash"><code># Get subscription key from Portal → Subscriptions
+
+curl -X GET \
+  "https://contoso-apim.azure-api.net/users/api/users/123" \
+  -H "Ocp-Apim-Subscription-Key: YOUR_SUBSCRIPTION_KEY"</code></pre>
+
+          <h4>Using Postman</h4>
+          <ol>
+            <li>Import OpenAPI spec from APIM</li>
+            <li>Add subscription key to headers</li>
+            <li>Configure environment variables</li>
+            <li>Test operations</li>
+          </ol>
+
+          <h3>6️⃣ Monitor and Troubleshoot</h3>
+
+          <h4>View Analytics</h4>
+          <ol>
+            <li>Go to APIM → Analytics</li>
+            <li>View:
+              <ul>
+                <li>Requests over time</li>
+                <li>Top APIs and operations</li>
+                <li>Response times</li>
+                <li>Error rates</li>
+                <li>Geographic distribution</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h4>Enable Application Insights</h4>
+          <ol>
+            <li>Create Application Insights resource</li>
+            <li>Go to APIM → Application Insights</li>
+            <li>Click "+ Add" and select AI resource</li>
+            <li>Configure sampling percentage</li>
+            <li>View detailed telemetry in AI</li>
+          </ol>
+
+          <h4>Enable Request Tracing</h4>
+          <ol>
+            <li>In API Test tab, enable "Trace"</li>
+            <li>Send request</li>
+            <li>View trace details:
+              <ul>
+                <li>Policy execution steps</li>
+                <li>Backend calls</li>
+                <li>Timing information</li>
+                <li>Variable values</li>
+              </ul>
+            </li>
+          </ol>
+
+          <h2>Common Integration Patterns</h2>
+
+          <h3>Pattern 1: Microservices Gateway</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;!-- Route to different backends based on path --&gt;
+&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;choose&gt;
+            &lt;when condition="@(context.Request.Url.Path.StartsWith("/users"))"&gt;
+                &lt;set-backend-service base-url="https://users-service.internal" /&gt;
+            &lt;/when&gt;
+            &lt;when condition="@(context.Request.Url.Path.StartsWith("/orders"))"&gt;
+                &lt;set-backend-service base-url="https://orders-service.internal" /&gt;
+            &lt;/when&gt;
+        &lt;/choose&gt;
+    &lt;/inbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h3>Pattern 2: Legacy API Modernization</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;!-- Transform XML SOAP to JSON REST --&gt;
+&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;!-- Convert incoming JSON to SOAP XML --&gt;
+        &lt;json-to-xml apply="always" consider-accept-header="false" /&gt;
+        &lt;set-header name="SOAPAction" exists-action="override"&gt;
+            &lt;value&gt;"http://tempuri.org/GetUser"&lt;/value&gt;
+        &lt;/set-header&gt;
+    &lt;/inbound&gt;
+    &lt;outbound&gt;
+        &lt;!-- Convert SOAP response back to JSON --&gt;
+        &lt;xml-to-json kind="direct" apply="always" consider-accept-header="false" /&gt;
+    &lt;/outbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h3>Pattern 3: API Versioning</h3>
+          <pre class="syntax-highlighted" data-language="xml"><code class="language-xml">&lt;!-- Route to different versions --&gt;
+&lt;policies&gt;
+    &lt;inbound&gt;
+        &lt;choose&gt;
+            &lt;when condition="@(context.Request.Headers.GetValueOrDefault("api-version","1.0") == "2.0")"&gt;
+                &lt;set-backend-service base-url="https://api-v2.internal" /&gt;
+            &lt;/when&gt;
+            &lt;otherwise&gt;
+                &lt;set-backend-service base-url="https://api-v1.internal" /&gt;
+            &lt;/otherwise&gt;
+        &lt;/choose&gt;
+    &lt;/inbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <div class="callout">
+            <strong>📚 Next Steps</strong><br />
+            <ul>
+              <li>Complete the <a href="https://learn.microsoft.com/azure/api-management/import-and-publish" target="_blank">Import and Publish tutorial</a></li>
+              <li>Explore <a href="https://learn.microsoft.com/azure/api-management/api-management-policies" target="_blank">Policy Reference</a></li>
+              <li>Watch <a href="https://aka.ms/apimlove" target="_blank">Video tutorials</a></li>
+              <li>Try <a href="https://learn.microsoft.com/training/modules/explore-api-management/" target="_blank">Microsoft Learn modules</a></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Best Practices Section -->
+        <section id="best-practices" role="article">
+          <h1>Best Practices</h1>
+          <span class="badge">best-practices</span>
+          <span class="badge">recommendations</span>
+          <span class="badge">patterns</span>
+          
+          <h2>Design & Architecture</h2>
+
+          <h3>✅ API Design</h3>
+          <ul>
+            <li>✅ <strong>Use RESTful principles:</strong> HTTP methods, status codes, resource naming</li>
+            <li>✅ <strong>Version your APIs:</strong> Use version sets and clear versioning strategy</li>
+            <li>✅ <strong>Design for pagination:</strong> Implement skip/take or cursor-based pagination</li>
+            <li>✅ <strong>Use standard error responses:</strong> Consistent error format across APIs</li>
+            <li>✅ <strong>Document thoroughly:</strong> Complete OpenAPI specs with examples</li>
+            <li>✅ <strong>Design idempotent operations:</strong> Safe retry behavior</li>
+          </ul>
+
+          <h3>✅ Security Best Practices</h3>
+
+          <h4>Authentication & Authorization</h4>
+          <ul>
+            <li>✅ Use <strong>OAuth 2.0 or JWT</strong> for authentication (not just subscription keys)</li>
+            <li>✅ Implement <strong>least privilege access</strong> with granular permissions</li>
+            <li>✅ Rotate subscription keys regularly</li>
+            <li>✅ Use <strong>Microsoft Entra ID</strong> for enterprise authentication</li>
+            <li>✅ Enable <strong>certificate-based authentication</strong> for backend services</li>
+            <li>✅ Implement <strong>IP restrictions</strong> where appropriate</li>
+          </ul>
+
+          <h4>Data Protection</h4>
+          <ul>
+            <li>✅ Always use <strong>HTTPS/TLS</strong> - disable HTTP</li>
+            <li>✅ Store secrets in <strong>Azure Key Vault</strong></li>
+            <li>✅ Use <strong>managed identities</strong> for Azure service authentication</li>
+            <li>✅ Enable <strong>Azure Defender for APIs</strong> for threat detection</li>
+            <li>✅ Implement <strong>request/response validation</strong></li>
+            <li>✅ Sanitize error messages (don't expose internal details)</li>
+          </ul>
+
+          <h4>Network Security</h4>
+          <ul>
+            <li>✅ Use <strong>VNet integration</strong> for private backend connectivity</li>
+            <li>✅ Enable <strong>private endpoints</strong> for inbound isolation</li>
+            <li>✅ Deploy <strong>WAF with Application Gateway</strong> for additional protection</li>
+            <li>✅ Use <strong>Azure DDoS Protection</strong> for public endpoints</li>
+          </ul>
+
+          <h3>✅ Performance Optimization</h3>
+
+          <h4>Caching Strategy</h4>
+          <ul>
+            <li>✅ Implement <strong>response caching</strong> for read-heavy APIs</li>
+            <li>✅ Use <strong>external Redis cache</strong> for large payloads (Premium tiers)</li>
+            <li>✅ Set appropriate <strong>cache duration</strong> based on data volatility</li>
+            <li>✅ Implement <strong>cache invalidation</strong> strategies</li>
+            <li>✅ Use <strong>vary-by parameters</strong> for personalized responses</li>
+          </ul>
+
+          <h4>Backend Optimization</h4>
+          <ul>
+            <li>✅ Use <strong>connection pooling</strong> to backends</li>
+            <li>✅ Implement <strong>timeout policies</strong> (don't wait forever)</li>
+            <li>✅ Use <strong>circuit breaker pattern</strong> for failing backends</li>
+            <li>✅ Enable <strong>HTTP/2</strong> for improved performance</li>
+            <li>✅ Optimize <strong>payload sizes</strong> (compression, selective fields)</li>
+          </ul>
+
+          <h4>Rate Limiting & Quotas</h4>
+          <ul>
+            <li>✅ Implement <strong>rate limits per subscription</strong> to prevent abuse</li>
+            <li>✅ Use <strong>quotas</strong> for long-term usage control</li>
+            <li>✅ Apply <strong>different limits per tier</strong> (bronze/silver/gold products)</li>
+            <li>✅ Monitor and adjust limits based on actual usage</li>
+          </ul>
+
+          <h2>Reliability & Resilience</h2>
+
+          <h3>✅ High Availability</h3>
+          <ul>
+            <li>✅ Choose <strong>Premium tier for production</strong> (99.99% SLA)</li>
+            <li>✅ Enable <strong>Availability Zones</strong> for zone redundancy</li>
+            <li>✅ Deploy <strong>multi-region</strong> for global availability (Premium)</li>
+            <li>✅ Implement <strong>health endpoints</strong> for monitoring</li>
+            <li>✅ Use <strong>self-hosted gateways</strong> for hybrid resilience</li>
+          </ul>
+
+          <h3>✅ Error Handling</h3>
+          <ul>
+            <li>✅ Implement <strong>comprehensive error handling</strong> in policies</li>
+            <li>✅ Use <strong>on-error section</strong> for centralized error responses</li>
+            <li>✅ Return <strong>meaningful error messages</strong> to consumers</li>
+            <li>✅ Log errors for <strong>troubleshooting</strong></li>
+            <li>✅ Implement <strong>retry logic</strong> with exponential backoff</li>
+          </ul>
+
+          <h3>✅ Disaster Recovery</h3>
+          <ul>
+            <li>✅ Backup <strong>API Management configuration</strong> regularly</li>
+            <li>✅ Use <strong>Infrastructure as Code</strong> (ARM, Bicep, Terraform)</li>
+            <li>✅ Implement <strong>multi-region deployments</strong></li>
+            <li>✅ Test <strong>failover procedures</strong> periodically</li>
+            <li>✅ Document <strong>recovery procedures</strong></li>
+          </ul>
+
+          <h2>Monitoring & Observability</h2>
+
+          <h3>✅ Comprehensive Monitoring</h3>
+          <ul>
+            <li>✅ Enable <strong>Application Insights</strong> for detailed telemetry</li>
+            <li>✅ Configure <strong>Azure Monitor alerts</strong> for critical metrics</li>
+            <li>✅ Monitor <strong>capacity metrics</strong> for scaling decisions</li>
+            <li>✅ Track <strong>SLA compliance</strong></li>
+            <li>✅ Use <strong>distributed tracing</strong> for end-to-end visibility</li>
+          </ul>
+
+          <h3>✅ Logging Strategy</h3>
+          <ul>
+            <li>✅ Log to <strong>Application Insights</strong> for analysis</li>
+            <li>✅ Stream to <strong>Event Hubs</strong> for SIEM integration</li>
+            <li>✅ Use <strong>correlation IDs</strong> for request tracking</li>
+            <li>✅ Implement <strong>log sampling</strong> for high-volume APIs</li>
+            <li>✅ <strong>Sanitize logs</strong> (no sensitive data)</li>
+          </ul>
+
+          <h3>✅ Metrics to Monitor</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Threshold</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Capacity</td>
+                <td>&gt; 80%</td>
+                <td>Scale up or out</td>
+              </tr>
+              <tr>
+                <td>Failed Requests</td>
+                <td>&gt; 5%</td>
+                <td>Investigate root cause</td>
+              </tr>
+              <tr>
+                <td>Response Time</td>
+                <td>&gt; SLA target</td>
+                <td>Optimize policies/backend</td>
+              </tr>
+              <tr>
+                <td>Backend Duration</td>
+                <td>&gt; Expected</td>
+                <td>Backend performance issue</td>
+              </tr>
+              <tr>
+                <td>Rate Limit Hits</td>
+                <td>Frequent</td>
+                <td>Review limits or block abuser</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Operational Excellence</h2>
+
+          <h3>✅ DevOps & Automation</h3>
+          <ul>
+            <li>✅ Use <strong>CI/CD pipelines</strong> for API deployments</li>
+            <li>✅ Manage configurations with <strong>Git/version control</strong></li>
+            <li>✅ Implement <strong>API versioning and revisions</strong></li>
+            <li>✅ Use <strong>environments</strong> (dev, test, prod)</li>
+            <li>✅ Automate <strong>testing</strong> (functional, load, security)</li>
+            <li>✅ Use <strong>IaC for infrastructure</strong> provisioning</li>
+          </ul>
+
+          <h3>✅ Documentation</h3>
+          <ul>
+            <li>✅ Maintain <strong>up-to-date OpenAPI specs</strong></li>
+            <li>✅ Provide <strong>code examples</strong> in multiple languages</li>
+            <li>✅ Document <strong>authentication flows</strong> clearly</li>
+            <li>✅ Include <strong>error codes and meanings</strong></li>
+            <li>✅ Publish <strong>change logs</strong> for API updates</li>
+            <li>✅ Create <strong>getting started guides</strong></li>
+          </ul>
+
+          <h3>✅ Developer Experience</h3>
+          <ul>
+            <li>✅ Customize <strong>Developer Portal</strong> with branding</li>
+            <li>✅ Enable <strong>self-service</strong> subscription management</li>
+            <li>✅ Provide <strong>interactive API testing</strong></li>
+            <li>✅ Offer <strong>SDKs</strong> for popular languages</li>
+            <li>✅ Maintain <strong>responsive support</strong> channels</li>
+            <li>✅ Share <strong>usage analytics</strong> with developers</li>
+          </ul>
+
+          <h2>Cost Optimization</h2>
+
+          <h3>✅ Cost Management</h3>
+          <ul>
+            <li>✅ Choose the <strong>right tier</strong> for your workload</li>
+            <li>✅ Use <strong>Consumption tier</strong> for variable traffic</li>
+            <li>✅ Enable <strong>autoscaling</strong> to match demand</li>
+            <li>✅ Implement <strong>caching</strong> to reduce backend calls</li>
+            <li>✅ Use <strong>workspaces</strong> to share Premium instances</li>
+            <li>✅ Monitor <strong>unused capacity</strong> and scale down</li>
+            <li>✅ Apply <strong>Azure Reservations</strong> for discounts</li>
+          </ul>
+
+          <h2>Anti-Patterns to Avoid</h2>
+
+          <h3>❌ Common Mistakes</h3>
+          <ul>
+            <li>❌ Using subscription keys as the only authentication</li>
+            <li>❌ Not implementing rate limiting (leaving APIs vulnerable)</li>
+            <li>❌ Ignoring capacity metrics until performance degrades</li>
+            <li>❌ Exposing internal error details to consumers</li>
+            <li>❌ Not using versioning (breaking changes impact all consumers)</li>
+            <li>❌ Over-complicated policy logic (difficult to maintain)</li>
+            <li>❌ Not testing policies in lower environments first</li>
+            <li>❌ Storing secrets in policy XML (use Key Vault)</li>
+            <li>❌ No monitoring or alerting setup</li>
+            <li>❌ Manual deployments without version control</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🎯 Success Checklist</strong><br />
+            <ol>
+              <li>✅ Security: JWT validation + Key Vault + HTTPS only</li>
+              <li>✅ Performance: Caching + Rate limits + Timeouts</li>
+              <li>✅ Reliability: Premium tier + Availability Zones + Multi-region</li>
+              <li>✅ Monitoring: Application Insights + Alerts + Distributed tracing</li>
+              <li>✅ DevOps: IaC + CI/CD + Version control</li>
+              <li>✅ Documentation: OpenAPI + Examples + Developer Portal</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" role="article">
+          <h1>Resources</h1>
+          <span class="badge">docs</span>
+          <span class="badge">community</span>
+          <span class="badge">links</span>
+          
+          <h2>Official Documentation</h2>
+          <ul class="list-style-none">
+            <li>📚 <a href="https://learn.microsoft.com/azure/api-management/" target="_blank" rel="noopener">Official Documentation</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/api-management/api-management-key-concepts" target="_blank" rel="noopener">Key Concepts</a></li>
+            <li>🚪 <a href="https://learn.microsoft.com/azure/api-management/api-management-gateways-overview" target="_blank" rel="noopener">Gateway Overview</a></li>
+            <li>⚙️ <a href="https://learn.microsoft.com/azure/api-management/api-management-policies" target="_blank" rel="noopener">Policy Reference</a></li>
+            <li>💻 <a href="https://learn.microsoft.com/azure/api-management/api-management-howto-policies" target="_blank" rel="noopener">Policy Examples</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/api-management/authentication-authorization-overview" target="_blank" rel="noopener">Authentication & Authorization</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/api-management/observability" target="_blank" rel="noopener">Observability Guide</a></li>
+          </ul>
+
+          <h2>Getting Started</h2>
+          <ul class="list-style-none">
+            <li>🚀 <a href="https://learn.microsoft.com/azure/api-management/get-started-create-service-instance" target="_blank" rel="noopener">Create APIM Instance</a></li>
+            <li>📥 <a href="https://learn.microsoft.com/azure/api-management/import-and-publish" target="_blank" rel="noopener">Import and Publish API</a></li>
+            <li>🎨 <a href="https://learn.microsoft.com/azure/api-management/transform-api" target="_blank" rel="noopener">Transform and Protect API</a></li>
+            <li>🧪 <a href="https://learn.microsoft.com/azure/api-management/mock-api-responses" target="_blank" rel="noopener">Mock API Responses</a></li>
+            <li>📖 <a href="https://learn.microsoft.com/azure/api-management/api-management-howto-developer-portal" target="_blank" rel="noopener">Developer Portal Customization</a></li>
+          </ul>
+
+          <h2>Architecture & Best Practices</h2>
+          <ul class="list-style-none">
+            <li>🏗️ <a href="https://learn.microsoft.com/azure/well-architected/service-guides/api-management" target="_blank" rel="noopener">Well-Architected Framework</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/enterprise-integration/basic-enterprise-integration" target="_blank" rel="noopener">Enterprise Integration Architecture</a></li>
+            <li>🚀 <a href="https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/app-platform/api-management/landing-zone-accelerator" target="_blank" rel="noopener">Landing Zone Accelerator</a></li>
+            <li>🤖 <a href="https://learn.microsoft.com/azure/api-management/genai-gateway-capabilities" target="_blank" rel="noopener">AI Gateway Capabilities</a></li>
+            <li>🌐 <a href="https://aka.ms/hybrid-and-multi-cloud-api-management" target="_blank" rel="noopener">Hybrid and Multi-Cloud</a></li>
+          </ul>
+
+          <h2>Learning Resources</h2>
+          <ul class="list-style-none">
+            <li>🎓 <a href="https://learn.microsoft.com/training/modules/explore-api-management/" target="_blank" rel="noopener">Microsoft Learn: Explore API Management</a></li>
+            <li>📺 <a href="https://aka.ms/apimlove" target="_blank" rel="noopener">Video Library (aka.ms/apimlove)</a></li>
+            <li>📝 <a href="https://learn.microsoft.com/training/paths/architect-api-integration/" target="_blank" rel="noopener">Learning Path: Architect API Integration</a></li>
+            <li>🎬 <a href="https://www.youtube.com/c/AzureAPIManagement" target="_blank" rel="noopener">YouTube Channel</a></li>
+          </ul>
+
+          <h2>Tools & Extensions</h2>
+          <ul class="list-style-none">
+            <li>🔧 <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-apimanagement" target="_blank" rel="noopener">VS Code Extension</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/powershell/module/az.apimanagement/" target="_blank" rel="noopener">PowerShell Module</a></li>
+            <li>🖥️ <a href="https://learn.microsoft.com/cli/azure/apim" target="_blank" rel="noopener">Azure CLI Commands</a></li>
+            <li>🐙 <a href="https://github.com/Azure/azure-api-management-devops-resource-kit" target="_blank" rel="noopener">DevOps Resource Kit</a></li>
+            <li>📦 <a href="https://www.nuget.org/packages/Microsoft.Azure.Management.ApiManagement/" target="_blank" rel="noopener">.NET SDK</a></li>
+          </ul>
+
+          <h2>Policy References</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Documentation Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Access Restriction</td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-access-restriction-policies" target="_blank">Policy Reference</a></td>
+              </tr>
+              <tr>
+                <td>Transformation</td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-transformation-policies" target="_blank">Policy Reference</a></td>
+              </tr>
+              <tr>
+                <td>Caching</td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-caching-policies" target="_blank">Policy Reference</a></td>
+              </tr>
+              <tr>
+                <td>Advanced</td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-advanced-policies" target="_blank">Policy Reference</a></td>
+              </tr>
+              <tr>
+                <td>Policy Expressions</td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-policy-expressions" target="_blank">Expressions Guide</a></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Community & Support</h2>
+          <ul class="list-style-none">
+            <li>💬 <a href="https://learn.microsoft.com/answers/tags/25/azure-api-management" target="_blank" rel="noopener">Microsoft Q&A</a></li>
+            <li>🐛 <a href="https://feedback.azure.com/d365community/forum/3c95f5ae-4824-ec11-b6e6-000d3a4f0f1c" target="_blank" rel="noopener">Feature Requests & Feedback</a></li>
+            <li>💡 <a href="https://stackoverflow.com/questions/tagged/azure-api-management" target="_blank" rel="noopener">Stack Overflow</a></li>
+            <li>🐦 <a href="https://twitter.com/AzureAPIM" target="_blank" rel="noopener">Twitter @AzureAPIM</a></li>
+            <li>📧 <a href="https://azure.microsoft.com/support/options/" target="_blank" rel="noopener">Azure Support</a></li>
+          </ul>
+
+          <h2>Pricing & Service Limits</h2>
+          <ul class="list-style-none">
+            <li>💰 <a href="https://azure.microsoft.com/pricing/details/api-management/" target="_blank" rel="noopener">Pricing Calculator</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/api-management/api-management-features" target="_blank" rel="noopener">Service Tiers & Feature Comparison</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/api-management/api-management-features" target="_blank" rel="noopener">Feature Comparison</a></li>
+            <li>⚠️ <a href="https://learn.microsoft.com/azure/api-management/service-limits" target="_blank" rel="noopener">Service Limits</a></li>
+            <li>🆕 <a href="https://learn.microsoft.com/azure/api-management/v2-service-tiers-overview" target="_blank" rel="noopener">V2 Tiers Overview</a></li>
+          </ul>
+
+          <h2>Integration Guides</h2>
+          <ul class="list-style-none">
+            <li>⚡ <a href="https://learn.microsoft.com/azure/api-management/import-function-app-as-api" target="_blank" rel="noopener">Azure Functions Integration</a></li>
+            <li>🔄 <a href="https://learn.microsoft.com/azure/api-management/import-logic-app-as-api" target="_blank" rel="noopener">Logic Apps Integration</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/azure/api-management/import-app-service-as-api" target="_blank" rel="noopener">App Service Integration</a></li>
+            <li>🤖 <a href="https://learn.microsoft.com/azure/api-management/azure-openai-api-from-specification" target="_blank" rel="noopener">Azure OpenAI Integration</a></li>
+            <li>🗄️ <a href="https://learn.microsoft.com/azure/api-management/cosmosdb-data-source-policy" target="_blank" rel="noopener">Cosmos DB Integration</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/api-management/api-management-howto-properties" target="_blank" rel="noopener">Key Vault Integration</a></li>
+            <li>🔍 <a href="https://learn.microsoft.com/azure/api-center/synchronize-api-management-apis" target="_blank" rel="noopener">API Center Integration</a></li>
+          </ul>
+
+          <h2>Samples & Templates</h2>
+          <ul class="list-style-none">
+            <li>🎨 <a href="https://github.com/Azure/api-management-policy-snippets" target="_blank" rel="noopener">Policy Snippets (GitHub)</a></li>
+            <li>📦 <a href="https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.apimanagement" target="_blank" rel="noopener">ARM Templates</a></li>
+            <li>🚀 <a href="https://github.com/Azure-Samples/api-management-sample-apis" target="_blank" rel="noopener">Sample APIs</a></li>
+            <li>🔧 <a href="https://github.com/Azure/azure-api-management-devops-resource-kit" target="_blank" rel="noopener">DevOps Toolkit</a></li>
+          </ul>
+
+          <h2>Key Takeaways</h2>
+          <div class="callout">
+            <ol>
+              <li><strong>API Management is a complete API platform</strong> for managing APIs across their entire lifecycle</li>
+              <li><strong>Three core components:</strong> API Gateway (data plane), Management Plane (control plane), and Developer Portal</li>
+              <li><strong>Policies are powerful</strong> - they enable transformation, security, rate limiting, and caching without code changes</li>
+              <li><strong>Multiple gateway options:</strong> Managed (Azure-hosted) and Self-hosted (hybrid/multi-cloud)</li>
+              <li><strong>Choose the right tier:</strong> Developer for testing, Consumption for variable traffic, Premium for enterprise production</li>
+              <li><strong>Workspaces enable federated management</strong> - decentralized teams with centralized governance</li>
+              <li><strong>Deep Azure integration:</strong> Seamless connection with Functions, Logic Apps, Key Vault, Monitor, Defender, and more</li>
+              <li><strong>Security is layered:</strong> Use JWT validation + Key Vault + VNet + rate limiting + monitoring</li>
+              <li><strong>Monitor everything:</strong> Enable Application Insights, set up alerts, use distributed tracing</li>
+              <li><strong>Automate with DevOps:</strong> Use IaC, CI/CD pipelines, and version control for consistency</li>
+            </ol>
+          </div>
+
+          <h2>Quick Reference Card</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Recommended Approach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dev/Test Environment</td>
+                <td>Developer tier (no SLA, lowest cost)</td>
+              </tr>
+              <tr>
+                <td>Production APIs</td>
+                <td>Premium tier (multi-region, self-hosted gateway, 99.99% SLA)</td>
+              </tr>
+              <tr>
+                <td>Variable Traffic</td>
+                <td>Consumption tier (serverless, pay-per-use)</td>
+              </tr>
+              <tr>
+                <td>Multi-Team Organization</td>
+                <td>Premium with Workspaces</td>
+              </tr>
+              <tr>
+                <td>On-Premises Backends</td>
+                <td>Self-hosted gateway</td>
+              </tr>
+              <tr>
+                <td>Legacy SOAP Services</td>
+                <td>Transform policies (XML-to-JSON)</td>
+              </tr>
+              <tr>
+                <td>Microservices Gateway</td>
+                <td>Routing policies + VNet integration</td>
+              </tr>
+              <tr>
+                <td>Partner API Platform</td>
+                <td>Products + Rate limiting + Analytics</td>
+              </tr>
+              <tr>
+                <td>AI/ML APIs</td>
+                <td>Azure OpenAI integration + token limits</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Getting Help</h2>
+          <ul class="list-style-none">
+            <li>📖 <a href="https://learn.microsoft.com/azure/api-management/" target="_blank" rel="noopener">Read the Docs</a></li>
+            <li>💬 <a href="https://learn.microsoft.com/answers/tags/25/azure-api-management" target="_blank" rel="noopener">Ask the Community</a></li>
+            <li>🎫 <a href="https://azure.microsoft.com/support/create-ticket/" target="_blank" rel="noopener">Open Support Ticket</a></li>
+            <li>💡 <a href="https://feedback.azure.com/d365community/forum/3c95f5ae-4824-ec11-b6e6-000d3a4f0f1c" target="_blank" rel="noopener">Request Features</a></li>
+          </ul>
+        </section>
+
+        <!-- AI/GenAI Gateway Section -->
+        <section id="ai-gateway" role="article">
+          <h1>AI/GenAI Gateway Capabilities</h1>
+          <span class="badge">ai</span>
+          <span class="badge">genai</span>
+          <span class="badge">llm</span>
+          <span class="badge">openai</span>
+          <span class="badge">azure-openai</span>
+          
+          <p>Azure API Management provides specialized capabilities for managing and optimizing AI and Generative AI (GenAI) APIs, including Azure OpenAI Service, third-party LLM providers, and custom AI models.</p>
+
+          <h2>Why Use APIM for AI/GenAI APIs?</h2>
+          
+          <div class="callout">
+            <strong>🤖 AI API Gateway Benefits</strong><br />
+            <ul>
+              <li><strong>Token Management:</strong> Monitor and control token consumption across models</li>
+              <li><strong>Cost Control:</strong> Implement quotas and rate limits to manage AI costs</li>
+              <li><strong>Load Balancing:</strong> Distribute requests across multiple AI endpoints</li>
+              <li><strong>Fallback Logic:</strong> Route to alternative models if primary is unavailable</li>
+              <li><strong>Security:</strong> Protect AI service keys and implement authentication</li>
+              <li><strong>Monitoring:</strong> Track usage, latency, and errors for AI services</li>
+              <li><strong>Governance:</strong> Centralized control over AI API access and usage</li>
+            </ul>
+          </div>
+
+          <h2>AI Gateway Architecture</h2>
+          
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 20 } } }%%
+graph TB
+    CLIENT[AI Applications
+    Web/Mobile/Desktop]
+    
+    subgraph APIM["Azure API Management"]
+        GATEWAY[API Gateway]
+        POLICIES[AI Policies
+        Token Limits
+        Load Balancing]
+    end
+    
+    subgraph AI_SERVICES["AI Services"]
+        AOAI1[Azure OpenAI
+        GPT-4]
+        AOAI2[Azure OpenAI
+        GPT-3.5]
+        ANTHROPIC[Anthropic
+        Claude]
+        CUSTOM[Custom AI Model
+        Azure ML]
+    end
+    
+    MONITOR[Application Insights
+    Token Metrics]
+    
+    CLIENT -->|API Request| GATEWAY
+    GATEWAY --> POLICIES
+    POLICIES -->|Route & Throttle| AOAI1
+    POLICIES -->|Fallback| AOAI2
+    POLICIES -->|Alternative| ANTHROPIC
+    POLICIES -->|Custom Logic| CUSTOM
+    
+    GATEWAY -.Telemetry.-> MONITOR
+    
+          </div>
+
+          <h2>Key AI Gateway Features</h2>
+
+          <h3>1. Token Management & Monitoring</h3>
+          <p>Track and control token consumption to manage costs and prevent overuse.</p>
+          
+          <h4>Token Metrics</h4>
+          <ul>
+            <li>📊 <strong>Prompt Tokens:</strong> Input tokens sent to the model</li>
+            <li>📤 <strong>Completion Tokens:</strong> Output tokens generated by the model</li>
+            <li>📈 <strong>Total Tokens:</strong> Sum of prompt and completion tokens</li>
+            <li>💰 <strong>Cost Tracking:</strong> Calculate costs based on token usage</li>
+            <li>⏱️ <strong>Rate Limiting:</strong> Control tokens per minute/hour/day</li>
+          </ul>
+
+          <h4>Token Limiting Policy Example</h4>
+          <pre><code>&lt;policies&gt;
+  &lt;inbound&gt;
+    &lt;azure-openai-token-limit 
+      tokens-per-minute="10000" 
+      counter-key="@(context.Subscription.Id)" 
+      estimate-prompt-tokens="true" 
+      tokens-consumed-header-name="consumed-tokens" 
+      remaining-tokens-header-name="remaining-tokens" /&gt;
+  &lt;/inbound&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h3>2. Load Balancing & Failover</h3>
+          <p>Distribute AI requests across multiple endpoints for reliability and performance.</p>
+          
+          <h4>Load Balancing Strategies</h4>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Strategy</th>
+                <th>Use Case</th>
+                <th>Implementation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Round Robin</strong></td>
+                <td>Equal distribution</td>
+                <td>Rotate across endpoints</td>
+              </tr>
+              <tr>
+                <td><strong>Priority-Based</strong></td>
+                <td>Primary + fallback</td>
+                <td>Try primary, fallback on failure</td>
+              </tr>
+              <tr>
+                <td><strong>Weighted</strong></td>
+                <td>Capacity-based</td>
+                <td>Distribute by endpoint capacity</td>
+              </tr>
+              <tr>
+                <td><strong>Regional</strong></td>
+                <td>Geographic routing</td>
+                <td>Route to nearest region</td>
+              </tr>
+              <tr>
+                <td><strong>Model-Based</strong></td>
+                <td>Capability routing</td>
+                <td>Route by model capabilities</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Load Balancing Policy Example</h4>
+          <pre><code>&lt;choose&gt;
+  &lt;when condition="@(context.Variables.GetValueOrDefault&lt;int&gt;(&quot;requestCount&quot;) % 2 == 0)"&gt;
+    &lt;set-backend-service base-url="https://openai-east-us.openai.azure.com" /&gt;
+  &lt;/when&gt;
+  &lt;otherwise&gt;
+    &lt;set-backend-service base-url="https://openai-west-us.openai.azure.com" /&gt;
+  &lt;/otherwise&gt;
+&lt;/choose&gt;</code></pre>
+
+          <h3>3. Semantic Caching</h3>
+          <p>Cache AI responses for similar queries to reduce costs and improve latency.</p>
+          
+          <ul>
+            <li>🎯 <strong>Exact Match:</strong> Cache identical prompts</li>
+            <li>🧠 <strong>Semantic Match:</strong> Cache semantically similar prompts</li>
+            <li>⚡ <strong>Response Time:</strong> Serve cached responses in milliseconds</li>
+            <li>💰 <strong>Cost Savings:</strong> Avoid redundant AI API calls</li>
+            <li>🔄 <strong>Cache Invalidation:</strong> Time-based or manual refresh</li>
+          </ul>
+
+          <h3>4. Request/Response Transformation</h3>
+          <p>Transform requests to support multiple AI providers with different formats.</p>
+          
+          <h4>Transformation Use Cases</h4>
+          <ul>
+            <li>🔀 <strong>Provider Abstraction:</strong> Single API for multiple AI providers</li>
+            <li>📝 <strong>Prompt Engineering:</strong> Inject system prompts or context</li>
+            <li>🛡️ <strong>Content Filtering:</strong> Remove sensitive data from prompts</li>
+            <li>📊 <strong>Response Shaping:</strong> Standardize output format</li>
+            <li>🎨 <strong>Response Enhancement:</strong> Add metadata or formatting</li>
+          </ul>
+
+          <h3>5. Azure OpenAI Integration</h3>
+          <p>Native integration with Azure OpenAI Service for seamless management.</p>
+          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Capability</th>
+                <th>Benefit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Direct Import</strong></td>
+                <td>Import Azure OpenAI as API</td>
+                <td>Auto-configure endpoints</td>
+              </tr>
+              <tr>
+                <td><strong>Managed Identity</strong></td>
+                <td>Keyless authentication</td>
+                <td>Enhanced security</td>
+              </tr>
+              <tr>
+                <td><strong>Token Metrics</strong></td>
+                <td>Built-in token tracking</td>
+                <td>Cost visibility</td>
+              </tr>
+              <tr>
+                <td><strong>Model Routing</strong></td>
+                <td>Route to specific models</td>
+                <td>Flexibility and optimization</td>
+              </tr>
+              <tr>
+                <td><strong>Streaming Support</strong></td>
+                <td>SSE streaming responses</td>
+                <td>Real-time AI responses</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>AI Gateway Policies</h2>
+
+          <h3>Azure OpenAI Specific Policies</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Policy</th>
+                <th>Purpose</th>
+                <th>Key Parameters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>azure-openai-token-limit</code></td>
+                <td>Control token consumption</td>
+                <td>tokens-per-minute, counter-key</td>
+              </tr>
+              <tr>
+                <td><code>azure-openai-emit-metric</code></td>
+                <td>Send custom metrics</td>
+                <td>namespace, dimensions</td>
+              </tr>
+              <tr>
+                <td><code>azure-openai-semantic-cache-lookup</code></td>
+                <td>Check semantic cache</td>
+                <td>score-threshold, embeddings-backend</td>
+              </tr>
+              <tr>
+                <td><code>azure-openai-semantic-cache-store</code></td>
+                <td>Store in semantic cache</td>
+                <td>duration, vary-by</td>
+              </tr>
+              <tr>
+                <td><code>llm-emit-token-metric</code></td>
+                <td>Emit token metrics to Azure Monitor</td>
+                <td>namespace, dimensions</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Complete AI Gateway Policy Example</h3>
+          <pre><code>&lt;policies&gt;
+  &lt;inbound&gt;
+    &lt;base /&gt;
+    &lt;!-- Authenticate with managed identity --&gt;
+    &lt;authentication-managed-identity resource="https://cognitiveservices.azure.com" /&gt;
+    
+    &lt;!-- Token limit enforcement --&gt;
+    &lt;azure-openai-token-limit 
+      tokens-per-minute="50000" 
+      counter-key="@(context.Subscription.Id)" 
+      estimate-prompt-tokens="true" 
+      remaining-tokens-header-name="x-ratelimit-remaining" /&gt;
+    
+    &lt;!-- Semantic cache lookup --&gt;
+    &lt;azure-openai-semantic-cache-lookup 
+      score-threshold="0.9" 
+      embeddings-backend-id="text-embedding-ada-002" 
+      vary-by="@(context.Subscription.Id)" /&gt;
+    
+    &lt;!-- Load balancing across regions --&gt;
+    &lt;set-variable name="backendIndex" value="@(context.RequestId.GetHashCode() % 2)" /&gt;
+    &lt;choose&gt;
+      &lt;when condition="@(context.Variables.GetValueOrDefault&lt;int&gt;(&quot;backendIndex&quot;) == 0)"&gt;
+        &lt;set-backend-service base-url="{{azure-openai-eastus}}" /&gt;
+      &lt;/when&gt;
+      &lt;otherwise&gt;
+        &lt;set-backend-service base-url="{{azure-openai-westus}}" /&gt;
+      &lt;/otherwise&gt;
+    &lt;/choose&gt;
+  &lt;/inbound&gt;
+  
+  &lt;outbound&gt;
+    &lt;base /&gt;
+    &lt;!-- Store response in semantic cache --&gt;
+    &lt;azure-openai-semantic-cache-store duration="3600" /&gt;
+    
+    &lt;!-- Emit token usage metrics --&gt;
+    &lt;azure-openai-emit-metric namespace="OpenAI-Metrics"&gt;
+      &lt;dimension name="Subscription" value="@(context.Subscription.Id)" /&gt;
+      &lt;dimension name="Model" value="@(context.Variables[&quot;modelName&quot;])" /&gt;
+    &lt;/azure-openai-emit-metric&gt;
+  &lt;/outbound&gt;
+  
+  &lt;on-error&gt;
+    &lt;base /&gt;
+    &lt;!-- Fallback to alternative endpoint --&gt;
+    &lt;retry condition="@(context.Response.StatusCode == 429 || context.Response.StatusCode &gt;= 500)" 
+           count="2" interval="1"&gt;
+      &lt;set-backend-service base-url="{{azure-openai-backup}}" /&gt;
+      &lt;forward-request /&gt;
+    &lt;/retry&gt;
+  &lt;/on-error&gt;
+&lt;/policies&gt;</code></pre>
+
+          <h2>AI Gateway Use Cases</h2>
+
+          <h3>🎯 Common Scenarios</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Solution</th>
+                <th>Benefits</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cost Management</strong></td>
+                <td>Token limits + quotas per user/app</td>
+                <td>Prevent runaway costs</td>
+              </tr>
+              <tr>
+                <td><strong>High Availability</strong></td>
+                <td>Multi-region load balancing</td>
+                <td>99.99% uptime for AI services</td>
+              </tr>
+              <tr>
+                <td><strong>Multi-Model Strategy</strong></td>
+                <td>Route to GPT-4 or GPT-3.5 based on complexity</td>
+                <td>Optimize cost vs quality</td>
+              </tr>
+              <tr>
+                <td><strong>Security & Compliance</strong></td>
+                <td>Content filtering + PII removal</td>
+                <td>Meet regulatory requirements</td>
+              </tr>
+              <tr>
+                <td><strong>Developer Experience</strong></td>
+                <td>Single API for multiple AI providers</td>
+                <td>Simplified integration</td>
+              </tr>
+              <tr>
+                <td><strong>Performance</strong></td>
+                <td>Semantic caching + regional routing</td>
+                <td>Reduced latency and costs</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Monitoring & Analytics</h2>
+
+          <h3>Key Metrics to Track</h3>
+          <ul>
+            <li>📊 <strong>Token Usage:</strong> Prompt tokens, completion tokens, total tokens</li>
+            <li>💰 <strong>Cost per Request:</strong> Calculate based on model pricing</li>
+            <li>⏱️ <strong>Latency:</strong> Time to first token (TTFT), total response time</li>
+            <li>🎯 <strong>Cache Hit Rate:</strong> Percentage of requests served from cache</li>
+            <li>⚠️ <strong>Error Rate:</strong> Rate limiting errors, model errors, timeouts</li>
+            <li>🔄 <strong>Retry Rate:</strong> Requests requiring fallback or retry</li>
+            <li>👥 <strong>Usage by User/App:</strong> Track consumption per subscriber</li>
+            <li>🤖 <strong>Model Distribution:</strong> Which models are most used</li>
+          </ul>
+
+          <h3>Application Insights Integration</h3>
+          <ul>
+            <li>Custom dashboards for AI metrics</li>
+            <li>Real-time alerts on token limits</li>
+            <li>Cost tracking and forecasting</li>
+            <li>Usage patterns and trends</li>
+            <li>Performance bottleneck identification</li>
+          </ul>
+
+          <h2>Best Practices for AI Gateway</h2>
+
+          <div class="callout">
+            <strong>✅ AI Gateway Best Practices</strong><br />
+            <ul>
+              <li>✅ <strong>Always implement token limits</strong> to prevent cost overruns</li>
+              <li>✅ <strong>Use managed identity</strong> for Azure OpenAI authentication</li>
+              <li>✅ <strong>Enable semantic caching</strong> for repeated queries</li>
+              <li>✅ <strong>Configure multi-region failover</strong> for high availability</li>
+              <li>✅ <strong>Monitor token consumption</strong> in Application Insights</li>
+              <li>✅ <strong>Implement progressive rate limiting</strong> (warn before blocking)</li>
+              <li>✅ <strong>Use different models for different tasks</strong> (GPT-4 vs GPT-3.5)</li>
+              <li>✅ <strong>Add content filtering policies</strong> for safety and compliance</li>
+              <li>✅ <strong>Set appropriate timeouts</strong> for long-running requests</li>
+              <li>✅ <strong>Track costs per subscriber</strong> for chargeback or billing</li>
+            </ul>
+          </div>
+
+          <h2>Getting Started with AI Gateway</h2>
+
+          <h3>Step-by-Step Setup</h3>
+          <ol>
+            <li><strong>Create APIM Instance:</strong> Choose Premium or Standard v2 tier</li>
+            <li><strong>Import Azure OpenAI API:</strong> Use direct import or manual setup</li>
+            <li><strong>Configure Managed Identity:</strong> Enable system-assigned identity</li>
+            <li><strong>Grant Permissions:</strong> Add "Cognitive Services User" role to APIM</li>
+            <li><strong>Add Token Limit Policy:</strong> Configure token-per-minute limits</li>
+            <li><strong>Enable Caching:</strong> Set up semantic cache with embeddings backend</li>
+            <li><strong>Configure Load Balancing:</strong> Add multiple backend endpoints</li>
+            <li><strong>Set Up Monitoring:</strong> Connect Application Insights</li>
+            <li><strong>Create Products:</strong> Define usage tiers with different limits</li>
+            <li><strong>Test & Monitor:</strong> Validate policies and track metrics</li>
+          </ol>
+
+          <h2>Resources & Documentation</h2>
+          <ul class="list-style-none">
+            <li>🤖 <a href="https://learn.microsoft.com/azure/api-management/genai-gateway-capabilities" target="_blank" rel="noopener">AI Gateway Capabilities Documentation</a></li>
+            <li>📘 <a href="https://learn.microsoft.com/azure/api-management/azure-openai-api-from-specification" target="_blank" rel="noopener">Import Azure OpenAI API</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/api-management/azure-openai-token-limit-policy" target="_blank" rel="noopener">Token Limit Policy Reference</a></li>
+            <li>💾 <a href="https://learn.microsoft.com/azure/api-management/azure-openai-semantic-cache-lookup-policy" target="_blank" rel="noopener">Semantic Cache Policy Reference</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/api-management/azure-openai-emit-token-metric-policy" target="_blank" rel="noopener">Emit Token Metrics Policy</a></li>
+            <li>🏗️ <a href="https://github.com/Azure-Samples/genai-gateway-apim" target="_blank" rel="noopener">GitHub Sample: GenAI Gateway</a></li>
+          </ul>
+        </section>
+
+        <section id="close" role="article">
+          <h1>Thank You!</h1>
+          <p>This guide provides a comprehensive overview of Azure API Management Gateway. For the latest updates and detailed documentation, always refer to the official <a href="https://learn.microsoft.com/azure/api-management/" target="_blank">Microsoft Learn documentation</a>.</p>
+          
+          <p><strong>Curated by:</strong> Murthy Vepa</p>
+          <p><strong>Last Updated:</strong> December 2025</p>
+          
+          <div class="callout">
+            <strong>📚 Continue Learning</strong><br />
+            Explore the other "In a Nutshell" guides in this collection for more Azure and technology deep-dives!
+          </div>
+        </section>
+        </div>
+      </main>
+    </div>
+    
+    <nav class="controls" role="navigation" aria-label="Pagination">
+      <div class="btn-group" role="group">
+        <button class="btn btn-outline-info btn-sm" id="prevBtn" title="Previous" aria-label="Previous concept">&nbsp;&lt;&nbsp;</button>
+        <button class="btn btn-outline-info btn-sm" id="nextBtn" title="Next" aria-label="Next concept">&nbsp;&gt;&nbsp;</button>
+      </div>
+    </nav>
+  </div>  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarLabel">Contents</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="list-group list-group-flush w-100" id="tocMobile"></ul>
+    </div>
+  </div>
+
+  <script>
+    // ---- Mermaid Initialization ----
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.mermaid) {
+        window.mermaid.contentLoaded();
+      }
+    });
+
+    // ---- Configuration ----
+    const sectionConfig = [
+      { id: "overview", title: "What is Azure API Management?", tags: ["intro", "overview", "basics"] },
+      { id: "key-components", title: "Key Components", tags: ["architecture", "components", "structure"] },
+      { id: "gateway", title: "API Gateway & Types", tags: ["gateway", "runtime", "dataplane", "managed", "self-hosted", "comparison"] },
+      { id: "key-concepts", title: "Key Concepts", tags: ["apis", "products", "policies", "concepts"] },
+      { id: "policies", title: "Policies in Detail", tags: ["policies", "transformation", "security"] },
+      { id: "tutorials", title: "Getting Started & Tutorials", tags: ["tutorials", "quickstart", "getting-started"] },
+      { id: "workspaces", title: "Workspaces & Federated Management", tags: ["workspaces", "federated", "teams"] },
+      { id: "management-dev-portal", title: "Management Plane & Dev Portal", tags: ["control", "configuration", "management", "portal", "documentation", "onboarding"] },
+      { id: "integration", title: "Azure Service Integration", tags: ["integration", "azure", "services"] },
+      { id: "ai-gateway", title: "AI/GenAI Gateway Capabilities", tags: ["ai", "genai", "llm", "openai", "chatgpt", "azure-openai", "token-management"] },
+      { id: "best-practices", title: "Best Practices", tags: ["best-practices", "recommendations", "patterns"] },
+      { id: "resources", title: "Resources", tags: ["docs", "community", "links"] }
+    ];
+
+    // ---- State & rendering ----
+    const state = {
+      index: 0,
+      filtered: sectionConfig.map((_, i) => i), // indices
+    };
+
+    const els = {
+      toc: document.getElementById('toc'),
+      tocMobile: document.getElementById('tocMobile'),
+      prev: document.getElementById('prevBtn'),
+      next: document.getElementById('nextBtn'),
+      toggleSidebar: document.getElementById('toggleSidebar'),
+      themeToggle: document.getElementById('themeToggle'),
+      main: document.getElementById('main'),
+      sidebar: document.querySelector('nav.sidebar'),
+      sidebarOffcanvas: document.getElementById('sidebarOffcanvas')
+    };
+
+    function buildTOC(){
+      // Clear both TOC lists
+      els.toc.innerHTML = '';
+      els.tocMobile.innerHTML = '';
+      
+      state.filtered.forEach((idx) => {
+        const s = sectionConfig[idx];
+        
+        // Desktop sidebar
+        const liDesktop = document.createElement('li');
+        liDesktop.className = 'list-group-item';
+        const aDesktop = document.createElement('a');
+        aDesktop.href = `#${s.id}`;
+        aDesktop.textContent = s.title;
+        aDesktop.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liDesktop.appendChild(aDesktop);
+        els.toc.appendChild(liDesktop);
+        
+        // Mobile offcanvas
+        const liMobile = document.createElement('li');
+        liMobile.className = 'list-group-item';
+        const aMobile = document.createElement('a');
+        aMobile.href = `#${s.id}`;
+        aMobile.textContent = s.title;
+        aMobile.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liMobile.appendChild(aMobile);
+        els.tocMobile.appendChild(liMobile);
+      });
+      highlightActiveTOC();
+    }
+
+    function setActiveByIndex(i){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      const id = ids[i];
+      const active = document.getElementById(id);
+      if (active){
+        active.classList.add('active');
+        active.setAttribute('tabindex', '-1');
+        active.focus({preventScroll:true});
+      }
+      updateControls();
+      highlightActiveTOC();
+      updateURLHash(id);
+    }
+
+    function updateControls(){
+      const count = state.filtered.length;
+      els.prev.disabled = state.index <= 0;
+      els.next.disabled = state.index >= count - 1;
+    }
+
+    function filterTOC(query){
+      const q = query.trim().toLowerCase();
+      state.filtered = sectionConfig
+        .map((s, i) => ({s, i}))
+        .filter(({s}) => s.title.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q)))
+        .map(({i}) => i);
+
+      state.index = Math.min(state.index, Math.max(0, state.filtered.length - 1));
+      buildTOC();
+      setActiveByIndex(state.index);
+    }
+
+    function navigate(delta){
+      const count = state.filtered.length;
+      const nextIndex = Math.min(Math.max(state.index + delta, 0), count - 1);
+      if (nextIndex !== state.index){
+        state.index = nextIndex;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      }
+    }
+
+    function navigateToId(id){
+      const idxInFiltered = state.filtered.findIndex(fi => sectionConfig[fi].id === id);
+      if (idxInFiltered !== -1){
+        state.index = idxInFiltered;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      } else {
+        state.filtered = sectionConfig.map((_, i) => i);
+        buildTOC();
+        navigateToId(id);
+      }
+    }
+
+    function updateURLHash(id){
+      const url = new URL(window.location);
+      url.hash = id;
+      history.replaceState(null, '', url);
+    }
+
+    function highlightActiveTOC(){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      const activeId = ids[state.index];
+      // Highlight desktop sidebar
+      els.toc.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+      // Highlight mobile offcanvas
+      els.tocMobile.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+    }
+
+    function openSidebar(){
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById('sidebarOffcanvas'));
+      offcanvas.show();
+    }
+    function closeSidebar(){
+      const offcanvasElement = document.getElementById('sidebarOffcanvas');
+      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if(offcanvas) offcanvas.hide();
+    }
+
+    // ---- Events ----
+    els.prev.addEventListener('click', () => navigate(-1));
+    els.next.addEventListener('click', () => navigate(1));
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+      else if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Deep linking on load/hash change
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#','');
+      if (id) navigateToId(id);
+    });
+
+    // Sidebar toggle (mobile)
+    els.toggleSidebar.addEventListener('click', () => {
+      openSidebar();
+    });
+
+    // Restore theme
+    (function(){
+      try {
+        const saved = localStorage.getItem('concepts-theme');
+        if (saved) { 
+          document.documentElement.setAttribute('data-theme', saved);
+          els.themeToggle.textContent = saved === 'light' ? '🌗' : '🌙';
+        }
+      } catch {}
+    })();
+
+    // Initial render
+    buildTOC();
+    setActiveByIndex(0);
+    
+    // Scroll content to top on initial load
+    const contentEl = document.querySelector('.content');
+    if (contentEl) contentEl.scrollTop = 0;
+
+    // Navigate to hash if present
+    const initialId = location.hash.replace('#','');
+    if (initialId){ navigateToId(initialId); }
+
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

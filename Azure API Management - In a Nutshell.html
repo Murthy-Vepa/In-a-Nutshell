@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Azure API Management - In a Nutshell</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='9' y1='16.82' x2='9' y2='1.18'%3E%3Cstop offset='0' stop-color='%23198ab3'/%3E%3Cstop offset='0.09' stop-color='%231f9dc4'/%3E%3Cstop offset='0.24' stop-color='%2328b5d9'/%3E%3Cstop offset='0.4' stop-color='%232dc6e9'/%3E%3Cstop offset='0.57' stop-color='%2331d1f2'/%3E%3Cstop offset='0.78' stop-color='%2332d4f5'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='8.36' y1='11.35' x2='8.36' y2='14.46'%3E%3Cstop offset='0' stop-color='%23c69aeb'/%3E%3Cstop offset='1' stop-color='%236f4bb2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M14.18,5.89A4.85,4.85,0,0,0,9.23,1.18,5,5,0,0,0,4.48,4.47,4.61,4.61,0,0,0,.5,9,4.67,4.67,0,0,0,5.29,13.5a3,3,0,0,0,.42,0h1.2a1.47,1.47,0,0,1-.11-.56v0A1.51,1.51,0,0,1,7,12.21H5.6l-.31,0A3.41,3.41,0,0,1,1.77,9,3.33,3.33,0,0,1,4.68,5.73l.76-.12.25-.73A3.73,3.73,0,0,1,9.23,2.45,3.6,3.6,0,0,1,12.91,5.9V7L14,7.15a2.59,2.59,0,0,1,2.26,2.49,2.63,2.63,0,0,1-2.62,2.54h-.15l-.08,0h-1A3.92,3.92,0,0,0,8.54,9a.64.64,0,1,0,0,1.27,2.65,2.65,0,0,1,0,5.29.64.64,0,1,0,0,1.27,3.92,3.92,0,0,0,3.87-3.34h1.05a.64.64,0,0,0,.2,0A3.91,3.91,0,0,0,17.5,9.64,3.86,3.86,0,0,0,14.18,5.89Z' fill='url(%23a)'/%3E%3Crect x='6.8' y='11.35' width='3.12' height='3.12' rx='1.54' fill='url(%23b)'/%3E%3C/svg%3E" />
-<meta name="description" content="A comprehensive guide to Azure API Management." />
+  <title>Azure API Management - In a Nutshell</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='9' y1='16.82' x2='9' y2='1.18'%3E%3Cstop offset='0' stop-color='%23198ab3'/%3E%3Cstop offset='0.09' stop-color='%231f9dc4'/%3E%3Cstop offset='0.24' stop-color='%2328b5d9'/%3E%3Cstop offset='0.4' stop-color='%232dc6e9'/%3E%3Cstop offset='0.57' stop-color='%2331d1f2'/%3E%3Cstop offset='0.78' stop-color='%2332d4f5'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='8.36' y1='11.35' x2='8.36' y2='14.46'%3E%3Cstop offset='0' stop-color='%23c69aeb'/%3E%3Cstop offset='1' stop-color='%236f4bb2'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M14.18,5.89A4.85,4.85,0,0,0,9.23,1.18,5,5,0,0,0,4.48,4.47,4.61,4.61,0,0,0,.5,9,4.67,4.67,0,0,0,5.29,13.5a3,3,0,0,0,.42,0h1.2a1.47,1.47,0,0,1-.11-.56v0A1.51,1.51,0,0,1,7,12.21H5.6l-.31,0A3.41,3.41,0,0,1,1.77,9,3.33,3.33,0,0,1,4.68,5.73l.76-.12.25-.73A3.73,3.73,0,0,1,9.23,2.45,3.6,3.6,0,0,1,12.91,5.9V7L14,7.15a2.59,2.59,0,0,1,2.26,2.49,2.63,2.63,0,0,1-2.62,2.54h-.15l-.08,0h-1A3.92,3.92,0,0,0,8.54,9a.64.64,0,1,0,0,1.27,2.65,2.65,0,0,1,0,5.29.64.64,0,1,0,0,1.27,3.92,3.92,0,0,0,3.87-3.34h1.05a.64.64,0,0,0,.2,0A3.91,3.91,0,0,0,17.5,9.64,3.86,3.86,0,0,0,14.18,5.89Z' fill='url(%23a)'/%3E%3Crect x='6.8' y='11.35' width='3.12' height='3.12' rx='1.54' fill='url(%23b)'/%3E%3C/svg%3E" />
+  <meta name="description" content="A comprehensive guide to Azure API Management." />
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -25,6 +25,29 @@
       --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
       --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     }
+    
+    /* Bootstrap Gradient Utility Classes */
+    .bg-gradient-blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; }
+    .bg-gradient-green { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important; }
+    .bg-gradient-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; }
+    .bg-gradient-pink { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important; }
+    .bg-gradient-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%) !important; }
+    .bg-gradient-teal { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important; }
+    .bg-gradient-blue-dark { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-gradient-gray { background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important; }
+    .bg-gradient-purple-dark { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important; }
+    .bg-gradient-teal-dark { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important; }
+    .bg-gradient-green-dark { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; }
+    .bg-gradient-green-light { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; }
+    .bg-gradient-blue-sky { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; }
+    .bg-gradient-red-dark { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+    .bg-gradient-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; }
+    .bg-gradient-green-medium { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important; }
+    .bg-gradient-violet { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important; }
+    .bg-gradient-lime { background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%) !important; }
+    .bg-gradient-sky { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; }
     
     /* Apply theme colors to Bootstrap elements */
     body { background-color: var(--bg); color: var(--fg); overflow: hidden; }
@@ -91,9 +114,30 @@
       list-style: none; 
       padding: 0rem 0; 
       margin: 0; 
-      background: linear-gradient(180deg, rgba(59, 130, 246, 0.02) 0%, transparent 100%);
+      background: transparent;
     }
-    .toc li { margin: 0; }
+    .toc li { 
+      margin: 0; 
+    }
+    
+    /* Section grouping */
+    .toc li[data-group="overview"] { margin-bottom: 0.75rem; }
+    .toc li[data-group="solid"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(59, 130, 246, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="other-principles"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(16, 185, 129, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="resources"] { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(100, 116, 139, 0.15);
+      padding-top: 1rem;
+    }
+    
     .list-group-item { 
       background: transparent; 
       border-color: transparent; 
@@ -119,6 +163,7 @@
       overflow: hidden;
       background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
       border: 1px solid rgba(0, 0, 0, 0.06);
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
@@ -151,6 +196,7 @@
       color: #1e40af;
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
       border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
     }
     .list-group-item a:hover::before {
       transform: scaleY(1);
@@ -173,6 +219,157 @@
       background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
       width: 5px;
       box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Sub-items tree connectors */
+    .list-group-sub-item a::before { 
+      content: '├─';
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      color: #6b7280;
+      z-index: 1;
+      position: relative;
+    }
+    
+    /* Sub-items styling - similar to main items but smaller and indented */
+    .list-group-sub-item {
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0px; 
+      margin: 0.2rem 0.75rem 0.2rem 1.5rem;
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+      position: relative;
+      list-style-type: none;
+    }
+    .list-group-sub-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+      z-index: 1;
+    }
+    .list-group-sub-item a {
+      color: #1f2937; 
+      text-decoration: none; 
+      display: block;
+      border-left: 3px solid transparent; 
+      padding: 0.65rem 1rem 0.65rem 2.00rem;
+      transition: all 0.2s ease; 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Sub-items hover and active states - same as main items */
+    .list-group-sub-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-sub-item:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-sub-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-sub-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    
+    .list-group-sub-item.active::before {
+      transform: scaleY(1);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-sub-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-sub-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-sub-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
     }
     .list-group-item a.active::after {
       opacity: 1;
@@ -257,7 +454,7 @@
       position: relative;
     }
     .mermaid.rendered {
-      min-height: auto;
+      min-height: 0;
     }
     .mermaid svg {
       max-width: 100%;
@@ -292,7 +489,7 @@
     }
 
     .mermaid[data-processed="true"] {
-      min-height: auto;
+      min-height: 0;
     }
     
     .mermaid svg {
@@ -597,6 +794,28 @@
       font-size: 0.875rem;
       line-height: 1.6;
     }
+
+    ul
+    {
+        list-style-type: none;
+    }
+  /* Document Footer */
+    .document-footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .document-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    .document-footer strong {
+      color: #495057;
+    }  
   </style>
   <!-- Mermaid.js for diagrams -->
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
@@ -860,8 +1079,20 @@
           <p>Azure API Management consists of three core components that work together to provide a complete API management solution:</p>
 
           <div class="mermaid">
-%%{ init: { "theme": "base", "fontFamily": "Segoe UI", "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis" } } }%%
+%%{ init: { 
+    "theme": "base", 
+    "themeVariables": {
+      "fontFamily": "Segoe UI"
+    }, 
+    "flowchart": { 
+      "useMaxWidth": true, 
+      "htmlLabels": true, 
+      "curve": "basis" 
+    } 
+  } 
+}%%
 graph TB
+  classDef withMargin fill-opacity:0.0,color:#FFFFFF,stroke-width:0px;
     subgraph "`**API Consumers**`"
         APP[Mobile/Web Apps]
         DEV[Developers]
@@ -869,6 +1100,8 @@ graph TB
     end
     
     subgraph "`**API Management Components**`"
+        SPACER["`<div style='width:100px;height:100px;margin:0;display: block;'>INVISIBLE SPACE</div>`"]:::withMargin; 
+        
         GATEWAY[API Gateway<br/>Data Plane]
         MGMT[Management Plane<br/>Control Plane]
         PORTAL[Developer Portal]
@@ -2237,8 +2470,7 @@ graph LR
           <div class="mermaid">
 %%{ init: { "theme": "base", "fontFamily": "Segoe UI", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 20 } } }%%
 graph TB
-    subgraph APIM["`**API Management Service (Premium)**`"]
-        
+    subgraph APIM["`**API Management Service**`"]
         PLATFORM[Platform Team<br/>Central Governance]
         
         subgraph "Workspace A"
@@ -2656,7 +2888,7 @@ graph TB
 
           <div class="callout">
             <strong>🏗️ Well-Architected Framework</strong><br />
-            Follow the <a href="https://learn.microsoft.com/azure/well-architected/service-guides/api-management" target="_blank">Azure Well-Architected Framework guidance for API Management</a> to build reliable, secure, efficient, and cost-effective solutions.
+            Follow the <a href="https://learn.microsoft.com/en-us/azure/well-architected/service-guides/azure-api-management" target="_blank" rel="noopener">Azure Well-Architected Framework guidance for API Management</a> to build reliable, secure, efficient, and cost-effective solutions.
           </div>
         </section>
 
@@ -2956,10 +3188,10 @@ curl -X GET \
           <div class="callout">
             <strong>📚 Next Steps</strong><br />
             <ul>
-              <li>Complete the <a href="https://learn.microsoft.com/azure/api-management/import-and-publish" target="_blank">Import and Publish tutorial</a></li>
-              <li>Explore <a href="https://learn.microsoft.com/azure/api-management/api-management-policies" target="_blank">Policy Reference</a></li>
-              <li>Watch <a href="https://aka.ms/apimlove" target="_blank">Video tutorials</a></li>
-              <li>Try <a href="https://learn.microsoft.com/training/modules/explore-api-management/" target="_blank">Microsoft Learn modules</a></li>
+              <li>Complete the <a href="https://learn.microsoft.com/azure/api-management/import-and-publish" target="_blank" rel="noopener">Import and Publish tutorial</a></li>
+              <li>Explore <a href="https://learn.microsoft.com/azure/api-management/api-management-policies" target="_blank" rel="noopener">Policy Reference</a></li>
+              <li>Watch <a href="https://aka.ms/apimlove" target="_blank" rel="noopener">Video tutorials</a></li>
+              <li>Try <a href="https://learn.microsoft.com/training/modules/explore-api-management/" target="_blank" rel="noopener">Microsoft Learn modules</a></li>
             </ul>
           </div>
         </section>
@@ -3266,23 +3498,23 @@ curl -X GET \
             <tbody>
               <tr>
                 <td>Access Restriction</td>
-                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-access-restriction-policies" target="_blank">Policy Reference</a></td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-access-restriction-policies" target="_blank" rel="noopener">Policy Reference</a></td>
               </tr>
               <tr>
                 <td>Transformation</td>
-                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-transformation-policies" target="_blank">Policy Reference</a></td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-transformation-policies" target="_blank" rel="noopener">Policy Reference</a></td>
               </tr>
               <tr>
                 <td>Caching</td>
-                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-caching-policies" target="_blank">Policy Reference</a></td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-caching-policies" target="_blank" rel="noopener">Policy Reference</a></td>
               </tr>
               <tr>
                 <td>Advanced</td>
-                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-advanced-policies" target="_blank">Policy Reference</a></td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-advanced-policies" target="_blank" rel="noopener">Policy Reference</a></td>
               </tr>
               <tr>
                 <td>Policy Expressions</td>
-                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-policy-expressions" target="_blank">Expressions Guide</a></td>
+                <td><a href="https://learn.microsoft.com/azure/api-management/api-management-policy-expressions" target="_blank" rel="noopener">Expressions Guide</a></td>
               </tr>
             </tbody>
           </table>
@@ -3809,18 +4041,13 @@ graph TB
             <li>📊 <a href="https://learn.microsoft.com/azure/api-management/azure-openai-emit-token-metric-policy" target="_blank" rel="noopener">Emit Token Metrics Policy</a></li>
             <li>🏗️ <a href="https://github.com/Azure-Samples/genai-gateway-apim" target="_blank" rel="noopener">GitHub Sample: GenAI Gateway</a></li>
           </ul>
-        </section>
 
-        <section id="close" role="article">
-          <h1>Thank You!</h1>
-          <p>This guide provides a comprehensive overview of Azure API Management Gateway. For the latest updates and detailed documentation, always refer to the official <a href="https://learn.microsoft.com/azure/api-management/" target="_blank">Microsoft Learn documentation</a>.</p>
-          
-          <p><strong>Curated by:</strong> Murthy Vepa</p>
-          <p><strong>Last Updated:</strong> December 2025</p>
-          
-          <div class="callout">
-            <strong>📚 Continue Learning</strong><br />
-            Explore the other "In a Nutshell" guides in this collection for more Azure and technology deep-dives!
+          <hr />
+          <div class="document-footer">
+            <p>
+              <strong>Last Updated:</strong> January 2026 | 
+              <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+            </p>
           </div>
         </section>
         </div>
@@ -3853,18 +4080,18 @@ graph TB
 
     // ---- Configuration ----
     const sectionConfig = [
-      { id: "overview", title: "What is Azure API Management?", tags: ["intro", "overview", "basics"] },
-      { id: "key-components", title: "Key Components", tags: ["architecture", "components", "structure"] },
-      { id: "gateway", title: "API Gateway & Types", tags: ["gateway", "runtime", "dataplane", "managed", "self-hosted", "comparison"] },
-      { id: "key-concepts", title: "Key Concepts", tags: ["apis", "products", "policies", "concepts"] },
-      { id: "policies", title: "Policies in Detail", tags: ["policies", "transformation", "security"] },
-      { id: "tutorials", title: "Getting Started & Tutorials", tags: ["tutorials", "quickstart", "getting-started"] },
-      { id: "workspaces", title: "Workspaces & Federated Management", tags: ["workspaces", "federated", "teams"] },
-      { id: "management-dev-portal", title: "Management Plane & Dev Portal", tags: ["control", "configuration", "management", "portal", "documentation", "onboarding"] },
-      { id: "integration", title: "Azure Service Integration", tags: ["integration", "azure", "services"] },
-      { id: "ai-gateway", title: "AI/GenAI Gateway Capabilities", tags: ["ai", "genai", "llm", "openai", "chatgpt", "azure-openai", "token-management"] },
-      { id: "best-practices", title: "Best Practices", tags: ["best-practices", "recommendations", "patterns"] },
-      { id: "resources", title: "Resources", tags: ["docs", "community", "links"] }
+      { id: "overview", title: "📖 What is Azure API Management?", tags: ["intro", "overview", "basics"] },
+      { id: "key-components", title: "🏗️ Key Components", tags: ["architecture", "components", "structure"] },
+      { id: "gateway", title: "🚪 API Gateway & Types", tags: ["gateway", "runtime", "dataplane", "managed", "self-hosted", "comparison"] },
+      { id: "key-concepts", title: "💡 Key Concepts", tags: ["apis", "products", "policies", "concepts"] },
+      { id: "policies", title: "🔧 Policies in Detail", tags: ["policies", "transformation", "security"] },
+      { id: "tutorials", title: "🚀 Getting Started & Tutorials", tags: ["tutorials", "quickstart", "getting-started"] },
+      { id: "workspaces", title: "👥 Workspaces & Federated Management", tags: ["workspaces", "federated", "teams"] },
+      { id: "management-dev-portal", title: "⚙️ Management Plane & Dev Portal", tags: ["control", "configuration", "management", "portal", "documentation", "onboarding"] },
+      { id: "integration", title: "🔗 Azure Service Integration", tags: ["integration", "azure", "services"] },
+      { id: "ai-gateway", title: "🤖 AI/GenAI Gateway Capabilities", tags: ["ai", "genai", "llm", "openai", "chatgpt", "azure-openai", "token-management"] },
+      { id: "best-practices", title: "✨ Best Practices", tags: ["best-practices", "recommendations", "patterns"] },
+      { id: "resources", title: "📚 Resources", tags: ["docs", "community", "links"] }
     ];
 
     // ---- State & rendering ----
@@ -4044,15 +4271,17 @@ graph TB
 
     // Initial render
     buildTOC();
-    setActiveByIndex(0);
-    
-    // Scroll content to top on initial load
-    const contentEl = document.querySelector('.content');
-    if (contentEl) contentEl.scrollTop = 0;
 
-    // Navigate to hash if present
+    // Navigate to hash if present, otherwise show first section
     const initialId = location.hash.replace('#','');
-    if (initialId){ navigateToId(initialId); }
+    if (initialId){ 
+      navigateToId(initialId); 
+    } else {
+      setActiveByIndex(0);
+      // Scroll content to top on initial load
+      const contentEl = document.querySelector('.content');
+      if (contentEl) contentEl.scrollTop = 0;
+    }
 
   </script>
   <!-- Bootstrap JS -->

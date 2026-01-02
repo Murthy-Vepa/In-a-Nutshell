@@ -1,0 +1,3380 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Azure Functions - In a Nutshell</title>
+<link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20id%3D'a2c88306-fa03-4e5b-b192-401f0b77808b'%20width%3D'18.0'%20height%3D'18.0'%20viewBox%3D'0%200%2018%2018'%3E%3Cdefs%3E%3ClinearGradient%20id%3D'b403aca7-f387-4434-96b4-ae157edc835f'%20x1%3D'-175.993'%20y1%3D'-343.723'%20x2%3D'-175.993'%20y2%3D'-359.232'%20gradientTransform%3D'translate(212.573%20370.548)%20scale(1.156%201.029)'%20gradientUnits%3D'userSpaceOnUse'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%23fea11b'%20/%3E%3Cstop%20offset%3D'0.284'%20stop-color%3D'%23fea51a'%20/%3E%3Cstop%20offset%3D'0.547'%20stop-color%3D'%23feb018'%20/%3E%3Cstop%20offset%3D'0.8'%20stop-color%3D'%23ffc314'%20/%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%23ffd70f'%20/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%3E%3Cpath%20d%3D'M2.37%2C7.475H3.2a.267.267%2C0%2C0%2C1%2C.267.267v6.148a.533.533%2C0%2C0%2C1-.533.533H2.1a0%2C0%2C0%2C0%2C1%2C0%2C0V7.741a.267.267%2C0%2C0%2C1%2C.267-.267Z'%20transform%3D'translate(12.507%2016.705)%20rotate(134.919)'%20fill%3D'%2350e6ff'%20/%3E%3Cpath%20d%3D'M2.325%2C3.6h.833a.267.267%2C0%2C0%2C1%2C.267.267v6.583a0%2C0%2C0%2C0%2C1%2C0%2C0H2.591a.533.533%2C0%2C0%2C1-.533-.533V3.865A.267.267%2C0%2C0%2C1%2C2.325%2C3.6Z'%20transform%3D'translate(5.759%200.114)%20rotate(44.919)'%20fill%3D'%231490df'%20/%3E%3C/g%3E%3Cg%3E%3Cpath%20d%3D'M14.53%2C7.475h.833a.533.533%2C0%2C0%2C1%2C.533.533v6.148a.267.267%2C0%2C0%2C1-.267.267H14.8a.267.267%2C0%2C0%2C1-.267-.267V7.475a0%2C0%2C0%2C0%2C1%2C0%2C0Z'%20transform%3D'translate(12.223%20-7.555)%20rotate(45.081)'%20fill%3D'%2350e6ff'%20/%3E%3Cpath%20d%3D'M15.108%2C3.6h.833a0%2C0%2C0%2C0%2C1%2C0%2C0v6.583a.267.267%2C0%2C0%2C1-.267.267h-.833a.267.267%2C0%2C0%2C1-.267-.267V4.131a.533.533%2C0%2C0%2C1%2C.533-.533Z'%20transform%3D'translate(31.022%201.222)%20rotate(135.081)'%20fill%3D'%231490df'%20/%3E%3C/g%3E%3Cpath%20d%3D'M8.459%2C9.9H4.87a.193.193%2C0%2C0%2C1-.2-.181.166.166%2C0%2C0%2C1%2C.018-.075L8.991%2C1.13a.206.206%2C0%2C0%2C1%2C.186-.106h4.245a.193.193%2C0%2C0%2C1%2C.2.181.165.165%2C0%2C0%2C1-.035.1L8.534%2C7.966h4.928a.193.193%2C0%2C0%2C1%2C.2.181.176.176%2C0%2C0%2C1-.052.122L5.421%2C16.788c-.077.046-.624.5-.356-.189h0Z'%20fill%3D'url(%23b403aca7-f387-4434-96b4-ae157edc835f)'%20/%3E%3C/svg%3E"
+/>
+  <meta name="description" content="A comprehensive guide to Azure Functions." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --border: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-fg: #0f172a;
+      --code-bg: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
+      --focus: #10b981;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+      --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    
+    /* Bootstrap Gradient Utility Classes */
+    .bg-gradient-blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; }
+    .bg-gradient-green { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important; }
+    .bg-gradient-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; }
+    .bg-gradient-pink { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important; }
+    .bg-gradient-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%) !important; }
+    .bg-gradient-teal { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important; }
+    .bg-gradient-blue-dark { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-gradient-gray { background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important; }
+    .bg-gradient-purple-dark { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important; }
+    .bg-gradient-teal-dark { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important; }
+    .bg-gradient-green-dark { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; }
+    .bg-gradient-green-light { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; }
+    .bg-gradient-blue-sky { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; }
+    .bg-gradient-red-dark { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+    .bg-gradient-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; }
+    .bg-gradient-green-medium { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important; }
+    .bg-gradient-violet { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important; }
+    .bg-gradient-lime { background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%) !important; }
+    .bg-gradient-sky { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; }
+    
+    /* Apply theme colors to Bootstrap elements */
+    body { background-color: var(--bg); color: var(--fg); overflow: hidden; }
+    .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+    .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+    .navbar-toggler-icon { 
+      filter: invert(1);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn-outline-secondary { border-color: var(--border) !important; color: var(--fg) !important; }
+    .btn-outline-secondary:hover { background-color: var(--accent-light) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+    
+    /* Sidebar - Modern Design */
+    nav.sidebar { 
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%); 
+      border-right: 1px solid rgba(0, 0, 0, 0.05) !important;  
+      overflow-y: auto; 
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      padding-top: 0;
+    }
+    
+    .menu-header {  
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1) 100%);
+      font-weight: bold; 
+      padding: 1.25rem 1.25rem; 
+      letter-spacing: 0px; 
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-bottom: 2px solid #a5aab3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: #0c346c;
+      text-shadow: none;
+      margin: 0;
+      text-transform: none;
+    }
+    .menu-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    .menu-header:hover::before {
+      left: 100%;
+    }
+    .menu-header::after {
+      content: '📋';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      opacity: 0.9;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+    
+    .toc { 
+      list-style: none; 
+      padding: 0rem 0; 
+      margin: 0; 
+      background: transparent;
+    }
+    .toc li { 
+      margin: 0; 
+    }
+    
+    /* Section grouping */
+    .toc li[data-group="overview"] { margin-bottom: 0.75rem; }
+    .toc li[data-group="solid"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(59, 130, 246, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="other-principles"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(16, 185, 129, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="resources"] { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(100, 116, 139, 0.15);
+      padding-top: 1rem;
+    }
+    
+    .list-group-item { 
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0; 
+      margin: 0.25rem 0.75rem; 
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+    }
+    .list-group-item a { 
+      color: #1f2937; 
+      text-decoration: none; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 0.4rem; 
+      border-left: 3px solid transparent; 
+      padding: 0.85rem 1.25rem; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .list-group-item a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+    }
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::before {
+      transform: scaleY(1);
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Sub-items tree connectors */
+    .list-group-sub-item a::before { 
+      content: '├─';
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      color: #6b7280;
+      z-index: 1;
+      position: relative;
+    }
+    
+    /* Sub-items styling - similar to main items but smaller and indented */
+    .list-group-sub-item {
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0px; 
+      margin: 0.2rem 0.75rem 0.2rem 1.5rem;
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+      position: relative;
+      list-style-type: none;
+    }
+    .list-group-sub-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+      z-index: 1;
+    }
+    .list-group-sub-item a {
+      color: #1f2937; 
+      text-decoration: none; 
+      display: block;
+      border-left: 3px solid transparent; 
+      padding: 0.65rem 1rem 0.65rem 2.00rem;
+      transition: all 0.2s ease; 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Sub-items hover and active states - same as main items */
+    .list-group-sub-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-sub-item:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-sub-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-sub-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    
+    .list-group-sub-item.active::before {
+      transform: scaleY(1);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-sub-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-sub-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-sub-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Badge styling */
+    .badge { font-size: 0.8rem; padding: 0.15rem 0.4rem; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; border-radius: 0.25rem; font-style: normal; line-height: 1.2; opacity: 0.9; }
+    .badge { background: var(--accent); color: white; border: none; font-size: 0.6rem; padding: 0.25rem 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 0.5rem; margin-right: 0.35rem; }
+    .list-group-item a:hover .badge { opacity: 1; background: var(--accent); color: white; }
+    .list-group-item a.active .badge { background: rgba(255, 255, 255, 0.3); color: white; border-color: rgba(255, 255, 255, 0.6); font-weight: 600; opacity: 1; }
+        
+    /* Content */
+    .content { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+    section { display: none !important; margin-bottom: 2rem; }
+    section.active { display: block !important; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0 0.25rem 0; letter-spacing: -0.5px; color: var(--fg); display: block; border: none; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: var(--fg); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 1rem 0 0.5rem 0; }
+    h4 { font-size: 0.8rem; color: var(--fg); font-weight: 600; margin: 0.75rem 0 0.4rem 0; }
+    p { margin: 1rem 0; line-height: 1.65; color: var(--fg); }
+    ul, ol { margin: 1rem 0; padding-left: 2rem; }
+    li { margin: 0.5rem 0; color: var(--fg); }
+    
+    code { background: var(--code-bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; font-size: 0.9em; color: var(--accent); border-radius: 0.5rem; }
+    pre { background: var(--code-bg); border: 0px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow: auto; box-shadow: var(--shadow-sm); margin: 1rem 0; }
+    pre code { padding: 0; background: transparent; border: none; color: var(--fg); }
+    
+    .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0.5rem; box-shadow: var(--shadow-sm); font-weight: 500; color: var(--fg); }
+    
+    /* Table styling */
+    .table { color: var(--fg); }
+    .table thead th { background: var(--accent-light); color: var(--accent); border-color: var(--border); font-weight: 600; }
+    .table tbody td { border-color: var(--border); }
+    .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.02); }
+    .table-striped tbody tr:hover { background-color: var(--accent-light); }
+    
+    /* Controls/Pagination */
+    .controls { opacity: 0.5; position: fixed; bottom: 0.25rem; right: 1rem; width: auto; z-index: 1000; background: transparent; display: flex; align-items: center; justify-content: center; gap: 0rem; padding: 0; min-height: 40px; }
+    @media (max-width: 991px) {
+      .controls { bottom: 0.25rem; right: 1rem; }
+      .menu-header { color: var(--focus); }
+    }
+    .controls:hover { opacity: 1; }
+    
+    .page-indicator { color: var(--accent); font-weight: 600; font-size: 0.875rem; }
+    .btn-group .btn { margin: 0px 2px; padding: 0.2rem 0.5rem; background: var(--accent); color: white; border-color: var(--accent); font-size: 1rem; font-weight: bold; }
+    .btn-group .btn:hover { background: var(--accent); }
+    .btn-group .btn + .btn { margin-left: -1px; }
+    
+    /* Mobile/Offcanvas */
+    .offcanvas { background: var(--bg) !important; }
+    .offcanvas-header { border-bottom: 1px solid var(--border); }
+    .offcanvas-title { color: var(--fg); font-weight: 600; }
+    .btn-close { color: var(--fg); }
+    
+    /* Scrollbar */
+    nav.sidebar::-webkit-scrollbar { width: 6px; }
+    nav.sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+    nav.sidebar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 0px; }
+    nav.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+    
+    /* Mermaid Diagrams */
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      position: relative;
+    }
+    .mermaid.rendered {
+      min-height: 0;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      min-height: 300px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+    .mermaid.zoomed {
+      overflow: auto;
+      cursor: grab;
+    }
+    .mermaid.zoomed:active {
+      cursor: grabbing;
+    }
+    .mermaid svg text {
+      font-size: 14px !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+    
+    /* Mermaid title styling */
+    .mermaid svg text, .diagram-modal-content svg text {
+      font-size: 1rem !important;
+      font-weight: bold !important;
+      fill: var(--fg) !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+
+    .mermaid svg *
+    {
+        color: #333;
+    }
+
+    .mermaid[data-processed="true"] {
+      min-height: 0;
+    }
+    
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+    
+    /* Zoom controls */
+    .zoom-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .mermaid:hover .zoom-controls {
+      opacity: 1;
+    }
+    .zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+
+    /* Modal for diagram zoom */
+    .diagram-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .diagram-modal.active {
+      display: flex;
+    }
+    .diagram-modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 0;
+      padding: 3rem 3rem 3rem 3rem;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .diagram-modal-content svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .modal-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+      z-index: 10000;
+    }
+    .modal-close:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+    .modal-zoom-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10000;
+      padding: 0rem;
+      border-radius: 0.4rem;
+    }
+    .modal-zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .modal-zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+    
+    /* Utilities */
+    .search { height: 0; overflow: hidden; padding: 0 !important; }
+    .search input { display: none; }
+    .min-vh-100 { min-height: 100vh; }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: static; width: auto; height: auto; padding: 0.4rem 0.6rem; background: var(--accent); color: white; border-radius: 0.4rem; }
+    
+    /* Override Bootstrap defaults for theme */
+    a { color: var(--accent); }
+    a:hover { color: var(--accent); text-decoration: underline; }
+    
+    /* Responsive - keep sidebar visible on desktop, offcanvas on mobile */
+    @media (max-width: 991px) {
+      nav.sidebar { display: none; }
+      #main { width: 100%; }
+      .row { --bs-gutter-x: 0; }
+    }
+    
+    /* Layout - prevent unnecessary scrolling */
+    html, body { height: 100%; margin: 0; }
+    #appContainer { display: flex; flex-direction: column; height: calc(100vh - 50px); }
+    #mainRow { flex: 1; overflow: hidden; display: flex; }
+    nav.sidebar { overflow-y: auto; max-height: 100%; position: relative; padding-bottom: 0px; }
+    #main { overflow: hidden; display: flex; flex-direction: column; height: 100%; -webkit-tap-highlight-color: transparent; outline: none; border: none; }
+    #main:focus { outline: none; }
+    .content { overflow-y: auto; flex: 1; width: 100%; min-height: 0; padding: 0rem 1.5rem 0rem 1.5rem; }
+    
+    /* Contact Info */
+    .contact-info {
+      font-weight: 400 !important;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      margin: 0;
+      opacity: 0.5;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .contact-info:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+    @media (max-width: 991px) {
+      .navbar-brand {
+        font-size: 1rem !important;
+        flex: 1;
+      }
+      .contact-info {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 0.9rem !important;
+      }
+      .contact-info {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+
+    .list-style-none {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* JSON Syntax Highlighting */
+    pre code.language-json {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-json .json-key {
+      color: #0451a5;
+      font-weight: 500;
+    }
+
+    pre code.language-json .json-string {
+      color: #a31515;
+    }
+
+    pre code.language-json .json-number {
+      color: #098658;
+    }
+
+    pre code.language-json .json-boolean {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-null {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-punctuation {
+      color: #333;
+    }
+
+    /* SQL Syntax Highlighting */
+    pre code.language-sql {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-sql .sql-keyword {
+      color: #0000ff;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    pre code.language-sql .sql-string {
+      color: #a31515;
+    }
+
+    pre code.language-sql .sql-number {
+      color: #098658;
+    }
+
+    pre code.language-sql .sql-comment {
+      color: #008000;
+      font-style: italic;
+    }
+
+    pre code.language-sql .sql-function {
+      color: #795e26;
+      font-weight: 500;
+    }
+
+    pre code.language-sql .sql-operator {
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Language Label for Code Blocks */
+    pre[data-language]::before {
+      content: attr(data-language);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.75em;
+      color: #6a737d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Enhanced pre/code styling for syntax highlighted blocks */
+    pre.syntax-highlighted {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+      margin: 1rem 0;
+    }
+
+    pre.syntax-highlighted code {
+      background: transparent;
+      padding: 0;
+      border: none;
+      color: var(--fg);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    ul
+    {
+        list-style-type: none;
+    }
+  /* Document Footer */
+    .document-footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .document-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    .document-footer strong {
+      color: #495057;
+    }  
+  </style>
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid with proper configuration
+    document.addEventListener('DOMContentLoaded', function() {
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'loose',
+        logLevel: 'error',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      // Render all diagrams
+      renderMermaidDiagrams();
+    });
+    
+    async function renderMermaidDiagrams() {
+      const diagrams = document.querySelectorAll('.mermaid');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.textContent.trim();
+        
+        // Store original code
+        if (!diagram.hasAttribute('data-original-code')) {
+          diagram.setAttribute('data-original-code', code);
+        }
+        
+        try {
+          const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+          diagram.innerHTML = svg;
+          diagram.setAttribute('data-processed', 'true');
+          
+          // Add zoom controls
+          addZoomControls(diagram);
+        } catch (error) {
+          console.error('Mermaid rendering error for diagram ' + i + ':', error);
+          diagram.innerHTML = '<div style="color: red; padding: 1rem; border: 2px solid red; border-radius: 0.5rem;">Error rendering diagram: ' + error.message + '</div>';
+        }
+      }
+    }
+    
+    // Add zoom controls to mermaid diagrams
+    function addZoomControls(diagram) {
+      const controls = document.createElement('div');
+      controls.className = 'zoom-controls';
+      controls.innerHTML = `
+        <button class="zoom-btn" data-action="expand" title="Expand View">⛶</button>
+      `;
+      
+      diagram.style.position = 'relative';
+      diagram.insertBefore(controls, diagram.firstChild);
+      
+      // Expand to modal
+      controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.zoom-btn');
+        if (!btn) return;
+        
+        openDiagramModal(diagram);
+      });
+    }
+
+    // Open diagram in modal
+    function openDiagramModal(diagram) {
+      // Create modal if it doesn't exist
+      let modal = document.getElementById('diagram-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'diagram-modal';
+        modal.className = 'diagram-modal';
+        modal.innerHTML = `
+          <button class="modal-close" id="modal-close">×</button>
+          <div class="diagram-modal-content" id="modal-diagram-content"></div>
+          <div class="modal-zoom-controls">
+            <button class="modal-zoom-btn" data-action="zoom-in" title="Zoom In">+</button>
+            <button class="modal-zoom-btn" data-action="zoom-out" title="Zoom Out">−</button>
+            <button class="modal-zoom-btn" data-action="reset" title="Reset Zoom">⟲</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal handlers
+        modal.querySelector('#modal-close').addEventListener('click', closeDiagramModal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeDiagramModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeDiagramModal();
+          }
+        });
+        
+        // Zoom controls in modal
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        
+        modal.querySelector('.modal-zoom-controls').addEventListener('click', (e) => {
+          const btn = e.target.closest('.modal-zoom-btn');
+          if (!btn) return;
+          
+          const action = btn.dataset.action;
+          const svg = modal.querySelector('svg');
+          if (!svg) return;
+          
+          if (action === 'zoom-in') {
+            scale = Math.min(scale + 0.1, 5);
+          } else if (action === 'zoom-out') {
+            scale = Math.max(scale - 0.1, 0.5);
+          } else if (action === 'reset') {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+          }
+          
+          svg.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+        });
+      }
+      
+      // Clone diagram content
+      const svg = diagram.querySelector('svg');
+      if (svg) {
+        const content = modal.querySelector('#modal-diagram-content');
+        content.innerHTML = '';
+        const clonedSvg = svg.cloneNode(true);
+        clonedSvg.style.transform = 'scale(1)';
+        clonedSvg.style.maxWidth = '100%';
+        clonedSvg.style.height = 'auto';
+        content.appendChild(clonedSvg);
+      }
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDiagramModal() {
+      const modal = document.getElementById('diagram-modal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Re-render on theme change
+    window.rerenderMermaid = async function() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? 'base' : 'base',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      const diagrams = document.querySelectorAll('.mermaid[data-processed="true"]');
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.getAttribute('data-original-code');
+        
+        if (code) {
+          try {
+            const { svg } = await mermaid.render('mermaid-diagram-rerender-' + i + '-' + Date.now(), code);
+            diagram.innerHTML = svg;
+          } catch (error) {
+            console.error('Mermaid re-rendering error:', error);
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top" aria-label="Top bar">
+    <div class="container-fluid d-flex align-items-center">
+      <button class="navbar-toggler me-2" id="toggleSidebar" type="button" aria-label="Toggle sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+<span class="navbar-brand mb-0 h1 me-auto"><?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" id="a2c88306-fa03-4e5b-b192-401f0b77808b" width="18.0" height="18.0" viewBox="0 0 18 18"><defs><linearGradient id="b403aca7-f387-4434-96b4-ae157edc835f" x1="-175.993" y1="-343.723" x2="-175.993" y2="-359.232" gradientTransform="translate(212.573 370.548) scale(1.156 1.029)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fea11b" /><stop offset="0.284" stop-color="#fea51a" /><stop offset="0.547" stop-color="#feb018" /><stop offset="0.8" stop-color="#ffc314" /><stop offset="1" stop-color="#ffd70f" /></linearGradient></defs><title>Icon-compute-29</title><g><path d="M2.37,7.475H3.2a.267.267,0,0,1,.267.267v6.148a.533.533,0,0,1-.533.533H2.1a0,0,0,0,1,0,0V7.741a.267.267,0,0,1,.267-.267Z" transform="translate(12.507 16.705) rotate(134.919)" fill="#50e6ff" /><path d="M2.325,3.6h.833a.267.267,0,0,1,.267.267v6.583a0,0,0,0,1,0,0H2.591a.533.533,0,0,1-.533-.533V3.865A.267.267,0,0,1,2.325,3.6Z" transform="translate(5.759 0.114) rotate(44.919)" fill="#1490df" /></g><g><path d="M14.53,7.475h.833a.533.533,0,0,1,.533.533v6.148a.267.267,0,0,1-.267.267H14.8a.267.267,0,0,1-.267-.267V7.475a0,0,0,0,1,0,0Z" transform="translate(12.223 -7.555) rotate(45.081)" fill="#50e6ff" /><path d="M15.108,3.6h.833a0,0,0,0,1,0,0v6.583a.267.267,0,0,1-.267.267h-.833a.267.267,0,0,1-.267-.267V4.131a.533.533,0,0,1,.533-.533Z" transform="translate(31.022 1.222) rotate(135.081)" fill="#1490df" /></g><path d="M8.459,9.9H4.87a.193.193,0,0,1-.2-.181.166.166,0,0,1,.018-.075L8.991,1.13a.206.206,0,0,1,.186-.106h4.245a.193.193,0,0,1,.2.181.165.165,0,0,1-.035.1L8.534,7.966h4.928a.193.193,0,0,1,.2.181.176.176,0,0,1-.052.122L5.421,16.788c-.077.046-.624.5-.356-.189h0Z" fill="url(#b403aca7-f387-4434-96b4-ae157edc835f)" /></svg> 
+    Azure Functions - In a Nutshell</span>
+<span class="contact-info mb-0">🤝 Curated by Murthy Vepa</span>
+    </div>      
+  </nav>
+
+  <div id="appContainer">
+    <div class="row g-0" id="mainRow">
+      <nav class="col-lg-3 border-end sidebar" id="sidebar" aria-label="Table of contents">
+        <div class="menu-header py-2">Contents</div>
+        <ul class="list-group list-group-flush toc" id="toc"></ul>
+      </nav>
+
+      <main id="main" class="col-lg-9 d-flex flex-column" tabindex="-1">
+        <div class="content" id="content">
+        <!-- Overview Section -->
+        <section id="overview" role="article">
+          <h1>📖 Overview</h1>
+          <span class="badge">intro</span>
+          <span class="badge">overview</span>
+          <span class="badge">basics</span>
+          
+          <p>Azure Functions is a <strong>serverless compute service that enables you to run event-driven code without having to explicitly provision or manage infrastructure</strong>. You can focus on writing code while Azure handles the scaling, infrastructure management, and operational concerns.</p>
+          
+          <div class="callout">
+            <strong>🎯 Core Purpose</strong><br />
+            Azure Functions allows you to run small pieces of code (functions) in response to events without worrying about infrastructure. Write your business logic, and Azure automatically handles scaling, availability, and resource management—paying only for the compute time you consume.
+          </div>
+
+          <h2>Key Benefits</h2>
+          <ul>
+            <li>⚡ <strong>Event-Driven Execution</strong> - Automatically triggered by various events (HTTP, timers, queues, etc.)</li>
+            <li>🚀 <strong>Automatic Scaling</strong> - Scales automatically based on demand, from zero to thousands of instances</li>
+            <li>💰 <strong>Pay-per-Use</strong> - Only pay for actual execution time (Consumption plan)</li>
+            <li>🔧 <strong>Multiple Languages</strong> - Support for C#, Java, JavaScript, TypeScript, Python, PowerShell</li>
+            <li>🔗 <strong>Integrated Bindings</strong> - Easy integration with Azure services through declarative bindings</li>
+            <li>📊 <strong>Built-in Monitoring</strong> - Application Insights integration for telemetry and diagnostics</li>
+          </ul>
+
+          <h2>Common Use Cases</h2>
+          
+          <h3>⏰ Scheduled Tasks</h3>
+          <p>Run periodic tasks like data cleanup, report generation, or batch processing without managing servers. Perfect for cron-like jobs with timer triggers.</p>
+
+          <h3>🌐 HTTP APIs & Webhooks</h3>
+          <p>Build serverless REST APIs and webhooks that scale automatically. Integrate with API Management for enterprise-grade API capabilities.</p>
+
+          <h3>📨 Event Processing</h3>
+          <p>React to events from Azure services (Blob Storage, Event Hubs, Service Bus, Cosmos DB) for real-time data processing and workflows.</p>
+
+          <h3>🤖 Backend for Mobile & Web Apps</h3>
+          <p>Create lightweight backend APIs for mobile and single-page applications with built-in authentication and authorization support.</p>
+
+          <h3>🔄 Microservices & Integration</h3>
+          <p>Implement microservices architecture patterns or integrate systems using Azure Functions as glue code between services.</p>
+
+          <h3>💾 Data Processing Pipelines</h3>
+          <p>Process streams of data for ETL operations, IoT telemetry, or real-time analytics with event-driven architecture.</p>
+
+          <h2>Why Choose Azure Functions?</h2>
+          <ul>
+            <li><strong>Serverless</strong> - No infrastructure management, automatic scaling, high availability</li>
+            <li><strong>Developer Productivity</strong> - Focus on code, not infrastructure; rich IDE support</li>
+            <li><strong>Flexible Hosting</strong> - Multiple hosting plans (Consumption, Premium, Dedicated)</li>
+            <li><strong>Rich Ecosystem</strong> - Extensions, bindings, and integrations with Azure services</li>
+            <li><strong>Open Source Runtime</strong> - Deploy anywhere (Azure, on-premises, other clouds)</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Serverless = Focus on Business Logic</strong><br />
+            With Azure Functions, you write code that solves business problems without managing VMs, configuring load balancers, or worrying about OS patches. Azure handles all operational aspects, letting you focus on delivering value.
+          </div>
+        </section>
+
+        <!-- Key Components Section -->
+        <section id="key-components" role="article">
+          <h1>🏗️ Core Architecture & Components</h1>
+          <span class="badge">architecture</span>
+          <span class="badge">components</span>
+          <span class="badge">structure</span>
+          
+          <p>Azure Functions consists of several key components that work together to provide a serverless execution environment:</p>
+
+          <div class="mermaid">
+%%{ init: { 
+    "theme": "base", 
+    "themeVariables": {
+      "fontFamily": "Segoe UI"
+    }, 
+    "flowchart": { 
+      "useMaxWidth": true, 
+      "htmlLabels": true, 
+      "curve": "basis" 
+    } 
+  } 
+}%%
+flowchart TB
+    subgraph Triggers["**Triggers (Input Events)**"]
+        HTTP[HTTP Request]
+        TIMER[Timer/Schedule]
+        QUEUE[Queue Message]
+        BLOB[Blob Storage]
+        COSMOSDB[Cosmos DB Change]
+        EVENTHUB[Event Hubs]
+    end
+    
+    subgraph FunctionApp["**Function App (Container)**"]
+        direction TB
+        FUNC1[Function 1]
+        FUNC2[Function 2]
+        FUNC3[Function 3]
+        RUNTIME[Azure Functions Runtime]
+        HOST[Host Configuration]
+    end
+    
+    subgraph Bindings["**Output Bindings**"]
+        DBOUT[Database Write]
+        QUEUEOUT[Queue Output]
+        BLOBOUT[Blob Write]
+        EMAILOUT[Email/Notification]
+    end
+    
+    HTTP --> FUNC1
+    TIMER --> FUNC2
+    QUEUE --> FUNC3
+    BLOB --> FUNC1
+    COSMOSDB --> FUNC2
+    EVENTHUB --> FUNC3
+    
+    FUNC1 --> RUNTIME
+    FUNC2 --> RUNTIME
+    FUNC3 --> RUNTIME
+    
+    RUNTIME --> DBOUT
+    RUNTIME --> QUEUEOUT
+    RUNTIME --> BLOBOUT
+    RUNTIME --> EMAILOUT
+    
+    style HTTP fill:#3b82f6,color:#fff
+    style TIMER fill:#10b981,color:#fff
+    style FUNC1 fill:#f59e0b,color:#fff
+    style FUNC2 fill:#f59e0b,color:#fff
+    style FUNC3 fill:#f59e0b,color:#fff
+    style RUNTIME fill:#8b5cf6,color:#fff
+          </div>
+
+          <h2>1️⃣ Function App</h2>
+          <p>A <strong>Function App</strong> is the execution context and container for one or more functions. It provides:</p>
+          <ul>
+            <li>📦 <strong>Deployment unit:</strong> Functions are deployed together as a single package</li>
+            <li>⚙️ <strong>Configuration management:</strong> Shared settings, connection strings, app settings</li>
+            <li>🔐 <strong>Security context:</strong> Authentication, managed identities, secrets</li>
+            <li>💰 <strong>Billing boundary:</strong> Cost is tracked at the Function App level</li>
+            <li>🚀 <strong>Scaling unit:</strong> All functions in the app scale together</li>
+            <li>🌍 <strong>Runtime environment:</strong> Shared language runtime and dependencies</li>
+          </ul>
+
+          <h2>2️⃣ Functions</h2>
+          <p>Individual <strong>Functions</strong> are the building blocks containing your business logic:</p>
+          <ul>
+            <li>📝 <strong>Code files:</strong> Your application logic written in supported languages</li>
+            <li>🔌 <strong>Trigger:</strong> Exactly one trigger that starts function execution</li>
+            <li>🔗 <strong>Bindings:</strong> Zero or more input/output bindings for data integration</li>
+            <li>⚡ <strong>Stateless by default:</strong> Each invocation is independent (unless using Durable Functions)</li>
+            <li>🔄 <strong>Reusable:</strong> Can be called multiple times concurrently</li>
+          </ul>
+
+          <h2>3️⃣ Triggers</h2>
+          <p><strong>Triggers</strong> define how a function is invoked. Every function must have exactly one trigger:</p>
+          
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Trigger Type</th>
+                <th>Description</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>HTTP</strong></td>
+                <td>REST API endpoints, webhooks</td>
+                <td>Web APIs, webhooks</td>
+              </tr>
+              <tr>
+                <td><strong>Timer</strong></td>
+                <td>Scheduled execution (cron)</td>
+                <td>Batch jobs, cleanup tasks</td>
+              </tr>
+              <tr>
+                <td><strong>Queue</strong></td>
+                <td>Azure Storage Queue or Service Bus</td>
+                <td>Asynchronous processing</td>
+              </tr>
+              <tr>
+                <td><strong>Blob</strong></td>
+                <td>Azure Blob Storage events</td>
+                <td>File processing, image resizing</td>
+              </tr>
+              <tr>
+                <td><strong>Cosmos DB</strong></td>
+                <td>Change feed from Cosmos DB</td>
+                <td>Real-time data sync</td>
+              </tr>
+              <tr>
+                <td><strong>Event Hubs</strong></td>
+                <td>High-throughput event streams</td>
+                <td>IoT telemetry, logging</td>
+              </tr>
+              <tr>
+                <td><strong>Event Grid</strong></td>
+                <td>Event-driven architecture</td>
+                <td>React to Azure events</td>
+              </tr>
+              <tr>
+                <td><strong>Service Bus</strong></td>
+                <td>Enterprise messaging</td>
+                <td>Reliable message processing</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>4️⃣ Bindings</h2>
+          <p><strong>Bindings</strong> are declarative connections to data sources, eliminating boilerplate code:</p>
+          
+          <h3>Input Bindings</h3>
+          <ul>
+            <li>📥 Read data from external sources (databases, blob storage, etc.)</li>
+            <li>🔄 Data is automatically deserialized and passed to your function</li>
+            <li>⚡ No need for SDK code to connect and read data</li>
+          </ul>
+
+          <h3>Output Bindings</h3>
+          <ul>
+            <li>📤 Write data to external destinations</li>
+            <li>🔄 Data is automatically serialized and sent</li>
+            <li>⚙️ Multiple output bindings per function are supported</li>
+          </ul>
+
+          <h3>Common Binding Types</h3>
+          <ul>
+            <li><strong>Azure Storage:</strong> Blobs, Queues, Tables</li>
+            <li><strong>Cosmos DB:</strong> Read/write documents</li>
+            <li><strong>Service Bus:</strong> Send messages</li>
+            <li><strong>Event Hubs:</strong> Send events</li>
+            <li><strong>HTTP:</strong> Return HTTP responses</li>
+            <li><strong>SendGrid:</strong> Send emails</li>
+            <li><strong>Twilio:</strong> Send SMS</li>
+            <li><strong>SignalR:</strong> Real-time messaging</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Bindings = Less Code</strong><br />
+            Bindings significantly reduce the amount of code you need to write. Instead of manually connecting to databases or storage accounts, you define bindings declaratively, and Azure Functions handles all the connection management, retry logic, and data transformation.
+          </div>
+
+          <h2>5️⃣ Azure Functions Runtime</h2>
+          <p>The <strong>Functions Runtime</strong> is the engine that executes your functions:</p>
+          <ul>
+            <li>🔧 <strong>Open Source:</strong> Available on <a href="https://github.com/Azure/azure-functions-host" target="_blank" rel="noopener">GitHub</a></li>
+            <li>🌍 <strong>Portable:</strong> Run anywhere (Azure, on-premises, other clouds)</li>
+            <li>🔄 <strong>Version Management:</strong> Runtime versions (v1, v2, v3, v4) with long-term support</li>
+            <li>📦 <strong>Language Support:</strong> Multiple language workers (C#, Java, Python, Node.js, etc.)</li>
+            <li>⚡ <strong>Execution Management:</strong> Handles scaling, lifecycle, logging, monitoring</li>
+          </ul>
+
+          <h2>6️⃣ Host Configuration (host.json)</h2>
+          <p>The <code>host.json</code> file contains global configuration for all functions in the app:</p>
+          <ul>
+            <li>⚙️ Runtime behavior settings</li>
+            <li>📊 Logging configuration</li>
+            <li>🔄 Retry policies</li>
+            <li>⏱️ Timeout settings</li>
+            <li>🔌 Extension configurations</li>
+          </ul>
+
+          <h2>7️⃣ Application Settings</h2>
+          <p>Configuration values and connection strings stored securely:</p>
+          <ul>
+            <li>🔐 Environment variables accessible to functions</li>
+            <li>🔒 Integration with Azure Key Vault for secrets</li>
+            <li>🌍 Different settings per environment (dev, test, prod)</li>
+            <li>⚙️ Runtime settings, connection strings, feature flags</li>
+          </ul>
+
+          <h2>Architecture Patterns</h2>
+
+          <h3>Simple Function Pattern</h3>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// HTTP trigger with Queue output binding
+[FunctionName("ProcessOrder")]
+public static async Task&lt;IActionResult&gt; Run(
+    [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
+    [Queue("orders")] IAsyncCollector&lt;string&gt; outputQueue,
+    ILogger log)
+{
+    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    await outputQueue.AddAsync(requestBody);
+    return new OkResult();
+}</code></pre>
+
+          <h3>Fan-Out/Fan-In Pattern</h3>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// Queue trigger processing with parallel execution
+[FunctionName("ProcessBatch")]
+public static async Task Run(
+    [QueueTrigger("batch-items")] string item,
+    [Blob("results/{rand-guid}.json")] Stream outputBlob,
+    ILogger log)
+{
+    var result = await ProcessItemAsync(item);
+    await outputBlob.WriteAsync(result);
+}</code></pre>
+
+          <div class="callout">
+            <strong>🏗️ Best Practice</strong><br />
+            Keep functions <strong>small and focused</strong>. Each function should do one thing well. Use bindings to minimize code, and leverage Durable Functions for complex workflows requiring state management or orchestration.
+          </div>
+        </section>
+        
+        <section id="function-app-structure" role="article">
+          <h1>📂 Function App Structure & Runtime</h1>
+          <p>A Function App is the unit of deployment, management, and scale. It contains one or more functions that share configuration and resources.</p>
+
+          <h3>Key Components</h3>
+          <ul>
+            <li><strong>Functions:</strong> Individual units of code triggered by events</li>
+            <li><strong>host.json:</strong> Global configuration for all functions</li>
+            <li><strong>local.settings.json:</strong> Local development settings (not deployed)</li>
+            <li><strong>function.json:</strong> Function-specific configuration (for non-.NET)</li>
+            <li><strong>Bindings:</strong> Declarative connections to services</li>
+          </ul>
+
+          <h3>Project Structure Examples</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Language</th>
+                <th>Key Files</th>
+                <th>Configuration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>C# (In-Process)</td>
+                <td>*.cs, *.csproj</td>
+                <td>Attributes for bindings</td>
+              </tr>
+              <tr>
+                <td>C# (Isolated)</td>
+                <td>Program.cs, *.csproj</td>
+                <td>Dependency injection, middleware</td>
+              </tr>
+              <tr>
+                <td>JavaScript/TypeScript</td>
+                <td>index.js, function.json</td>
+                <td>JSON-based bindings</td>
+              </tr>
+              <tr>
+                <td>Python</td>
+                <td>__init__.py, function.json</td>
+                <td>Decorators or JSON</td>
+              </tr>
+              <tr>
+                <td>Java</td>
+                <td>*.java, pom.xml</td>
+                <td>Annotations</td>
+              </tr>
+              <tr>
+                <td>PowerShell</td>
+                <td>run.ps1, function.json</td>
+                <td>JSON-based bindings</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Functions Runtime</h2>
+          
+          <h3>Runtime Versions</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Version</th>
+                <th>Status</th>
+                <th>.NET Support</th>
+                <th>Support End</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>4.x</strong></td>
+                <td>Current (GA)</td>
+                <td>.NET 6, 7, 8 (isolated)</td>
+                <td>Ongoing</td>
+              </tr>
+              <tr>
+                <td><strong>3.x</strong></td>
+                <td>Deprecated</td>
+                <td>.NET Core 3.1, .NET 5</td>
+                <td>Dec 13, 2022</td>
+              </tr>
+              <tr>
+                <td><strong>2.x</strong></td>
+                <td>End of Support</td>
+                <td>.NET Core 2.x</td>
+                <td>Ended</td>
+              </tr>
+              <tr>
+                <td><strong>1.x</strong></td>
+                <td>Maintenance Only</td>
+                <td>.NET Framework 4.7</td>
+                <td>Maintenance</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <strong>⚡ Recommendation</strong><br />
+            Use <strong>Functions 4.x runtime</strong> with <strong>.NET isolated worker model</strong> for new projects. This provides the best performance, flexibility, and long-term support.
+          </div>
+
+          <h3>Runtime Configuration (host.json)</h3>
+          <p>The host.json file contains global configuration that affects all functions in the app.</p>
+
+          <h4>Key Configuration Options</h4>
+          <ul>
+            <li><strong>functionTimeout:</strong> Maximum execution time (default: 5 min Consumption, 30 min Premium/Dedicated)</li>
+            <li><strong>logging:</strong> Application Insights and log levels</li>
+            <li><strong>extensions:</strong> Binding-specific settings (HTTP, Durable, etc.)</li>
+            <li><strong>retry:</strong> Automatic retry policies</li>
+            <li><strong>concurrency:</strong> Throttling and scaling settings</li>
+          </ul>
+
+          <h4>Example host.json</h4>
+          <pre><code>{
+  "version": "2.0",
+  "functionTimeout": "00:10:00",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "maxTelemetryItemsPerSecond": 20
+      }
+    }
+  },
+  "extensions": {
+    "http": {
+      "routePrefix": "api",
+      "maxConcurrentRequests": 100
+    }
+  }
+}</code></pre>
+
+          <h2>Bindings & Extensions</h2>
+          
+          <h3>Binding Types</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Bindings</th>
+                <th>Direction</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Storage</strong></td>
+                <td>Blob, Queue, Table, Files</td>
+                <td>In/Out</td>
+              </tr>
+              <tr>
+                <td><strong>Messaging</strong></td>
+                <td>Service Bus, Event Hubs, Event Grid</td>
+                <td>In/Out</td>
+              </tr>
+              <tr>
+                <td><strong>Database</strong></td>
+                <td>Cosmos DB, SQL</td>
+                <td>In/Out</td>
+              </tr>
+              <tr>
+                <td><strong>HTTP</strong></td>
+                <td>HTTP, Webhooks</td>
+                <td>In/Out</td>
+              </tr>
+              <tr>
+                <td><strong>Real-time</strong></td>
+                <td>SignalR, RabbitMQ, Kafka</td>
+                <td>In/Out</td>
+              </tr>
+              <tr>
+                <td><strong>AI/ML</strong></td>
+                <td>OpenAI, Semantic Kernel</td>
+                <td>In/Out</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Extension Bundles</h3>
+          <p>Extension bundles provide a convenient way to add pre-compiled binding extensions without requiring compilation.</p>
+
+          <ul>
+            <li><strong>Default Bundle:</strong> Most common bindings (HTTP, Timer, Blob, Queue, etc.)</li>
+            <li><strong>Preview Bundle:</strong> Early access to new bindings</li>
+            <li><strong>Custom Extensions:</strong> Install specific NuGet packages</li>
+          </ul>
+
+          <h4>Configure Extension Bundles (host.json)</h4>
+          <pre><code>{
+  "version": "2.0",
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.*, 5.0.0)"
+  }
+}</code></pre>
+
+          <h2>Execution Context</h2>
+          <p>The execution context provides runtime information about function invocations.</p>
+
+          <h3>Context Properties</h3>
+          <ul>
+            <li><strong>invocationId:</strong> Unique GUID for each invocation</li>
+            <li><strong>functionName:</strong> Name of the function being executed</li>
+            <li><strong>functionDirectory:</strong> Path to function code</li>
+            <li><strong>traceContext:</strong> Distributed tracing information</li>
+            <li><strong>retryContext:</strong> Retry attempt information</li>
+          </ul>
+
+          <h3>Logging & Monitoring</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Purpose</th>
+                <th>Implementation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ILogger</strong></td>
+                <td>Structured logging</td>
+                <td>Injected by runtime</td>
+              </tr>
+              <tr>
+                <td><strong>Application Insights</strong></td>
+                <td>Telemetry & diagnostics</td>
+                <td>Automatic integration</td>
+              </tr>
+              <tr>
+                <td><strong>Live Metrics</strong></td>
+                <td>Real-time monitoring</td>
+                <td>App Insights feature</td>
+              </tr>
+              <tr>
+                <td><strong>Distributed Tracing</strong></td>
+                <td>Cross-service correlation</td>
+                <td>W3C Trace Context</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Dependency Injection</h2>
+          <p>Modern Functions runtime supports dependency injection for better testability and separation of concerns.</p>
+
+          <h3>Supported Models</h3>
+          <ul>
+            <li><strong>.NET Isolated:</strong> Full ASP.NET Core DI container</li>
+            <li><strong>.NET In-Process:</strong> Limited DI via Startup class</li>
+            <li><strong>Node.js:</strong> Manual dependency management</li>
+            <li><strong>Python:</strong> Built-in DI support in v2 model</li>
+          </ul>
+
+          <h3>Common DI Scenarios</h3>
+          <ul>
+            <li>📦 Register HTTP clients with proper lifetime management</li>
+            <li>🗄️ Inject database contexts (Entity Framework, Cosmos DB)</li>
+            <li>🔐 Centralize configuration and secrets management</li>
+            <li>📊 Add logging, telemetry, and monitoring services</li>
+            <li>🧪 Enable unit testing with mock dependencies</li>
+          </ul>
+
+          <h4>Example (.NET Isolated)</h4>
+          <pre><code>var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureServices(services =>
+    {
+        services.AddHttpClient();
+        services.AddScoped&lt;IMyService, MyService&gt;();
+        services.AddSingleton&lt;IConfiguration&gt;(configuration);
+    })
+    .Build();
+
+host.Run();</code></pre>
+
+          <h2>Security & Identity</h2>
+          
+          <h3>Authentication Options</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Use Case</th>
+                <th>Implementation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Function Keys</strong></td>
+                <td>Simple API protection</td>
+                <td>Built-in key management</td>
+              </tr>
+              <tr>
+                <td><strong>Microsoft Entra ID</strong></td>
+                <td>Enterprise auth</td>
+                <td>EasyAuth / App Service Auth</td>
+              </tr>
+              <tr>
+                <td><strong>API Management</strong></td>
+                <td>External API gateway</td>
+                <td>Managed service integration</td>
+              </tr>
+              <tr>
+                <td><strong>Client Certificates</strong></td>
+                <td>mTLS authentication</td>
+                <td>Certificate validation</td>
+              </tr>
+              <tr>
+                <td><strong>Custom Auth</strong></td>
+                <td>Token validation</td>
+                <td>Manual JWT validation</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Authorization Levels</h3>
+          <ul>
+            <li><strong>Anonymous:</strong> No key required (public endpoints)</li>
+            <li><strong>Function:</strong> Requires function-specific key</li>
+            <li><strong>Admin:</strong> Requires master key (full access)</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🔒 Security Tip</strong><br />
+            For production APIs, use <strong>Microsoft Entra ID authentication</strong> combined with <strong>Managed Identity</strong> for accessing Azure resources. Function keys should only be used for development or simple scenarios.
+          </div>
+
+          <h2>Networking & Connectivity</h2>
+          
+          <h3>Inbound Connectivity</h3>
+          <ul>
+            <li><strong>Public Endpoint:</strong> Default internet-accessible endpoint</li>
+            <li><strong>Private Endpoint:</strong> Secure VNet-only access (Premium/Dedicated)</li>
+            <li><strong>Access Restrictions:</strong> IP filtering and service tags</li>
+            <li><strong>Custom Domains:</strong> Branded endpoints with SSL/TLS</li>
+          </ul>
+
+          <h3>Outbound Connectivity</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Plan Requirement</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>VNet Integration</strong></td>
+                <td>Premium/Dedicated</td>
+                <td>Access private resources</td>
+              </tr>
+              <tr>
+                <td><strong>Hybrid Connections</strong></td>
+                <td>Basic and above</td>
+                <td>On-premises connectivity</td>
+              </tr>
+              <tr>
+                <td><strong>NAT Gateway</strong></td>
+                <td>Premium (with VNet)</td>
+                <td>Static outbound IP</td>
+              </tr>
+              <tr>
+                <td><strong>Service Endpoints</strong></td>
+                <td>Premium/Dedicated</td>
+                <td>Secure Azure service access</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Storage & State</h2>
+          
+          <h3>Storage Account Requirements</h3>
+          <p>Every Function App requires an Azure Storage account for:</p>
+          <ul>
+            <li>⚙️ Internal runtime state management</li>
+            <li>🔑 Function keys and secrets storage</li>
+            <li>📊 Execution history (for Durable Functions)</li>
+            <li>📈 Scaling controller coordination</li>
+            <li>💾 Deployment package storage (Run from Package)</li>
+          </ul>
+
+          <h3>Supported Storage Types</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Storage Type</th>
+                <th>Use Case</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>General Purpose v2</strong></td>
+                <td>Standard Functions storage</td>
+                <td>Recommended</td>
+              </tr>
+              <tr>
+                <td><strong>Premium Storage</strong></td>
+                <td>High-performance scenarios</td>
+                <td>Premium plan only</td>
+              </tr>
+              <tr>
+                <td><strong>Blob-only</strong></td>
+                <td>Not supported</td>
+                <td>Missing queue/table</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Files</strong></td>
+                <td>Content share mounting</td>
+                <td>Linux Consumption/Premium</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <strong>🌍 Regional Consideration</strong><br />
+            Always deploy the Storage Account in the <strong>same region</strong> as your Function App to minimize latency and avoid egress charges.
+          </div>
+        </section>
+
+        <!-- Triggers and Bindings Section -->
+        <section id="triggers-bindings" role="article">
+          <h1>🔌 Triggers & Bindings</h1>
+          <span class="badge">triggers</span>
+          <span class="badge">bindings</span>
+          <span class="badge">events</span>
+          
+          <p>Triggers and bindings are powerful declarative features that minimize the code needed to integrate with Azure services and external systems.</p>
+
+          <h2>Understanding Triggers</h2>
+          <p>A <strong>trigger</strong> defines how a function is invoked. Each function must have <strong>exactly one trigger</strong>.</p>
+
+          <h3>HTTP Trigger</h3>
+          <p>Invoke functions via HTTP requests—perfect for APIs and webhooks.</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("HttpExample")]
+public static async Task&lt;IActionResult&gt; Run(
+    [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req,
+    ILogger log)
+{
+    string name = req.Query["name"];
+    return new OkObjectResult($"Hello, {name}");
+}</code></pre>
+
+          <h3>Timer Trigger</h3>
+          <p>Schedule function execution using cron expressions.</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// Runs every day at 2:00 AM
+[FunctionName("DailyCleanup")]
+public static void Run(
+    [TimerTrigger("0 0 2 * * *")] TimerInfo myTimer,
+    ILogger log)
+{
+    log.LogInformation($"Cleanup executed at: {DateTime.Now}");
+}</code></pre>
+
+          <h4>Cron Expression Examples</h4>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Expression</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>0 */5 * * * *</code></td>
+                <td>Every 5 minutes</td>
+              </tr>
+              <tr>
+                <td><code>0 0 * * * *</code></td>
+                <td>Every hour</td>
+              </tr>
+              <tr>
+                <td><code>0 0 9 * * 1-5</code></td>
+                <td>9 AM weekdays</td>
+              </tr>
+              <tr>
+                <td><code>0 0 0 * * *</code></td>
+                <td>Daily at midnight</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Queue Trigger</h3>
+          <p>Process messages from Azure Storage Queues or Service Bus Queues.</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("QueueProcessor")]
+public static void Run(
+    [QueueTrigger("orders", Connection = "AzureWebJobsStorage")] string myQueueItem,
+    ILogger log)
+{
+    log.LogInformation($"Processing order: {myQueueItem}");
+}</code></pre>
+
+          <h3>Blob Trigger</h3>
+          <p>React to new or updated blobs in Azure Blob Storage.</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("ImageProcessor")]
+public static void Run(
+    [BlobTrigger("images/{name}", Connection = "AzureWebJobsStorage")] Stream imageBlob,
+    string name,
+    ILogger log)
+{
+    log.LogInformation($"Processing blob: {name}, Size: {imageBlob.Length} bytes");
+}</code></pre>
+
+          <h3>Cosmos DB Trigger</h3>
+          <p>React to changes in Cosmos DB using the change feed.</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("CosmosDBProcessor")]
+public static void Run(
+    [CosmosDBTrigger(
+        databaseName: "MyDatabase",
+        containerName: "MyContainer",
+        Connection = "CosmosDBConnection",
+        LeaseContainerName = "leases")] IReadOnlyList&lt;Document&gt; documents,
+    ILogger log)
+{
+    foreach (var doc in documents)
+    {
+        log.LogInformation($"Document modified: {doc.Id}");
+    }
+}</code></pre>
+
+          <h3>Event Hubs Trigger</h3>
+          <p>Process high-throughput event streams from Azure Event Hubs.</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("EventHubProcessor")]
+public static void Run(
+    [EventHubTrigger("telemetry", Connection = "EventHubConnection")] EventData[] events,
+    ILogger log)
+{
+    foreach (var evt in events)
+    {
+        log.LogInformation($"Event: {Encoding.UTF8.GetString(evt.EventBody)}");
+    }
+}</code></pre>
+
+          <h2>Understanding Bindings</h2>
+          <p><strong>Bindings</strong> provide declarative data access without writing connection code.</p>
+
+          <h3>Input Bindings</h3>
+          <p>Read data from external sources and pass it to your function.</p>
+
+          <h4>Blob Input Binding</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("BlobReader")]
+public static void Run(
+    [QueueTrigger("requests")] string requestId,
+    [Blob("data/{requestId}.json", FileAccess.Read)] string blobContent,
+    ILogger log)
+{
+    log.LogInformation($"Blob content: {blobContent}");
+}</code></pre>
+
+          <h4>Cosmos DB Input Binding</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("GetUser")]
+public static IActionResult Run(
+    [HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req,
+    [CosmosDB(
+        databaseName: "MyDatabase",
+        containerName: "Users",
+        Connection = "CosmosDBConnection",
+        Id = "{Query.id}",
+        PartitionKey = "{Query.partitionKey}")] dynamic user,
+    ILogger log)
+{
+    return user != null 
+        ? new OkObjectResult(user) 
+        : new NotFoundResult();
+}</code></pre>
+
+          <h3>Output Bindings</h3>
+          <p>Write data to external destinations without connection code.</p>
+
+          <h4>Queue Output Binding</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("EnqueueMessage")]
+public static void Run(
+    [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
+    [Queue("notifications")] out string queueMessage,
+    ILogger log)
+{
+    queueMessage = "New notification";
+}</code></pre>
+
+          <h4>Table Output Binding</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("SaveLog")]
+public static void Run(
+    [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
+    [Table("LogTable")] out LogEntry logEntry,
+    ILogger log)
+{
+    logEntry = new LogEntry 
+    {
+        PartitionKey = "logs",
+        RowKey = Guid.NewGuid().ToString(),
+        Message = "Log message"
+    };
+}</code></pre>
+
+          <h4>Cosmos DB Output Binding</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("SaveDocument")]
+public static void Run(
+    [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
+    [CosmosDB(
+        databaseName: "MyDatabase",
+        containerName: "Items",
+        Connection = "CosmosDBConnection")] out dynamic document,
+    ILogger log)
+{
+    document = new { id = Guid.NewGuid().ToString(), name = "Item" };
+}</code></pre>
+
+          <h2>Multiple Bindings Example</h2>
+          <p>Functions can have multiple input and output bindings:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("ProcessOrder")]
+public static void Run(
+    [QueueTrigger("orders")] Order order,
+    [Blob("receipts/{rand-guid}.pdf", FileAccess.Write)] Stream receiptBlob,
+    [Queue("notifications")] out string notificationMessage,
+    [CosmosDB(
+        databaseName: "OrdersDB",
+        containerName: "Orders",
+        Connection = "CosmosDBConnection")] out dynamic savedOrder,
+    ILogger log)
+{
+    // Generate receipt PDF
+    GenerateReceiptPDF(order, receiptBlob);
+    
+    // Queue notification
+    notificationMessage = $"Order {order.Id} processed";
+    
+    // Save to Cosmos DB
+    savedOrder = new 
+    { 
+        id = order.Id, 
+        status = "Completed",
+        timestamp = DateTime.UtcNow 
+    };
+}</code></pre>
+
+          <h2>Available Triggers & Bindings</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Trigger</th>
+                <th>Input</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>HTTP</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Timer</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>❌</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Storage Blob</strong></td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Storage Queue</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Azure Storage Table</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Cosmos DB</strong></td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Event Hubs</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Service Bus</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Event Grid</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>SignalR</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>SendGrid</strong></td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Twilio</strong></td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Mobile Apps</strong></td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>RabbitMQ</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td><strong>Kafka</strong></td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <strong>💡 Extension Bundles</strong><br />
+            Most bindings require extension packages. Use <strong>Extension Bundles</strong> in host.json to automatically include necessary extensions without manual package management.
+          </div>
+        </section>
+
+        <!-- Durable Functions Section -->
+        <section id="durable-functions" role="article">
+          <h1>⏱️ Durable Functions</h1>
+          <span class="badge">durable</span>
+          <span class="badge">orchestration</span>
+          <span class="badge">stateful</span>
+          <span class="badge">workflows</span>
+          
+          <p><strong>Durable Functions</strong> is an extension that enables you to write stateful workflows in a serverless environment. It manages state, checkpoints, and restarts automatically.</p>
+
+          <h2>Why Durable Functions?</h2>
+          <ul>
+            <li>🔄 <strong>Stateful workflows:</strong> Chain functions together with state management</li>
+            <li>⏱️ <strong>Long-running processes:</strong> Handle operations that take hours or days</li>
+            <li>🔁 <strong>Automatic retries:</strong> Built-in retry logic with exponential backoff</li>
+            <li>💾 <strong>Checkpoint and replay:</strong> Automatic progress tracking and recovery</li>
+            <li>⚡ <strong>Parallel execution:</strong> Fan-out/fan-in patterns made easy</li>
+            <li>👤 <strong>Human interaction:</strong> Wait for external events or approvals</li>
+          </ul>
+
+          <h2>Key Concepts</h2>
+
+          <h3>Orchestrator Functions</h3>
+          <p>Orchestrator functions define the workflow logic and coordinate other functions:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("OrderOrchestrator")]
+public static async Task&lt;string&gt; RunOrchestrator(
+    [OrchestrationTrigger] IDurableOrchestrationContext context)
+{
+    var order = context.GetInput&lt;Order&gt;();
+    
+    // Sequential execution
+    await context.CallActivityAsync("ProcessPayment", order);
+    await context.CallActivityAsync("UpdateInventory", order);
+    await context.CallActivityAsync("ShipOrder", order);
+    
+    return "Order completed";
+}</code></pre>
+
+          <h3>Activity Functions</h3>
+          <p>Activity functions contain the actual work to be performed:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("ProcessPayment")]
+public static async Task ProcessPayment([ActivityTrigger] Order order, ILogger log)
+{
+    log.LogInformation($"Processing payment for order {order.Id}");
+    await PaymentService.ChargeAsync(order.Amount);
+}</code></pre>
+
+          <h3>Client Functions</h3>
+          <p>Start and monitor orchestrations:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("StartOrchestration")]
+public static async Task&lt;IActionResult&gt; Start(
+    [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
+    [DurableClient] IDurableOrchestrationClient client)
+{
+    var order = await req.ReadAsAsync&lt;Order&gt;();
+    string instanceId = await client.StartNewAsync("OrderOrchestrator", order);
+    
+    return client.CreateCheckStatusResponse(req, instanceId);
+}</code></pre>
+
+          <h2>Common Patterns</h2>
+
+          <h3>1. Function Chaining</h3>
+          <p>Execute functions in a sequence:</p>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "themeVariables": { "fontFamily": "Segoe UI" } } }%%
+flowchart LR
+    Start[Start] --> F1[Function 1]
+    F1 --> F2[Function 2]
+    F2 --> F3[Function 3]
+    F3 --> End[Complete]
+    
+    style Start fill:#10b981,color:#fff
+    style End fill:#3b82f6,color:#fff
+          </div>
+          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task&lt;object&gt; Run(IDurableOrchestrationContext context)
+{
+    var x = await context.CallActivityAsync&lt;object&gt;("F1", null);
+    var y = await context.CallActivityAsync&lt;object&gt;("F2", x);
+    return await context.CallActivityAsync&lt;object&gt;("F3", y);
+}</code></pre>
+
+          <h3>2. Fan-Out/Fan-In</h3>
+          <p>Execute multiple functions in parallel and aggregate results:</p>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "themeVariables": { "fontFamily": "Segoe UI" } } }%%
+flowchart TB
+    Start[Start] --> Split{Fan-Out}
+    Split --> F1[Task 1]
+    Split --> F2[Task 2]
+    Split --> F3[Task 3]
+    F1 --> Merge{Fan-In}
+    F2 --> Merge
+    F3 --> Merge
+    Merge --> End[Aggregate Results]
+    
+    style Start fill:#10b981,color:#fff
+    style End fill:#3b82f6,color:#fff
+          </div>
+          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task&lt;long&gt; Run(IDurableOrchestrationContext context)
+{
+    var tasks = new List&lt;Task&lt;int&gt;&gt;();
+    for (int i = 0; i < 100; i++)
+    {
+        tasks.Add(context.CallActivityAsync&lt;int&gt;("ProcessItem", i));
+    }
+    
+    var results = await Task.WhenAll(tasks);
+    return results.Sum();
+}</code></pre>
+
+          <h3>3. Async HTTP APIs</h3>
+          <p>Long-running HTTP operations with status polling:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// Start long-running operation
+[FunctionName("StartLongOperation")]
+public static async Task&lt;IActionResult&gt; Start(
+    [HttpTrigger] HttpRequest req,
+    [DurableClient] IDurableOrchestrationClient client)
+{
+    string instanceId = await client.StartNewAsync("LongRunningOrchestrator");
+    return client.CreateCheckStatusResponse(req, instanceId);
+}
+
+// Returns: 202 Accepted with status URLs
+// {
+//   "id": "abc123",
+//   "statusQueryGetUri": "https://...",
+//   "sendEventPostUri": "https://..."
+// }</code></pre>
+
+          <h3>4. Monitoring Pattern</h3>
+          <p>Periodic monitoring with conditional logic:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task Run(IDurableOrchestrationContext context)
+{
+    var jobId = context.GetInput&lt;string&gt;();
+    DateTime expiryTime = context.CurrentUtcDateTime.AddMinutes(30);
+    
+    while (context.CurrentUtcDateTime < expiryTime)
+    {
+        var status = await context.CallActivityAsync&lt;string&gt;("CheckJobStatus", jobId);
+        
+        if (status == "Completed")
+            break;
+        
+        // Wait 30 seconds before checking again
+        await context.CreateTimer(context.CurrentUtcDateTime.AddSeconds(30), CancellationToken.None);
+    }
+}</code></pre>
+
+          <h3>5. Human Interaction</h3>
+          <p>Wait for external events or approvals:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task&lt;bool&gt; Run(IDurableOrchestrationContext context)
+{
+    var approvalTask = context.WaitForExternalEvent&lt;bool&gt;("ApprovalEvent");
+    var timeoutTask = context.CreateTimer(context.CurrentUtcDateTime.AddDays(3), CancellationToken.None);
+    
+    var winner = await Task.WhenAny(approvalTask, timeoutTask);
+    
+    if (winner == approvalTask)
+        return await approvalTask;
+    else
+        return false; // Timeout
+}</code></pre>
+
+          <h2>Advanced Features</h2>
+
+          <h3>Eternal Orchestrations</h3>
+          <p>Infinite loops with <code>ContinueAsNew</code>:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task Run(IDurableOrchestrationContext context)
+{
+    var counter = context.GetInput&lt;int&gt;();
+    
+    await context.CallActivityAsync("DoWork", counter);
+    
+    context.ContinueAsNew(counter + 1); // Restart with new state
+}</code></pre>
+
+          <h3>Sub-Orchestrations</h3>
+          <p>Call orchestrations from within orchestrations:</p>
+          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task Run(IDurableOrchestrationContext context)
+{
+    var results = new List&lt;string&gt;();
+    
+    foreach (var item in items)
+    {
+        var result = await context.CallSubOrchestratorAsync&lt;string&gt;(
+            "ItemProcessor", 
+            item);
+        results.Add(result);
+    }
+}</code></pre>
+
+          <h2>Best Practices</h2>
+          <ul>
+            <li>✅ <strong>Keep orchestrators deterministic:</strong> No random numbers, DateTime.Now, or HTTP calls</li>
+            <li>✅ <strong>Use activity functions for I/O:</strong> Database calls, HTTP requests, file operations</li>
+            <li>✅ <strong>Handle timeouts:</strong> Implement timeout patterns for long-running operations</li>
+            <li>✅ <strong>Version orchestrators:</strong> Use versioning for breaking changes</li>
+            <li>✅ <strong>Monitor instances:</strong> Track status and clean up completed instances</li>
+          </ul>
+
+          <div class="callout">
+            <strong>⚡ Durable Functions = Stateful Serverless</strong><br />
+            Durable Functions brings the power of stateful workflows to serverless. Write complex business processes as code without managing state infrastructure, queues, or coordination logic.
+          </div>
+        </section>
+
+        <!-- Development & Deployment Section -->
+        <section id="development" role="article">
+          <h1>💻 Development & Deployment</h1>
+          <span class="badge">development</span>
+          <span class="badge">coding</span>
+          <span class="badge">tools</span>
+          <span class="badge">cicd</span>
+          
+          <p>Azure Functions provides a comprehensive development and deployment ecosystem with support for multiple languages and tooling options.</p>
+
+          <h2>Development Tools</h2>
+
+          <h3>🔧 Azure Functions Core Tools</h3>
+          <p>Command-line tools for local development and testing.</p>
+          <pre class="syntax-highlighted" data-language="bash"><code># Install Core Tools (Windows)
+npm install -g azure-functions-core-tools@4 --unsafe-perm true
+
+# Create new function project
+func init MyFunctionApp --worker-runtime node
+
+# Create new function
+func new --template "HTTP trigger" --name MyHttpTrigger
+
+# Run functions locally
+func start
+
+# Deploy to Azure
+func azure functionapp publish MyFunctionApp</code></pre>
+
+          <h3>💻 Visual Studio Code</h3>
+          <ul>
+            <li><strong>Azure Functions Extension:</strong> Full development lifecycle support</li>
+            <li><strong>Local debugging:</strong> Set breakpoints and debug locally</li>
+            <li><strong>Azure integration:</strong> Deploy directly from VS Code</li>
+            <li><strong>Remote debugging:</strong> Debug functions running in Azure</li>
+            <li><strong>Bindings designer:</strong> Visual configuration of triggers and bindings</li>
+          </ul>
+
+          <h3>🎨 Visual Studio</h3>
+          <ul>
+            <li>Full .NET Functions development support</li>
+            <li>Azure Functions templates</li>
+            <li>Integrated debugging and testing</li>
+            <li>Publish wizard for Azure deployment</li>
+            <li>Durable Functions visual designer</li>
+          </ul>
+
+          <h2>Supported Languages</h2>
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Language</th>
+                <th>Versions</th>
+                <th>Model</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>C#</strong></td>
+                <td>.NET 6, .NET 8</td>
+                <td>In-process, Isolated</td>
+                <td>Full feature support</td>
+              </tr>
+              <tr>
+                <td><strong>JavaScript</strong></td>
+                <td>Node.js 18, 20</td>
+                <td>Programming Model v4</td>
+                <td>TypeScript supported</td>
+              </tr>
+              <tr>
+                <td><strong>Python</strong></td>
+                <td>3.9, 3.10, 3.11</td>
+                <td>Programming Model v2</td>
+                <td>Async/await support</td>
+              </tr>
+              <tr>
+                <td><strong>Java</strong></td>
+                <td>Java 8, 11, 17</td>
+                <td>Annotation-based</td>
+                <td>Maven/Gradle support</td>
+              </tr>
+              <tr>
+                <td><strong>PowerShell</strong></td>
+                <td>PowerShell 7.2</td>
+                <td>Script-based</td>
+                <td>Automation scenarios</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Local Development Workflow</h2>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis" } } }%%
+graph LR
+    A[1. Create Project] --> B[2. Add Functions]
+    B --> C[3. Configure local.settings.json]
+    C --> D[4. Run Locally]
+    D --> E[5. Test & Debug]
+    E --> F[6. Deploy to Azure]
+    
+    style A fill:#3b82f6,color:#fff
+    style D fill:#10b981,color:#fff
+    style F fill:#f59e0b,color:#fff
+          </div>
+
+          <h3>Local Configuration (local.settings.json)</h3>
+          <pre class="syntax-highlighted" data-language="json"><code>{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "CosmosDBConnection": "AccountEndpoint=https://...",
+    "MyCustomSetting": "value"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*"
+  }
+}</code></pre>
+
+          <h2>Deployment Options</h2>
+
+          <h3>1️⃣ Azure Portal Deployment</h3>
+          <ul>
+            <li>Create Function App through Azure Portal</li>
+            <li>Upload code via ZIP deployment</li>
+            <li>Edit functions directly in portal (Consumption plan only)</li>
+            <li>Best for: Quick prototypes and demos</li>
+          </ul>
+
+          <h3>2️⃣ Azure CLI Deployment</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create Function App
+az functionapp create \
+  --resource-group MyResourceGroup \
+  --consumption-plan-location eastus \
+  --runtime node \
+  --runtime-version 20 \
+  --functions-version 4 \
+  --name MyFunctionApp \
+  --storage-account mystorageaccount
+
+# Deploy code
+func azure functionapp publish MyFunctionApp</code></pre>
+
+          <h3>3️⃣ GitHub Actions CI/CD</h3>
+          <pre class="syntax-highlighted" data-language="yaml"><code>name: Deploy Azure Function
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Deploy to Azure Functions
+      uses: Azure/functions-action@v1
+      with:
+        app-name: MyFunctionApp
+        package: .
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}</code></pre>
+
+          <h3>4️⃣ Azure DevOps Pipelines</h3>
+          <pre class="syntax-highlighted" data-language="yaml"><code>trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Build Functions'
+
+- task: AzureFunctionApp@1
+  inputs:
+    azureSubscription: 'MyServiceConnection'
+    appType: 'functionApp'
+    appName: 'MyFunctionApp'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'</code></pre>
+
+          <h3>5️⃣ Container Deployment</h3>
+          <pre class="syntax-highlighted" data-language="dockerfile"><code># Dockerfile
+FROM mcr.microsoft.com/azure-functions/node:4-node20
+
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
+COPY . /home/site/wwwroot
+
+RUN cd /home/site/wwwroot && \
+    npm install</code></pre>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Build and push container
+docker build -t myfunctionapp:latest .
+docker tag myfunctionapp:latest myregistry.azurecr.io/myfunctionapp:latest
+docker push myregistry.azurecr.io/myfunctionapp:latest
+
+# Deploy container to Functions
+az functionapp create \
+  --name MyFunctionApp \
+  --storage-account mystorageaccount \
+  --resource-group MyResourceGroup \
+  --plan MyPremiumPlan \
+  --deployment-container-image-name myregistry.azurecr.io/myfunctionapp:latest</code></pre>
+
+          <h3>6️⃣ Infrastructure as Code</h3>
+
+          <h4>ARM/Bicep Template</h4>
+          <pre class="syntax-highlighted" data-language="bicep"><code>// main.bicep
+resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
+  name: functionAppName
+  location: location
+  kind: 'functionapp'
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'node'
+        }
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name}...'
+        }
+      ]
+    }
+  }
+}</code></pre>
+
+          <h4>Terraform</h4>
+          <pre class="syntax-highlighted" data-language="hcl"><code>resource "azurerm_linux_function_app" "example" {
+  name                = "example-function-app"
+  resource_group_name = azurerm_resource_group.example.name
+  location            = azurerm_resource_group.example.location
+
+  storage_account_name       = azurerm_storage_account.example.name
+  storage_account_access_key = azurerm_storage_account.example.primary_access_key
+  service_plan_id            = azurerm_service_plan.example.id
+
+  site_config {
+    application_stack {
+      node_version = "20"
+    }
+  }
+
+  app_settings = {
+    "FUNCTIONS_WORKER_RUNTIME" = "node"
+  }
+}</code></pre>
+
+          <h2>Testing Strategies</h2>
+
+          <h3>Unit Testing</h3>
+          <pre class="syntax-highlighted" data-language="javascript"><code>// Node.js unit test example (Jest)
+const { app } = require('../src/functions/httpTrigger');
+const { InvocationContext } = require('@azure/functions');
+
+test('HTTP trigger returns 200', async () => {
+  const request = {
+    query: { name: 'Azure' },
+    params: {}
+  };
+  const context = new InvocationContext();
+  
+  const response = await app.httpTrigger(request, context);
+  
+  expect(response.status).toBe(200);
+  expect(response.body).toContain('Hello, Azure');
+});</code></pre>
+
+          <h3>Integration Testing</h3>
+          <ul>
+            <li>Test with Azure Storage Emulator (Azurite)</li>
+            <li>Use Azure Functions runtime locally</li>
+            <li>Mock external dependencies</li>
+            <li>Test bindings and triggers end-to-end</li>
+          </ul>
+
+          <h3>Load Testing</h3>
+          <ul>
+            <li>Use Azure Load Testing service</li>
+            <li>Test scaling behavior under load</li>
+            <li>Monitor performance metrics</li>
+            <li>Validate cold start times</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Development Best Practices</strong><br />
+            <ul>
+              <li>Use isolated worker model for better performance and compatibility</li>
+              <li>Store connection strings in Azure Key Vault</li>
+              <li>Enable Application Insights for all environments</li>
+              <li>Use managed identities instead of connection strings</li>
+              <li>Implement retry policies for external dependencies</li>
+              <li>Keep functions small and focused (single responsibility)</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Hosting Plans Section -->
+        <section id="hosting-plans" role="article">
+          <h1>🚀 Hosting Plans & Scaling</h1>
+          <span class="badge">hosting</span>
+          <span class="badge">scaling</span>
+          <span class="badge">plans</span>
+          <span class="badge">performance</span>
+          
+          <p>Azure Functions offers three primary hosting plans, each optimized for different workload patterns, scaling requirements, and budget considerations.</p>
+
+          <h2>Hosting Plans Comparison</h2>
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Consumption</th>
+                <th>Premium (Elastic Premium)</th>
+                <th>Dedicated (App Service)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pricing Model</strong></td>
+                <td>Pay per execution + GB-s</td>
+                <td>Pre-warmed instances + executions</td>
+                <td>Standard App Service pricing</td>
+              </tr>
+              <tr>
+                <td><strong>Cold Start</strong></td>
+                <td>Yes (can be slow)</td>
+                <td>No (always warm)</td>
+                <td>No (always on)</td>
+              </tr>
+              <tr>
+                <td><strong>Max Timeout</strong></td>
+                <td>5 min (configurable to 10 min)</td>
+                <td>30 min (configurable unlimited)</td>
+                <td>Unlimited</td>
+              </tr>
+              <tr>
+                <td><strong>Max Scale Out</strong></td>
+                <td>200 instances</td>
+                <td>100 instances (30 on Windows)</td>
+                <td>10-30 instances</td>
+              </tr>
+              <tr>
+                <td><strong>VNet Integration</strong></td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>Best For</strong></td>
+                <td>Event-driven, unpredictable workloads</td>
+                <td>Production apps requiring predictable latency</td>
+                <td>Existing App Service plans, long-running</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis" } } }%%
+graph TD
+    A[Choose Hosting Plan] --> B{Predictable<br/>Traffic?}
+    B -->|No| C[Consumption Plan]
+    B -->|Yes| D{Need VNet?}
+    D -->|No| E{Budget<br/>Sensitive?}
+    E -->|Yes| C
+    E -->|No| F[Premium Plan]
+    D -->|Yes| F
+    
+    A --> G{Long-running<br/>processes?}
+    G -->|Yes| H[Dedicated Plan]
+    G -->|No| B
+    
+    A --> I{Cold starts<br/>acceptable?}
+    I -->|Yes| C
+    I -->|No| F
+    
+    style C fill:#10b981,color:#fff
+    style F fill:#3b82f6,color:#fff
+    style H fill:#f59e0b,color:#fff
+          </div>
+
+          <h2>Detailed Plan Features</h2>
+
+          <h3>🟢 Consumption Plan</h3>
+          <ul>
+            <li><strong>Automatic scaling:</strong> Platform automatically adds/removes instances</li>
+            <li><strong>Pricing:</strong> Pay only for execution time + memory consumption</li>
+            <li><strong>Free grant:</strong> 1M executions + 400,000 GB-s per month</li>
+            <li><strong>Cold starts:</strong> First request after idle period may be slow (2-10 seconds)</li>
+            <li><strong>Limitations:</strong> No VNet integration, max 10 min timeout, limited instance size</li>
+          </ul>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Create Consumption plan Function App
+az functionapp create \
+  --resource-group MyResourceGroup \
+  --consumption-plan-location eastus \
+  --runtime node \
+  --functions-version 4 \
+  --name MyConsumptionFunctionApp \
+  --storage-account mystorageaccount</code></pre>
+
+          <h3>🔵 Premium Plan (Elastic Premium)</h3>
+          <ul>
+            <li><strong>Pre-warmed instances:</strong> Always-on workers eliminate cold starts</li>
+            <li><strong>VNet integration:</strong> Access private resources securely</li>
+            <li><strong>Unlimited execution duration:</strong> Long-running functions supported</li>
+            <li><strong>Enhanced hardware:</strong> Faster CPUs, more memory (up to 14 GB)</li>
+            <li><strong>Pricing:</strong> Based on number and size of instances + executions</li>
+            <li><strong>SKUs:</strong> EP1, EP2, EP3 (increasing compute power)</li>
+          </ul>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Create Premium plan
+az functionapp plan create \
+  --resource-group MyResourceGroup \
+  --name MyPremiumPlan \
+  --location eastus \
+  --sku EP1 \
+  --is-linux
+
+# Create Function App on Premium plan
+az functionapp create \
+  --resource-group MyResourceGroup \
+  --plan MyPremiumPlan \
+  --runtime node \
+  --functions-version 4 \
+  --name MyPremiumFunctionApp \
+  --storage-account mystorageaccount</code></pre>
+
+          <h3>🟠 Dedicated (App Service) Plan</h3>
+          <ul>
+            <li><strong>Predictable pricing:</strong> Fixed monthly cost regardless of usage</li>
+            <li><strong>Always on:</strong> No cold starts</li>
+            <li><strong>Shared resources:</strong> Run alongside web apps on same plan</li>
+            <li><strong>Full control:</strong> Manual or auto-scale rules</li>
+            <li><strong>Use existing plan:</strong> Leverage underutilized App Service plan capacity</li>
+          </ul>
+
+          <h2>Scaling Behavior</h2>
+
+          <h3>Consumption Plan Scaling</h3>
+          <ul>
+            <li>Platform monitors event rate and scales automatically</li>
+            <li>New instances added when needed (up to 200)</li>
+            <li>Each instance handles multiple concurrent executions</li>
+            <li>Idle instances removed after functions stop executing</li>
+            <li><strong>Scale controller:</strong> Per-trigger heuristics determine scaling</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": 14, "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis" } } }%%
+graph LR
+    A[Low Traffic
+    0-10 req/s] -->|Auto-scale| B[Medium Traffic
+    10-100 req/s]
+    B -->|Auto-scale| C[High Traffic
+    100-1000 req/s]
+    C -->|Scale down| B
+    B -->|Scale down| A
+    
+    A --> D[1-2 Instances]
+    B --> E[5-20 Instances]
+    C --> F[50-200 Instances]
+    
+    style D fill:#10b981,color:#fff
+    style E fill:#3b82f6,color:#fff
+    style F fill:#f59e0b,color:#fff
+          </div>
+
+          <h3>Scale Limits Configuration</h3>
+          <pre class="syntax-highlighted" data-language="json"><code>// host.json - Control scaling behavior
+{
+  "version": "2.0",
+  "extensions": {
+    "http": {
+      "maxConcurrentRequests": 100,
+      "maxOutstandingRequests": 200
+    }
+  },
+  "functionTimeout": "00:05:00",
+  "aggregator": {
+    "batchSize": 1000,
+    "flushTimeout": "00:00:30"
+  }
+}</code></pre>
+
+          <h3>Per-Function Scale Control</h3>
+          <pre class="syntax-highlighted" data-language="json"><code>// function.json - Limit scaling for specific function
+{
+  "bindings": [...],
+  "disabled": false,
+  "scriptFile": "index.js",
+  "functionMaxInstances": 10
+}</code></pre>
+
+          <h2>Cold Start Mitigation Strategies</h2>
+
+          <h3>1️⃣ Use Premium Plan</h3>
+          <p>Pre-warmed instances eliminate cold starts entirely</p>
+
+          <h3>2️⃣ Application Insights Availability Tests</h3>
+          <p>Ping functions periodically to keep them warm (Consumption plan)</p>
+          <pre class="syntax-highlighted" data-language="bash"><code># External health check every 5 minutes
+curl https://myfunctionapp.azurewebsites.net/api/health</code></pre>
+
+          <h3>3️⃣ Optimize Code</h3>
+          <ul>
+            <li>Minimize dependencies (smaller deployment package)</li>
+            <li>Use isolated worker process (.NET)</li>
+            <li>Lazy-load heavy libraries</li>
+            <li>Keep function code modular</li>
+          </ul>
+
+          <h3>4️⃣ Connection Pooling</h3>
+          <pre class="syntax-highlighted" data-language="javascript"><code>// Node.js - Reuse connections across invocations
+const { CosmosClient } = require("@azure/cosmos");
+
+// Initialize outside handler
+const client = new CosmosClient({ endpoint, key });
+const database = client.database("mydb");
+const container = database.container("items");
+
+module.exports = async function (context, req) {
+  // Reuse existing connection
+  const { resources } = await container.items.readAll().fetchAll();
+  context.res = { body: resources };
+};</code></pre>
+
+          <div class="callout">
+            <strong>🎯 Choosing the Right Plan</strong><br />
+            <ul>
+              <li><strong>Consumption:</strong> Event-driven apps with unpredictable load, low budget</li>
+              <li><strong>Premium:</strong> Production apps requiring consistent latency, VNet access, or long execution</li>
+              <li><strong>Dedicated:</strong> Predictable costs, existing App Service capacity, or specialized VM requirements</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Best Practices Section -->
+        <section id="best-practices" role="article">
+          <h1>✨ Best Practices</h1>
+          <span class="badge">best-practices</span>
+          <span class="badge">security</span>
+          <span class="badge">reliability</span>
+          
+          <h2>Function Design Principles</h2>
+          <ul>
+            <li>✅ <strong>Single Responsibility:</strong> Each function should do one thing well</li>
+            <li>✅ <strong>Stateless by design:</strong> Don't rely on in-memory state</li>
+            <li>✅ <strong>Idempotent operations:</strong> Safe to retry without side effects</li>
+            <li>✅ <strong>Small and focused:</strong> Keep execution time short (seconds, not minutes)</li>
+            <li>✅ <strong>Defensive coding:</strong> Validate inputs, handle errors gracefully</li>
+          </ul>
+
+          <h2>Security</h2>
+
+          <h3>Authentication & Authorization</h3>
+          <ul>
+            <li>✅ Use <strong>Azure AD/Entra ID</strong> for authentication (not anonymous)</li>
+            <li>✅ Implement <strong>function-level authorization</strong> with access keys</li>
+            <li>✅ Use <strong>managed identities</strong> to access Azure resources</li>
+            <li>✅ Validate <strong>JWT tokens</strong> for API endpoints</li>
+            <li>✅ Apply <strong>least privilege</strong> to service principals and identities</li>
+          </ul>
+
+          <h4>Secrets Management</h4>
+          <ul>
+            <li>✅ Store secrets in <strong>Azure Key Vault</strong> (not in code or app settings)</li>
+            <li>✅ Use <strong>Key Vault references</strong> in app settings</li>
+            <li>✅ Rotate keys and secrets regularly</li>
+            <li>✅ Never commit secrets to source control</li>
+          </ul>
+
+          <pre class=\"syntax-highlighted\" data-language=\"json\"><code>// Application Settings - Key Vault reference\n{\n  \"MySecret\": \"@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/MySecret/)\",\n  \"CosmosDBConnection\": \"@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/CosmosDB/)\"\n}</code></pre>
+
+          <h4>Network Security</h4>
+          <ul>
+            <li>✅ Use <strong>VNet integration</strong> for outbound connectivity (Premium/Dedicated)</li>
+            <li>✅ Enable <strong>private endpoints</strong> for inbound isolation</li>
+            <li>✅ Configure <strong>IP restrictions</strong> for HTTP triggers</li>
+            <li>✅ Use <strong>Azure Front Door or API Management</strong> as a gateway</li>
+          </ul>
+
+          <h3>✅ Performance Optimization</h3>
+
+          <h4>Connection Management</h4>
+          <ul>
+            <li>✅ <strong>Reuse connections:</strong> Initialize clients outside handler function</li>
+            <li>✅ <strong>Use connection pooling</strong> for databases and HTTP clients</li>
+            <li>✅ <strong>Static/singleton pattern:</strong> Share expensive resources across invocations</li>
+          </ul>
+
+          <pre class=\"syntax-highlighted\" data-language=\"csharp\"><code>// ✅ Good - Reuse HttpClient\npublic class MyFunction\n{\n    private static readonly HttpClient httpClient = new HttpClient();\n    \n    [FunctionName(\"MyFunction\")]\n    public static async Task Run(/* bindings */)\n    {\n        var response = await httpClient.GetAsync(\"https://api.example.com\");\n    }\n}\n\n// ❌ Bad - Creates new HttpClient each time\npublic static async Task Run(/* bindings */)\n{\n    using var httpClient = new HttpClient(); // DON'T DO THIS\n    var response = await httpClient.GetAsync(\"https://api.example.com\");\n}</code></pre>
+
+          <h4>Async Patterns</h4>
+          <ul>
+            <li>✅ Use <strong>async/await</strong> for all I/O operations</li>
+            <li>✅ Never block on async operations (.Result or .Wait())</li>
+            <li>✅ Use <strong>ConfigureAwait(false)</strong> in library code</li>
+          </ul>
+
+          <h4>Memory Management</h4>
+          <ul>
+            <li>✅ Dispose of resources properly (use <code>using</code> statements)</li>
+            <li>✅ Avoid large in-memory objects</li>
+            <li>✅ Stream large payloads instead of loading entirely</li>
+            <li>✅ Monitor memory usage in Application Insights</li>
+          </ul>
+
+          <h3>✅ Reliability & Error Handling</h3>
+
+          <h4>Retry Logic</h4>
+          <ul>
+            <li>✅ Use <strong>exponential backoff</strong> for transient failures</li>
+            <li>✅ Implement <strong>circuit breaker pattern</strong> for external dependencies</li>
+            <li>✅ Configure <strong>retry policies</strong> in host.json for triggers</li>
+          </ul>
+
+          <pre class=\"syntax-highlighted\" data-language=\"json\"><code>// host.json - Retry configuration\n{\n  \"version\": \"2.0\",\n  \"extensions\": {\n    \"serviceBus\": {\n      \"prefetchCount\": 100,\n      \"messageHandlerOptions\": {\n        \"maxConcurrentCalls\": 32,\n        \"maxAutoRenewDuration\": \"00:05:00\"\n      }\n    },\n    \"queues\": {\n      \"maxPollingInterval\": \"00:00:02\",\n      \"visibilityTimeout\" : \"00:00:30\",\n      \"batchSize\": 16,\n      \"maxDequeueCount\": 5\n    }\n  }\n}</code></pre>
+
+          <h3>Error Logging</h3>
+          <ul>
+            <li>✅ Use <strong>ILogger</strong> for structured logging</li>
+            <li>✅ Log exceptions with <strong>context and correlation IDs</strong></li>
+            <li>✅ Avoid logging sensitive data (PII)</li>
+            <li>✅ Set up <strong>alerts</strong> for critical errors</li>
+          </ul>
+
+          <h3>Dead Letter Queues</h3>
+          <ul>
+            <li>✅ Configure <strong>poison message handling</strong></li>
+            <li>✅ Use dead letter queues for failed messages</li>
+            <li>✅ Monitor and process dead letter queues</li>
+          </ul>
+
+          <h2>Monitoring & Observability</h2>
+          <ul>
+            <li>✅ Enable <strong>Application Insights</strong> for all functions</li>
+            <li>✅ Use <strong>custom metrics and events</strong> for business logic tracking</li>
+            <li>✅ Configure <strong>availability tests</strong> for critical endpoints</li>
+            <li>✅ Set up <strong>alerts</strong> for failures, latency, and anomalies</li>
+            <li>✅ Use <strong>dependency tracking</strong> to identify bottlenecks</li>
+            <li>✅ Monitor <strong>scaling metrics</strong> (instance count, CPU, memory)</li>
+          </ul>
+
+          <h2>Common Anti-Patterns</h2>
+          <ul>
+            <li>❌ Creating HttpClient instances per invocation (socket exhaustion)</li>
+            <li>❌ Blocking async operations with .Result or .Wait()</li>
+            <li>❌ Storing state in static variables (unreliable in serverless)</li>
+            <li>❌ Long-running operations in Consumption plan (use Premium/Durable)</li>
+            <li>❌ Synchronous processing of high-volume queues (use batching)</li>
+            <li>❌ Not handling exceptions (functions fail silently)</li>
+            <li>❌ Hardcoding connection strings and secrets</li>
+            <li>❌ No monitoring or logging (blind to failures)</li>
+            <li>❌ Using anonymous HTTP auth in production</li>
+            <li>❌ Not setting maxConcurrentCalls for event-driven triggers</li>
+          </ul>
+
+          <div class=\"callout\">
+            <strong>🎯 Production Readiness Checklist</strong><br />
+            <ol>
+              <li>✅ Security: Managed identities + Key Vault + Azure AD auth</li>
+              <li>✅ Performance: Connection reuse + async patterns + batching</li>
+              <li>✅ Reliability: Retry logic + error handling + dead letter queues</li>
+              <li>✅ Monitoring: Application Insights + alerts + custom metrics</li>
+              <li>✅ Cost: Right hosting plan + optimized execution + cleanup</li>
+              <li>✅ DevOps: CI/CD + IaC + deployment slots + testing</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" role="article">
+          <h1>📚 Resources</h1>
+          <span class="badge">docs</span>
+          <span class="badge">community</span>
+          <span class="badge">links</span>
+          
+          <h2>Official Documentation</h2>
+          <ul class="list-style-none">
+            <li>📚 <a href="https://learn.microsoft.com/azure/azure-functions/" target="_blank" rel="noopener">Official Documentation</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/azure-functions/functions-overview" target="_blank" rel="noopener">Azure Functions Overview</a></li>
+            <li>🔌 <a href="https://learn.microsoft.com/azure/azure-functions/functions-triggers-bindings" target="_blank" rel="noopener">Triggers and Bindings</a></li>
+            <li>⏱️ <a href="https://learn.microsoft.com/azure/azure-functions/durable/durable-functions-overview" target="_blank" rel="noopener">Durable Functions</a></li>
+            <li>🚀 <a href="https://learn.microsoft.com/azure/azure-functions/functions-scale" target="_blank" rel="noopener">Hosting Plans & Scaling</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/azure-functions/security-concepts" target="_blank" rel="noopener">Security in Azure Functions</a></li>
+          </ul>
+
+          <h2>Getting Started</h2>
+          <ul class="list-style-none">
+            <li>🚀 <a href="https://learn.microsoft.com/azure/azure-functions/functions-get-started" target="_blank" rel="noopener">Create Your First Function</a></li>
+            <li>💻 <a href="https://learn.microsoft.com/azure/azure-functions/functions-develop-vs-code" target="_blank" rel="noopener">Develop with VS Code</a></li>
+            <li>🎨 <a href="https://learn.microsoft.com/azure/azure-functions/functions-develop-vs" target="_blank" rel="noopener">Develop with Visual Studio</a></li>
+            <li>🛠️ <a href="https://learn.microsoft.com/azure/azure-functions/functions-run-local" target="_blank" rel="noopener">Develop Locally with Core Tools</a></li>
+            <li>🐳 <a href="https://learn.microsoft.com/azure/azure-functions/functions-create-function-linux-custom-image" target="_blank" rel="noopener">Custom Container Deployment</a></li>
+          </ul>
+
+          <h2>Language-Specific Guides</h2>
+          <ul class="list-style-none">
+            <li>💠 <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-csharp" target="_blank" rel="noopener">C# Developer Reference</a></li>
+            <li>📜 <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-node" target="_blank" rel="noopener">JavaScript/TypeScript Reference</a></li>
+            <li>🐍 <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-python" target="_blank" rel="noopener">Python Developer Reference</a></li>
+            <li>☕ <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-java" target="_blank" rel="noopener">Java Developer Reference</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/azure/azure-functions/functions-reference-powershell" target="_blank" rel="noopener">PowerShell Developer Reference</a></li>
+          </ul>
+
+          <h2>Bindings & Integrations</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Documentation Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HTTP Trigger/Binding</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-http-webhook" target="_blank" rel="noopener">HTTP Reference</a></td>
+              </tr>
+              <tr>
+                <td>Azure Cosmos DB</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-cosmosdb-v2" target="_blank" rel="noopener">Cosmos DB Bindings</a></td>
+              </tr>
+              <tr>
+                <td>Azure Storage (Blob, Queue, Table)</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-storage-blob" target="_blank" rel="noopener">Storage Bindings</a></td>
+              </tr>
+              <tr>
+                <td>Event Hubs</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-event-hubs" target="_blank" rel="noopener">Event Hubs Bindings</a></td>
+              </tr>
+              <tr>
+                <td>Service Bus</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-service-bus" target="_blank" rel="noopener">Service Bus Bindings</a></td>
+              </tr>
+              <tr>
+                <td>Event Grid</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-event-grid" target="_blank" rel="noopener">Event Grid Bindings</a></td>
+              </tr>
+              <tr>
+                <td>Timer</td>
+                <td><a href="https://learn.microsoft.com/azure/azure-functions/functions-bindings-timer" target="_blank" rel="noopener">Timer Trigger</a></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Architecture & Best Practices</h2>
+          <ul class="list-style-none">
+            <li>🏗️ <a href="https://learn.microsoft.com/azure/well-architected/service-guides/azure-functions" target="_blank" rel="noopener">Well-Architected Framework for Functions</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/architecture/serverless-quest/reference-architectures" target="_blank" rel="noopener">Serverless Reference Architectures</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/azure/azure-functions/performance-reliability" target="_blank" rel="noopener">Performance & Reliability Guide</a></li>
+            <li>🔒 <a href="https://learn.microsoft.com/azure/azure-functions/security-concepts" target="_blank" rel="noopener">Security Best Practices</a></li>
+            <li>💰 <a href="https://learn.microsoft.com/azure/azure-functions/functions-best-practices" target="_blank" rel="noopener">Best Practices Guide</a></li>
+          </ul>
+
+          <h2>Learning Resources</h2>
+          <ul class="list-style-none">
+            <li>🎓 <a href="https://learn.microsoft.com/training/paths/create-serverless-applications/" target="_blank" rel="noopener">Learning Path: Create Serverless Applications</a></li>
+            <li>📝 <a href="https://learn.microsoft.com/training/modules/create-serverless-logic-with-azure-functions/" target="_blank" rel="noopener">Module: Create Serverless Logic</a></li>
+            <li>⏱️ <a href="https://learn.microsoft.com/training/modules/create-long-running-serverless-workflow-with-durable-functions/" target="_blank" rel="noopener">Module: Durable Functions</a></li>
+            <li>📺 <a href="https://www.youtube.com/results?search_query=azure+functions" target="_blank" rel="noopener">Video Tutorials (YouTube)</a></li>
+          </ul>
+
+          <h2>Tools & Extensions</h2>
+          <ul class="list-style-none">
+            <li>🔧 <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions" target="_blank" rel="noopener">Azure Functions VS Code Extension</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/azure/azure-functions/functions-run-local" target="_blank" rel="noopener">Azure Functions Core Tools</a></li>
+            <li>🖥️ <a href="https://learn.microsoft.com/cli/azure/functionapp" target="_blank" rel="noopener">Azure CLI Commands</a></li>
+            <li>💠 <a href="https://www.nuget.org/packages/Microsoft.Azure.WebJobs.Extensions/" target="_blank" rel="noopener">WebJobs SDK Extensions</a></li>
+            <li>🐙 <a href="https://github.com/Azure/azure-functions-core-tools" target="_blank" rel="noopener">Core Tools (GitHub)</a></li>
+          </ul>
+
+          <h2>Community & Support</h2>
+          <ul class="list-style-none">
+            <li>💬 <a href="https://learn.microsoft.com/answers/tags/40/azure-functions" target="_blank" rel="noopener">Microsoft Q&A</a></li>
+            <li>💡 <a href="https://stackoverflow.com/questions/tagged/azure-functions" target="_blank" rel="noopener">Stack Overflow</a></li>
+            <li>🐛 <a href="https://github.com/Azure/Azure-Functions/issues" target="_blank" rel="noopener">GitHub Issues</a></li>
+            <li>🐦 <a href="https://twitter.com/AzureFunctions" target="_blank" rel="noopener">Twitter @AzureFunctions</a></li>
+            <li>📧 <a href="https://azure.microsoft.com/support/options/" target="_blank" rel="noopener">Azure Support</a></li>
+            <li>💭 <a href="https://feedback.azure.com/d365community/forum/f5e3ddde-4524-ec11-b6e6-000d3a4f09d0" target="_blank" rel="noopener">Feature Requests & Feedback</a></li>
+          </ul>
+
+          <h2>Pricing & Quotas</h2>
+          <ul class="list-style-none">
+            <li>💰 <a href="https://azure.microsoft.com/pricing/details/functions/" target="_blank" rel="noopener">Pricing Calculator</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/azure-functions/functions-scale#service-limits" target="_blank" rel="noopener">Service Limits & Quotas</a></li>
+            <li>🆓 <a href="https://azure.microsoft.com/free/" target="_blank" rel="noopener">Free Azure Account (1M executions free)</a></li>
+          </ul>
+
+          <h2>Sample Code & Templates</h2>
+          <ul class="list-style-none">
+            <li>🎨 <a href="https://github.com/Azure/azure-functions-templates" target="_blank" rel="noopener">Function Templates (GitHub)</a></li>
+            <li>📦 <a href="https://github.com/Azure-Samples/functions-quickstart" target="_blank" rel="noopener">Quickstart Samples</a></li>
+            <li>⏱️ <a href="https://github.com/Azure/azure-functions-durable-extension/tree/main/samples" target="_blank" rel="noopener">Durable Functions Samples</a></li>
+            <li>🚀 <a href="https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.web/function-app" target="_blank" rel="noopener">ARM Templates</a></li>
+          </ul>
+
+          <h2>Monitoring & Diagnostics</h2>
+          <ul class="list-style-none">
+            <li>📊 <a href="https://learn.microsoft.com/azure/azure-functions/functions-monitoring" target="_blank" rel="noopener">Monitor Azure Functions</a></li>
+            <li>🔍 <a href="https://learn.microsoft.com/azure/azure-monitor/app/azure-functions" target="_blank" rel="noopener">Application Insights Integration</a></li>
+            <li>⚠️ <a href="https://learn.microsoft.com/azure/azure-functions/functions-diagnostics" target="_blank" rel="noopener">Diagnostics & Problem Solving</a></li>
+            <li>📈 <a href="https://learn.microsoft.com/azure/azure-functions/analyze-telemetry-data" target="_blank" rel="noopener">Analyze Telemetry Data</a></li>
+          </ul>
+
+          <h2>Getting Help</h2>
+          <ul class="list-style-none">
+            <li>📖 <a href="https://learn.microsoft.com/azure/azure-functions/" target="_blank" rel="noopener">Read the Docs</a></li>
+            <li>💬 <a href="https://learn.microsoft.com/answers/tags/40/azure-functions" target="_blank" rel="noopener">Ask the Community</a></li>
+            <li>🎫 <a href="https://azure.microsoft.com/support/create-ticket/" target="_blank" rel="noopener">Open Support Ticket</a></li>
+            <li>💡 <a href="https://feedback.azure.com/d365community/forum/f5e3ddde-4524-ec11-b6e6-000d3a4f09d0" target="_blank" rel="noopener">Request Features</a></li>
+          </ul>
+          <hr />
+          <div class="document-footer">
+            <p>
+              <strong>Last Updated:</strong> January 2026 | 
+              <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+            </p>
+          </div>
+        </section>
+        </div>
+      </main>
+    </div>
+    
+    <nav class="controls" role="navigation" aria-label="Pagination">
+      <div class="btn-group" role="group">
+        <button class="btn btn-outline-info btn-sm" id="prevBtn" title="Previous" aria-label="Previous concept">&nbsp;&lt;&nbsp;</button>
+        <button class="btn btn-outline-info btn-sm" id="nextBtn" title="Next" aria-label="Next concept">&nbsp;&gt;&nbsp;</button>
+      </div>
+    </nav>
+  </div>  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarLabel">Contents</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="list-group list-group-flush w-100" id="tocMobile"></ul>
+    </div>
+  </div>
+
+  <script>
+    // ---- Mermaid Initialization ----
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.mermaid) {
+        window.mermaid.contentLoaded();
+      }
+    });
+
+    // ---- Configuration ----
+    const sectionConfig = [
+      { id: "overview", title: "📖 Overview", tags: ["intro", "overview", "basics"] },
+      { id: "key-components", title: "🏗️ Core Architecture & Components", tags: ["architecture", "components", "structure"] },
+      { id: "function-app-structure", title: "📂 Function App Structure", tags: ["structure", "organization", "files"] },
+      { id: "triggers-bindings", title: "🔌 Triggers & Bindings", tags: ["triggers", "bindings", "events"] },
+      { id: "durable-functions", title: "⏱️ Durable Functions", tags: ["durable", "orchestration", "stateful", "workflows"] },
+      { id: "development", title: "💻 Development & Deployment", tags: ["development", "coding", "tools", "cicd"] },
+      { id: "hosting-plans", title: "🚀 Hosting Plans & Scaling", tags: ["hosting", "scaling", "plans", "performance"] },
+      { id: "best-practices", title: "✨ Best Practices", tags: ["best-practices", "recommendations", "patterns"] },
+      { id: "resources", title: "📚 Resources", tags: ["docs", "community", "links"] }
+    ];
+
+    // ---- State & rendering ----
+    const state = {
+      index: 0,
+      filtered: sectionConfig.map((_, i) => i), // indices
+    };
+
+    const els = {
+      toc: document.getElementById('toc'),
+      tocMobile: document.getElementById('tocMobile'),
+      prev: document.getElementById('prevBtn'),
+      next: document.getElementById('nextBtn'),
+      toggleSidebar: document.getElementById('toggleSidebar'),
+      themeToggle: document.getElementById('themeToggle'),
+      main: document.getElementById('main'),
+      sidebar: document.querySelector('nav.sidebar'),
+      sidebarOffcanvas: document.getElementById('sidebarOffcanvas')
+    };
+
+    function buildTOC(){
+      // Clear both TOC lists
+      els.toc.innerHTML = '';
+      els.tocMobile.innerHTML = '';
+      
+      state.filtered.forEach((idx) => {
+        const s = sectionConfig[idx];
+        
+        // Desktop sidebar
+        const liDesktop = document.createElement('li');
+        liDesktop.className = 'list-group-item';
+        const aDesktop = document.createElement('a');
+        aDesktop.href = `#${s.id}`;
+        aDesktop.textContent = s.title;
+        aDesktop.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liDesktop.appendChild(aDesktop);
+        els.toc.appendChild(liDesktop);
+        
+        // Mobile offcanvas
+        const liMobile = document.createElement('li');
+        liMobile.className = 'list-group-item';
+        const aMobile = document.createElement('a');
+        aMobile.href = `#${s.id}`;
+        aMobile.textContent = s.title;
+        aMobile.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liMobile.appendChild(aMobile);
+        els.tocMobile.appendChild(liMobile);
+      });
+      highlightActiveTOC();
+    }
+
+    function setActiveByIndex(i){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      const id = ids[i];
+      const active = document.getElementById(id);
+      if (active){
+        active.classList.add('active');
+        active.setAttribute('tabindex', '-1');
+        active.focus({preventScroll:true});
+      }
+      updateControls();
+      highlightActiveTOC();
+      updateURLHash(id);
+    }
+
+    function updateControls(){
+      const count = state.filtered.length;
+      els.prev.disabled = state.index <= 0;
+      els.next.disabled = state.index >= count - 1;
+    }
+
+    function filterTOC(query){
+      const q = query.trim().toLowerCase();
+      state.filtered = sectionConfig
+        .map((s, i) => ({s, i}))
+        .filter(({s}) => s.title.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q)))
+        .map(({i}) => i);
+
+      state.index = Math.min(state.index, Math.max(0, state.filtered.length - 1));
+      buildTOC();
+      setActiveByIndex(state.index);
+    }
+
+    function navigate(delta){
+      const count = state.filtered.length;
+      const nextIndex = Math.min(Math.max(state.index + delta, 0), count - 1);
+      if (nextIndex !== state.index){
+        state.index = nextIndex;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      }
+    }
+
+    function navigateToId(id){
+      const idxInFiltered = state.filtered.findIndex(fi => sectionConfig[fi].id === id);
+      if (idxInFiltered !== -1){
+        state.index = idxInFiltered;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      } else {
+        state.filtered = sectionConfig.map((_, i) => i);
+        buildTOC();
+        navigateToId(id);
+      }
+    }
+
+    function updateURLHash(id){
+      const url = new URL(window.location);
+      url.hash = id;
+      history.replaceState(null, '', url);
+    }
+
+    function highlightActiveTOC(){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      const activeId = ids[state.index];
+      // Highlight desktop sidebar
+      els.toc.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+      // Highlight mobile offcanvas
+      els.tocMobile.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+    }
+
+    function openSidebar(){
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById('sidebarOffcanvas'));
+      offcanvas.show();
+    }
+    function closeSidebar(){
+      const offcanvasElement = document.getElementById('sidebarOffcanvas');
+      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if(offcanvas) offcanvas.hide();
+    }
+
+    // ---- Events ----
+    els.prev.addEventListener('click', () => navigate(-1));
+    els.next.addEventListener('click', () => navigate(1));
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+      else if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Deep linking on load/hash change
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#','');
+      if (id) navigateToId(id);
+    });
+
+    // Sidebar toggle (mobile)
+    els.toggleSidebar.addEventListener('click', () => {
+      openSidebar();
+    });
+
+    // Restore theme
+    (function(){
+      try {
+        const saved = localStorage.getItem('concepts-theme');
+        if (saved) { 
+          document.documentElement.setAttribute('data-theme', saved);
+          els.themeToggle.textContent = saved === 'light' ? '🌗' : '🌙';
+        }
+      } catch {}
+    })();
+
+    // Initial render
+    buildTOC();
+
+    // Navigate to hash if present, otherwise show first section
+    const initialId = location.hash.replace('#','');
+    if (initialId){ 
+      navigateToId(initialId); 
+    } else {
+      setActiveByIndex(0);
+      // Scroll content to top on initial load
+      const contentEl = document.querySelector('.content');
+      if (contentEl) contentEl.scrollTop = 0;
+    }
+
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

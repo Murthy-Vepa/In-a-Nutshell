@@ -1,0 +1,3593 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🧱</text></svg>" />
+  <title>Design Principles - In a Nutshell</title>
+  <meta name="description" content="A comprehensive guide to Design Principles." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --border: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-fg: #0f172a;
+      --code-bg: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
+      --focus: #10b981;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+      --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    
+    /* Bootstrap Gradient Utility Classes */
+    .bg-gradient-blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; }
+    .bg-gradient-green { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important; }
+    .bg-gradient-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; }
+    .bg-gradient-pink { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important; }
+    .bg-gradient-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%) !important; }
+    .bg-gradient-teal { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important; }
+    .bg-gradient-blue-dark { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-gradient-gray { background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important; }
+    .bg-gradient-purple-dark { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important; }
+    .bg-gradient-teal-dark { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important; }
+    .bg-gradient-green-dark { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; }
+    .bg-gradient-green-light { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; }
+    .bg-gradient-blue-sky { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; }
+    .bg-gradient-red-dark { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+    .bg-gradient-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; }
+    .bg-gradient-green-medium { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important; }
+    .bg-gradient-violet { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important; }
+    .bg-gradient-lime { background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%) !important; }
+    .bg-gradient-sky { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; }
+    
+    /* Apply theme colors to Bootstrap elements */
+    body { background-color: var(--bg); color: var(--fg); overflow: hidden; }
+    .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+    .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+    .navbar-toggler-icon { 
+      filter: invert(1);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn-outline-secondary { border-color: var(--border) !important; color: var(--fg) !important; }
+    .btn-outline-secondary:hover { background-color: var(--accent-light) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+    
+    /* Sidebar - Modern Design */
+    nav.sidebar { 
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%); 
+      border-right: 1px solid rgba(0, 0, 0, 0.05) !important;  
+      overflow-y: auto; 
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      padding-top: 0;
+    }
+    
+    .menu-header {  
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1) 100%);
+      font-weight: bold; 
+      padding: 1.25rem 1.25rem; 
+      letter-spacing: 0px; 
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-bottom: 2px solid #a5aab3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: #0c346c;
+      text-shadow: none;
+      margin: 0;
+      text-transform: none;
+    }
+    .menu-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    .menu-header:hover::before {
+      left: 100%;
+    }
+    .menu-header::after {
+      content: '📋';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      opacity: 0.9;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+    
+    .toc { 
+      list-style: none; 
+      padding: 0rem 0; 
+      margin: 0; 
+      background: transparent;
+    }
+    .toc li { 
+      margin: 0; 
+    }
+    
+    /* Section grouping */
+    .toc li[data-group="overview"] { margin-bottom: 0.75rem; }
+    .toc li[data-group="solid"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(59, 130, 246, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="other-principles"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(16, 185, 129, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="resources"] { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(100, 116, 139, 0.15);
+      padding-top: 1rem;
+    }
+    
+    .list-group-item { 
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0; 
+      margin: 0.25rem 0.75rem; 
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+    }
+    .list-group-item a { 
+      color: #1f2937; 
+      text-decoration: none; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 0.4rem; 
+      border-left: 3px solid transparent; 
+      padding: 0.85rem 1.25rem; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .list-group-item a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+    }
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::before {
+      transform: scaleY(1);
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Sub-items tree connectors */
+    .list-group-sub-item a::before { 
+      content: '├─';
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      color: #6b7280;
+      z-index: 1;
+      position: relative;
+    }
+    
+    /* Sub-items styling - similar to main items but smaller and indented */
+    .list-group-sub-item {
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0px; 
+      margin: 0.2rem 0.75rem 0.2rem 1.5rem;
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+      position: relative;
+      list-style-type: none;
+    }
+    .list-group-sub-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+      z-index: 1;
+    }
+    .list-group-sub-item a {
+      color: #1f2937; 
+      text-decoration: none; 
+      display: block;
+      border-left: 3px solid transparent; 
+      padding: 0.65rem 1rem 0.65rem 2.00rem;
+      transition: all 0.2s ease; 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Sub-items hover and active states - same as main items */
+    .list-group-sub-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-sub-item:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-sub-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-sub-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    
+    .list-group-sub-item.active::before {
+      transform: scaleY(1);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-sub-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-sub-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-sub-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Badge styling */
+    .badge { font-size: 0.8rem; padding: 0.15rem 0.4rem; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; border-radius: 0.25rem; font-style: normal; line-height: 1.2; opacity: 0.9; }
+    .badge { background: var(--accent); color: white; border: none; font-size: 0.6rem; padding: 0.25rem 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 0.5rem; margin-right: 0.35rem; }
+    .list-group-item a:hover .badge { opacity: 1; background: var(--accent); color: white; }
+    .list-group-item a.active .badge { background: rgba(255, 255, 255, 0.3); color: white; border-color: rgba(255, 255, 255, 0.6); font-weight: 600; opacity: 1; }
+        
+    /* Content */
+    .content { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+    section { display: none !important; margin-bottom: 2rem; }
+    section.active { display: block !important; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0 0.25rem 0; letter-spacing: -0.5px; color: var(--fg); display: block; border: none; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: var(--fg); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 1rem 0 0.5rem 0; }
+    h4 { font-size: 0.8rem; color: var(--fg); font-weight: 600; margin: 0.75rem 0 0.4rem 0; }
+    p { margin: 1rem 0; line-height: 1.65; color: var(--fg); }
+    ul, ol { margin: 1rem 0; padding-left: 2rem; }
+    li { margin: 0.5rem 0; color: var(--fg); }
+    
+    code { background: var(--code-bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; font-size: 0.9em; color: var(--accent); border-radius: 0.5rem; }
+    pre { background: var(--code-bg); border: 0px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow: auto; box-shadow: var(--shadow-sm); margin: 1rem 0; }
+    pre code { padding: 0; background: transparent; border: none; color: var(--fg); }
+    
+    .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0.5rem; box-shadow: var(--shadow-sm); font-weight: 500; color: var(--fg); }
+    
+    /* Table styling */
+    .table { color: var(--fg); }
+    .table thead th { background: var(--accent-light); color: var(--accent); border-color: var(--border); font-weight: 600; }
+    .table tbody td { border-color: var(--border); }
+    .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.02); }
+    .table-striped tbody tr:hover { background-color: var(--accent-light); }
+    
+    /* Controls/Pagination */
+    .controls { opacity: 0.5; position: fixed; bottom: 0.25rem; right: 1rem; width: auto; z-index: 1000; background: transparent; display: flex; align-items: center; justify-content: center; gap: 0rem; padding: 0; min-height: 40px; }
+    @media (max-width: 991px) {
+      .controls { bottom: 0.25rem; right: 1rem; }
+      .menu-header { color: var(--focus); }
+    }
+    .controls:hover { opacity: 1; }
+    
+    .page-indicator { color: var(--accent); font-weight: 600; font-size: 0.875rem; }
+    .btn-group .btn { margin: 0px 2px; padding: 0.2rem 0.5rem; background: var(--accent); color: white; border-color: var(--accent); font-size: 1rem; font-weight: bold; }
+    .btn-group .btn:hover { background: var(--accent); }
+    .btn-group .btn + .btn { margin-left: -1px; }
+    
+    /* Mobile/Offcanvas */
+    .offcanvas { background: var(--bg) !important; }
+    .offcanvas-header { border-bottom: 1px solid var(--border); }
+    .offcanvas-title { color: var(--fg); font-weight: 600; }
+    .btn-close { color: var(--fg); }
+    
+    /* Scrollbar */
+    nav.sidebar::-webkit-scrollbar { width: 6px; }
+    nav.sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+    nav.sidebar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 0px; }
+    nav.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+    
+    /* Mermaid Diagrams */
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      position: relative;
+    }
+    .mermaid.rendered {
+      min-height: 0;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      min-height: 300px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+    .mermaid.zoomed {
+      overflow: auto;
+      cursor: grab;
+    }
+    .mermaid.zoomed:active {
+      cursor: grabbing;
+    }
+    .mermaid svg text {
+      font-size: 14px !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+    
+    /* Mermaid title styling */
+    .mermaid svg text, .diagram-modal-content svg text {
+      font-size: 1rem !important;
+      font-weight: bold !important;
+      fill: var(--fg) !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+
+    .mermaid svg *
+    {
+        color: #333;
+    }
+
+    .mermaid[data-processed="true"] {
+      min-height: 0;
+    }
+    
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+    
+    /* Zoom controls */
+    .zoom-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .mermaid:hover .zoom-controls {
+      opacity: 1;
+    }
+    .zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+
+    /* Modal for diagram zoom */
+    .diagram-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .diagram-modal.active {
+      display: flex;
+    }
+    .diagram-modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 0;
+      padding: 3rem 3rem 3rem 3rem;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .diagram-modal-content svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .modal-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+      z-index: 10000;
+    }
+    .modal-close:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+    .modal-zoom-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10000;
+      padding: 0rem;
+      border-radius: 0.4rem;
+    }
+    .modal-zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .modal-zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+    
+    /* Utilities */
+    .search { height: 0; overflow: hidden; padding: 0 !important; }
+    .search input { display: none; }
+    .min-vh-100 { min-height: 100vh; }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: static; width: auto; height: auto; padding: 0.4rem 0.6rem; background: var(--accent); color: white; border-radius: 0.4rem; }
+    
+    /* Override Bootstrap defaults for theme */
+    a { color: var(--accent); }
+    a:hover { color: var(--accent); text-decoration: underline; }
+    
+    /* Responsive - keep sidebar visible on desktop, offcanvas on mobile */
+    @media (max-width: 991px) {
+      nav.sidebar { display: none; }
+      #main { width: 100%; }
+      .row { --bs-gutter-x: 0; }
+    }
+    
+    /* Layout - prevent unnecessary scrolling */
+    html, body { height: 100%; margin: 0; }
+    #appContainer { display: flex; flex-direction: column; height: calc(100vh - 50px); }
+    #mainRow { flex: 1; overflow: hidden; display: flex; }
+    nav.sidebar { overflow-y: auto; max-height: 100%; position: relative; padding-bottom: 0px; }
+    #main { overflow: hidden; display: flex; flex-direction: column; height: 100%; -webkit-tap-highlight-color: transparent; outline: none; border: none; }
+    #main:focus { outline: none; }
+    .content { overflow-y: auto; flex: 1; width: 100%; min-height: 0; padding: 0rem 1.5rem 0rem 1.5rem; }
+    
+    /* Contact Info */
+    .contact-info {
+      font-weight: 400 !important;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      margin: 0;
+      opacity: 0.5;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .contact-info:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+    @media (max-width: 991px) {
+      .navbar-brand {
+        font-size: 1rem !important;
+        flex: 1;
+      }
+      .contact-info {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 0.9rem !important;
+      }
+      .contact-info {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+
+    .list-style-none {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* JSON Syntax Highlighting */
+    pre code.language-json {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-json .json-key {
+      color: #0451a5;
+      font-weight: 500;
+    }
+
+    pre code.language-json .json-string {
+      color: #a31515;
+    }
+
+    pre code.language-json .json-number {
+      color: #098658;
+    }
+
+    pre code.language-json .json-boolean {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-null {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-punctuation {
+      color: #333;
+    }
+
+    /* SQL Syntax Highlighting */
+    pre code.language-sql {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-sql .sql-keyword {
+      color: #0000ff;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    pre code.language-sql .sql-string {
+      color: #a31515;
+    }
+
+    pre code.language-sql .sql-number {
+      color: #098658;
+    }
+
+    pre code.language-sql .sql-comment {
+      color: #008000;
+      font-style: italic;
+    }
+
+    pre code.language-sql .sql-function {
+      color: #795e26;
+      font-weight: 500;
+    }
+
+    pre code.language-sql .sql-operator {
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Language Label for Code Blocks */
+    pre[data-language]::before {
+      content: attr(data-language);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.75em;
+      color: #6a737d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Enhanced pre/code styling for syntax highlighted blocks */
+    pre.syntax-highlighted {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+      margin: 1rem 0;
+    }
+
+    pre.syntax-highlighted code {
+      background: transparent;
+      padding: 0;
+      border: none;
+      color: var(--fg);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    ul
+    {
+        list-style-type: none;
+    }
+  /* Document Footer */
+    .document-footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .document-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    .document-footer strong {
+      color: #495057;
+    }  
+  </style>
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid with proper configuration
+    document.addEventListener('DOMContentLoaded', function() {
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'loose',
+        logLevel: 'error',
+        fontFamily: 'Segoe UI',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      // Render all diagrams
+      renderMermaidDiagrams();
+    });
+    
+    async function renderMermaidDiagrams() {
+      const diagrams = document.querySelectorAll('.mermaid');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.textContent.trim();
+        
+        // Store original code
+        if (!diagram.hasAttribute('data-original-code')) {
+          diagram.setAttribute('data-original-code', code);
+        }
+        
+        try {
+          const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+          diagram.innerHTML = svg;
+          diagram.setAttribute('data-processed', 'true');
+          
+          // Add zoom controls
+          addZoomControls(diagram);
+        } catch (error) {
+          console.error('Mermaid rendering error for diagram ' + i + ':', error);
+          diagram.innerHTML = '<div class="alert alert-danger border border-danger rounded p-3">Error rendering diagram: ' + error.message + '</div>';
+        }
+      }
+    }
+    
+    // Add zoom controls to mermaid diagrams
+    function addZoomControls(diagram) {
+      const controls = document.createElement('div');
+      controls.className = 'zoom-controls';
+      controls.innerHTML = `
+        <button class="zoom-btn" data-action="expand" title="Expand View">⛶</button>
+      `;
+      
+      diagram.style.position = 'relative';
+      diagram.insertBefore(controls, diagram.firstChild);
+      
+      // Expand to modal
+      controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.zoom-btn');
+        if (!btn) return;
+        
+        openDiagramModal(diagram);
+      });
+    }
+
+    // Open diagram in modal
+    function openDiagramModal(diagram) {
+      // Create modal if it doesn't exist
+      let modal = document.getElementById('diagram-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'diagram-modal';
+        modal.className = 'diagram-modal';
+        modal.innerHTML = `
+          <button class="modal-close" id="modal-close">×</button>
+          <div class="diagram-modal-content" id="modal-diagram-content"></div>
+          <div class="modal-zoom-controls">
+            <button class="modal-zoom-btn" data-action="zoom-in" title="Zoom In">+</button>
+            <button class="modal-zoom-btn" data-action="zoom-out" title="Zoom Out">−</button>
+            <button class="modal-zoom-btn" data-action="reset" title="Reset Zoom">⟲</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal handlers
+        modal.querySelector('#modal-close').addEventListener('click', closeDiagramModal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeDiagramModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeDiagramModal();
+          }
+        });
+        
+        // Zoom controls in modal
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        
+        modal.querySelector('.modal-zoom-controls').addEventListener('click', (e) => {
+          const btn = e.target.closest('.modal-zoom-btn');
+          if (!btn) return;
+          
+          const action = btn.dataset.action;
+          const svg = modal.querySelector('svg');
+          if (!svg) return;
+          
+          if (action === 'zoom-in') {
+            scale = Math.min(scale + 0.1, 5);
+          } else if (action === 'zoom-out') {
+            scale = Math.max(scale - 0.1, 0.5);
+          } else if (action === 'reset') {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+          }
+          
+          svg.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+        });
+      }
+      
+      // Clone diagram content
+      const svg = diagram.querySelector('svg');
+      if (svg) {
+        const content = modal.querySelector('#modal-diagram-content');
+        content.innerHTML = '';
+        const clonedSvg = svg.cloneNode(true);
+        clonedSvg.style.transform = 'scale(1)';
+        clonedSvg.style.maxWidth = '100%';
+        clonedSvg.style.height = 'auto';
+        content.appendChild(clonedSvg);
+      }
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDiagramModal() {
+      const modal = document.getElementById('diagram-modal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Re-render on theme change
+    window.rerenderMermaid = async function() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? 'base' : 'base',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      const diagrams = document.querySelectorAll('.mermaid[data-processed="true"]');
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.getAttribute('data-original-code');
+        
+        if (code) {
+          try {
+            const { svg } = await mermaid.render('mermaid-diagram-rerender-' + i + '-' + Date.now(), code);
+            diagram.innerHTML = svg;
+          } catch (error) {
+            console.error('Mermaid re-rendering error:', error);
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top" aria-label="Top bar">
+    <div class="container-fluid d-flex align-items-center">
+      <button class="navbar-toggler me-2" id="toggleSidebar" type="button" aria-label="Toggle sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+<span class="navbar-brand mb-0 h1 me-auto">🧱 Design Principles - In a Nutshell</span>
+<span class="contact-info mb-0">🤝 Curated by Murthy Vepa</span>
+    </div>      
+  </nav>
+
+  <div id="appContainer">
+    <div class="row g-0" id="mainRow">
+      <nav class="col-lg-3 border-end sidebar" id="sidebar" aria-label="Table of contents">
+        <div class="menu-header py-2">Contents</div>
+        <ul class="list-group list-group-flush toc" id="toc"></ul>
+      </nav>
+
+      <main id="main" class="col-lg-9 d-flex flex-column" tabindex="-1">
+        <div class="content" id="content">
+        <!-- Overview Section -->
+        <section id="overview" role="article">
+          <h1>📖 Overview</h1>
+          <span class="badge">intro</span>
+          <span class="badge">overview</span>
+          <span class="badge">basics</span>
+          
+          <p>Design principles are fundamental guidelines that help developers create maintainable, scalable, and robust software systems. They provide a foundation for making architectural decisions and writing clean code that stands the test of time.</p>
+          
+          <h2>Why Design Principles Matter</h2>
+          <ul>
+            <li><strong>Maintainability:</strong> Well-designed code is easier to understand, modify, and extend</li>
+            <li><strong>Scalability:</strong> Principles guide you to build systems that can grow with changing requirements</li>
+            <li><strong>Reduced Technical Debt:</strong> Following principles prevents accumulation of problematic code</li>
+            <li><strong>Team Collaboration:</strong> Shared principles create a common language and understanding</li>
+            <li><strong>Quality & Reliability:</strong> Principled design leads to fewer bugs and more predictable behavior</li>
+          </ul>
+          
+          <h2>Core Design Principles</h2>
+          <p>This guide covers the most important design principles every software engineer should master:</p>
+          
+          <div class="callout">
+            <strong>🧱 SOLID Principles</strong> - Five object-oriented design principles that form the foundation of maintainable class design
+          </div>
+          
+          <div class="callout">
+            <strong>💧 DRY (Don't Repeat Yourself)</strong> - Eliminate duplication by centralizing logic and knowledge
+          </div>
+          
+          <div class="callout">
+            <strong>🎯 KISS (Keep It Simple, Stupid)</strong> - Favor simplicity over complexity in design and implementation
+          </div>
+          
+          <div class="callout">
+            <strong>🚫 YAGNI (You Aren't Gonna Need It)</strong> - Build only what you need now, not what you might need later
+          </div>
+          
+          <h2>Modern Design Principles</h2>
+          <p>Beyond the classic principles, these modern approaches help create flexible and maintainable architectures:</p>
+          
+          <div class="callout">
+            <strong>🧩 Separation of Concerns (SoC)</strong> - Divide programs into distinct sections, each addressing a separate concern
+          </div>
+          
+          <div class="callout">
+            <strong>🔗 Composition Over Inheritance</strong> - Favor object composition over class inheritance for better flexibility and reusability
+          </div>
+          
+          <div class="callout">
+            <strong>👥 Law of Demeter (LoD)</strong> - Only talk to your immediate friends, not to strangers - reduces coupling
+          </div>
+          
+          <p><em>💡 Pro Tip: These principles work together synergistically. Applying them collectively creates software that is both elegant and effective.</em></p>
+        </section>
+
+        <!-- SOLID Overview Section -->
+        <section id="solid-principles" role="article">
+          <h1>🧱 SOLID Principles</h1>
+          <span class="badge">architecture</span>
+          <span class="badge">oop</span>
+          <span class="badge">solid</span>
+          
+          <p>SOLID is an acronym representing five fundamental principles of object-oriented design, coined by Robert C. Martin (Uncle Bob). These principles help developers create software that is more understandable, flexible, and maintainable.</p>
+          
+          <h2>The Five SOLID Principles</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Principle</th>
+                <th>Acronym</th>
+                <th>Core Concept</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Single Responsibility</strong></td>
+                <td>SRP</td>
+                <td>One class, one job, one reason to change</td>
+              </tr>
+              <tr>
+                <td><strong>Open/Closed</strong></td>
+                <td>OCP</td>
+                <td>Open for extension, closed for modification</td>
+              </tr>
+              <tr>
+                <td><strong>Liskov Substitution</strong></td>
+                <td>LSP</td>
+                <td>Subtypes must be substitutable for their base types</td>
+              </tr>
+              <tr>
+                <td><strong>Interface Segregation</strong></td>
+                <td>ISP</td>
+                <td>No client should depend on methods it doesn't use</td>
+              </tr>
+              <tr>
+                <td><strong>Dependency Inversion</strong></td>
+                <td>DIP</td>
+                <td>Depend on abstractions, not concretions</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h2>SOLID Principles Visualization</h2>
+          <div class="mermaid">
+graph LR
+    SOLID["🧱 SOLID Principles"]
+    
+    SRP["S - Single Responsibility
+    One class, one job"]
+    OCP["O - Open/Closed
+    Open for extension,
+    closed for modification"]
+    LSP["L - Liskov Substitution
+    Subtypes replace base types"]
+    ISP["I - Interface Segregation
+    Small, focused interfaces"]
+    DIP["D - Dependency Inversion
+    Depend on abstractions"]
+    
+    SOLID --> SRP
+    SOLID --> OCP
+    SOLID --> LSP
+    SOLID --> ISP
+    SOLID --> DIP
+    
+    SRP --> B1["✔ Easier to understand"]
+    SRP --> B2["✔ Localized changes"]
+    
+    OCP --> B3["✔ Add features safely"]
+    OCP --> B4["✔ No breaking changes"]
+    
+    LSP --> B5["✔ Reliable polymorphism"]
+    LSP --> B6["✔ Predictable behavior"]
+    
+    ISP --> B7["✔ Clean interfaces"]
+    ISP --> B8["✔ Reduced coupling"]
+    
+    DIP --> B9["✔ Flexible architecture"]
+    DIP --> B10["✔ Testable code"]
+    
+    style SOLID fill:#3b82f6,stroke:#2563eb,stroke-width:3px,color:#fff
+    style SRP fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style OCP fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style LSP fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style ISP fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style DIP fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+          </div>
+          
+          <h2>Benefits of SOLID</h2>
+          <ul>
+            <li>✔ <strong>Cleaner Architecture:</strong> Well-organized code with clear separation of concerns</li>
+            <li>✔ <strong>Easier Maintenance:</strong> Changes are localized and don't ripple through the system</li>
+            <li>✔ <strong>Fewer Bugs:</strong> Isolated responsibilities mean fewer unintended side effects</li>
+            <li>✔ <strong>Better Testability:</strong> Decoupled components are easier to test in isolation</li>
+            <li>✔ <strong>Enhanced Flexibility:</strong> Systems can adapt to changing requirements</li>
+            <li>✔ <strong>Improved Reusability:</strong> Well-designed components can be reused across projects</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Start with abstractions and interfaces early in design. Break down responsibilities from the beginning rather than refactoring later. Think about how each class will change over time.
+          </div>
+        </section>
+        
+        <!-- Single Responsibility Principle -->
+        <section id="single-responsibility" role="article">
+          <h1>S - Single Responsibility Principle (SRP)</h1>
+          <span class="badge">solid</span>
+          <span class="badge">srp</span>
+          <span class="badge">responsibility</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"A class should have only one reason to change."</strong></p>
+          
+          <p>Each class should have a single, well-defined responsibility. When a class has multiple responsibilities, changes to one responsibility can affect the implementation of others, leading to fragile designs.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>One Job:</strong> Each class focuses on doing one thing well</li>
+            <li><strong>Cohesion:</strong> Related functionality stays together, unrelated functionality is separated</li>
+            <li><strong>Change Isolation:</strong> Changes for different reasons happen in different places</li>
+          </ul>
+          
+          <h2>Visual Example: Separating Responsibilities</h2>
+          <div class="mermaid">
+classDiagram
+    class Employee_Bad {
+        &lt;&lt;Multiple Responsibilities&gt;&gt;
+        +String Name
+        +Decimal Salary
+        +CalculatePay()
+        +SaveToDatabase()
+        +GenerateReport()
+    }
+    
+    class Employee_Good {
+        &lt;&lt;Single Responsibility&gt;&gt;
+        +String Name
+        +Decimal Salary
+        +CalculatePay()
+    }
+    
+    class EmployeeRepository {
+        &lt;&lt;Data Persistence&gt;&gt;
+        +Save(Employee)
+        +FindById(int)
+        +Delete(Employee)
+    }
+    
+    class EmployeeReportGenerator {
+        &lt;&lt;Report Generation&gt;&gt;
+        +Generate(Employee)
+        +GeneratePDF(Employee)
+        +GenerateCSV(Employee)
+    }
+    
+    Employee_Good --> EmployeeRepository : uses
+    Employee_Good --> EmployeeReportGenerator : uses
+    
+    note for Employee_Bad "Violates SRP: 3 reasons to change"
+    note for Employee_Good "Follows SRP: 1 reason to change"
+          </div>
+          
+          <h2>❌ Bad Example: Multiple Responsibilities</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">public class Employee
+{
+    public string Name { get; set; }
+    public decimal Salary { get; set; }
+    
+    // Responsibility 1: Business Logic
+    public decimal CalculatePay()
+    {
+        return Salary * 1.1m;
+    }
+    
+    // Responsibility 2: Data Access
+    public void SaveToDatabase()
+    {
+        // Database code...
+    }
+    
+    // Responsibility 3: Reporting
+    public string GenerateReport()
+    {
+        return $"Employee {Name} earns {Salary}";
+    }
+}</code></pre>
+          
+          <p><em>Problems: This class has three reasons to change - business logic changes, database schema changes, and report format changes.</em></p>
+          
+          <h2>✅ Good Example: Single Responsibility</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Responsibility 1: Employee business logic
+public class Employee
+{
+    public string Name { get; set; }
+    public decimal Salary { get; set; }
+    
+    public decimal CalculatePay()
+    {
+        return Salary * 1.1m;
+    }
+}
+
+// Responsibility 2: Data persistence
+public class EmployeeRepository
+{
+    public void Save(Employee employee)
+    {
+        // Database code...
+    }
+}
+
+// Responsibility 3: Report generation
+public class EmployeeReportGenerator
+{
+    public string Generate(Employee employee)
+    {
+        return $"Employee {employee.Name} earns {employee.Salary}";
+    }
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>Easier to understand and reason about code</li>
+            <li>Changes are localized to specific classes</li>
+            <li>Better testability - test one concern at a time</li>
+            <li>Reduced coupling between different functionalities</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Ask yourself "What is this class's job?" If you use the word "and" in your answer, you probably have multiple responsibilities that should be separated.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Separate business logic from data access (use Repository pattern)</li>
+            <li>Keep controllers thin - delegate to service classes</li>
+            <li>Separate validation logic into dedicated validators</li>
+            <li>Use separate classes for serialization/deserialization</li>
+            <li>Extract logging and error handling to cross-cutting concerns</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>One notebook per pipeline stage (ingestion, transformation, loading)</li>
+            <li>Separate data quality checks into dedicated utility notebooks</li>
+            <li>Keep schema definitions separate from transformation logic</li>
+            <li>Create focused functions: reading, transforming, writing data</li>
+            <li>Separate orchestration logic from data processing logic</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Separate infrastructure code (ARM/Terraform) from application code</li>
+            <li>Use separate Azure Functions for different triggers/responsibilities</li>
+            <li>Keep authentication logic separate from business logic</li>
+            <li>Separate configuration management from application logic</li>
+          </ul>
+        </section>
+        
+        <!-- Open/Closed Principle -->
+        <section id="open-closed" role="article">
+          <h1>O - Open/Closed Principle (OCP)</h1>
+          <span class="badge">solid</span>
+          <span class="badge">ocp</span>
+          <span class="badge">extension</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Software entities should be open for extension but closed for modification."</strong></p>
+          
+          <p>You should be able to add new functionality without changing existing code. This is achieved through abstraction, polymorphism, and dependency injection.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>Open for Extension:</strong> New behavior can be added to meet new requirements</li>
+            <li><strong>Closed for Modification:</strong> Existing code remains unchanged and stable</li>
+            <li><strong>Abstraction:</strong> Use interfaces or abstract classes to define contracts</li>
+          </ul>
+          
+          <h2>Visual Example: Extension Without Modification</h2>
+          <div class="mermaid">
+classDiagram
+    class IPaymentMethod {
+        &lt;&lt;interface&gt;&gt;
+        +ProcessPayment(decimal amount)
+    }
+    
+    class PaymentProcessor {
+        +Process(IPaymentMethod, decimal)
+    }
+    
+    class CreditCardPayment {
+        +ProcessPayment(decimal amount)
+    }
+    
+    class PayPalPayment {
+        +ProcessPayment(decimal amount)
+    }
+    
+    class BitcoinPayment {
+        &lt;&lt;NEW&gt;&gt;
+        +ProcessPayment(decimal amount)
+    }
+    
+    IPaymentMethod &lt;|.. CreditCardPayment
+    IPaymentMethod &lt;|.. PayPalPayment
+    IPaymentMethod &lt;|.. BitcoinPayment
+    PaymentProcessor --> IPaymentMethod : depends on
+    
+    note for PaymentProcessor "CLOSED for modification"
+    note for IPaymentMethod "OPEN for extension"
+          </div>
+          
+          <h2>❌ Bad Example: Modification Required</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">public class PaymentProcessor
+{
+    public void ProcessPayment(string paymentType, decimal amount)
+    {
+        if (paymentType == "CreditCard")
+        {
+            // Process credit card
+        }
+        else if (paymentType == "PayPal")
+        {
+            // Process PayPal
+        }
+        // Adding new payment method requires modifying this class!
+    }
+}</code></pre>
+          
+          <h2>✅ Good Example: Extension Without Modification</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Abstract interface
+public interface IPaymentMethod
+{
+    void ProcessPayment(decimal amount);
+}
+
+// Concrete implementations
+public class CreditCardPayment : IPaymentMethod
+{
+    public void ProcessPayment(decimal amount)
+    {
+        // Credit card logic
+    }
+}
+
+public class PayPalPayment : IPaymentMethod
+{
+    public void ProcessPayment(decimal amount)
+    {
+        // PayPal logic
+    }
+}
+
+// Processor is closed for modification, open for extension
+public class PaymentProcessor
+{
+    public void Process(IPaymentMethod paymentMethod, decimal amount)
+    {
+        paymentMethod.ProcessPayment(amount);
+    }
+}
+
+// Adding new payment method is easy - just create new implementation!
+public class BitcoinPayment : IPaymentMethod
+{
+    public void ProcessPayment(decimal amount)
+    {
+        // Bitcoin logic
+    }
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>New features don't risk breaking existing functionality</li>
+            <li>Reduces testing overhead for unchanged code</li>
+            <li>Encourages use of design patterns (Strategy, Factory, etc.)</li>
+            <li>Promotes plug-and-play architecture</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Use abstraction strategically. Identify variation points in your system where behavior might change or new options might be added, then use interfaces or abstract classes to make those points extensible.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Use Strategy pattern for varying algorithms (payment methods, sorting)</li>
+            <li>Use Factory pattern to create objects without modifying client code</li>
+            <li>Define interfaces for external dependencies (database, APIs)</li>
+            <li>Use plugin architectures for extensible systems</li>
+            <li>Leverage dependency injection frameworks (.NET Core DI, Spring)</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Use configuration files to add new data sources without code changes</li>
+            <li>Create generic reader/writer interfaces for different formats (CSV, Parquet, Delta)</li>
+            <li>Use Delta table schemas that support column additions</li>
+            <li>Design transformation pipelines to accept pluggable transformers</li>
+            <li>Use notebook parameters to extend behavior without modification</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Use Azure API Management policies to add features without changing backends</li>
+            <li>Design serverless functions with extension points</li>
+            <li>Use message-based architectures (Service Bus, Event Grid) for extensibility</li>
+            <li>Implement API versioning to extend without breaking clients</li>
+          </ul>
+        </section>
+        
+        <!-- Liskov Substitution Principle -->
+        <section id="liskov-substitution" role="article">
+          <h1>L - Liskov Substitution Principle (LSP)</h1>
+          <span class="badge">solid</span>
+          <span class="badge">lsp</span>
+          <span class="badge">polymorphism</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Objects of a superclass should be replaceable with objects of a subclass without breaking the application."</strong></p>
+          
+          <p>Derived classes must be substitutable for their base classes without altering the correctness of the program. Subtypes should strengthen, not weaken, the contract defined by the base type.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>Behavioral Compatibility:</strong> Subclasses must honor the contract of the base class</li>
+            <li><strong>Preconditions:</strong> Subclasses cannot strengthen preconditions (require more)</li>
+            <li><strong>Postconditions:</strong> Subclasses cannot weaken postconditions (guarantee less)</li>
+            <li><strong>Invariants:</strong> Subclasses must preserve all invariants of the base class</li>
+          </ul>
+          
+          <h2>❌ Bad Example: LSP Violation</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">public class Rectangle
+{
+    public virtual int Width { get; set; }
+    public virtual int Height { get; set; }
+    
+    public int GetArea()
+    {
+        return Width * Height;
+    }
+}
+
+public class Square : Rectangle
+{
+    public override int Width
+    {
+        get => base.Width;
+        set { base.Width = value; base.Height = value; }
+    }
+    
+    public override int Height
+    {
+        get => base.Height;
+        set { base.Width = value; base.Height = value; }
+    }
+}
+
+// This breaks!
+void TestRectangle(Rectangle rect)
+{
+    rect.Width = 5;
+    rect.Height = 10;
+    Assert.AreEqual(50, rect.GetArea()); // Fails for Square!
+}</code></pre>
+          
+          <h2>✅ Good Example: LSP Compliant</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">public interface IShape
+{
+    int GetArea();
+}
+
+public class Rectangle : IShape
+{
+    public int Width { get; set; }
+    public int Height { get; set; }
+    
+    public int GetArea()
+    {
+        return Width * Height;
+    }
+}
+
+public class Square : IShape
+{
+    public int Side { get; set; }
+    
+    public int GetArea()
+    {
+        return Side * Side;
+    }
+}
+
+// Works correctly for both
+void TestShape(IShape shape)
+{
+    int area = shape.GetArea();
+    // No assumptions about specific properties
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>Polymorphism works correctly and predictably</li>
+            <li>Reduces surprises when using inheritance</li>
+            <li>Improves code reliability and correctness</li>
+            <li>Enables safe refactoring and extension</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Before creating an inheritance relationship, ask "Is X truly a type of Y in all contexts?" If the answer involves exceptions or special cases, use composition instead of inheritance.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Ensure derived classes don't throw unexpected exceptions</li>
+            <li>Don't weaken preconditions or strengthen postconditions in subclasses</li>
+            <li>Avoid overriding methods to do nothing or throw NotImplementedException</li>
+            <li>Use interfaces when you can't guarantee true substitutability</li>
+            <li>Test with both base and derived types to verify substitutability</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>If creating data reader hierarchies, ensure all readers return consistent schema</li>
+            <li>Don't create transformers that violate expected data contracts</li>
+            <li>Use composition over inheritance for data processing pipelines</li>
+            <li>Ensure consistent error handling across similar pipeline stages</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Ensure all storage implementations (Blob, File, Table) maintain contracts</li>
+            <li>Don't violate expected behavior when swapping Azure services</li>
+            <li>Keep consistent authentication patterns across service implementations</li>
+          </ul>
+        </section>
+        
+        <!-- Interface Segregation Principle -->
+        <section id="interface-segregation" role="article">
+          <h1>I - Interface Segregation Principle (ISP)</h1>
+          <span class="badge">solid</span>
+          <span class="badge">isp</span>
+          <span class="badge">interfaces</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"No client should be forced to depend on methods it does not use."</strong></p>
+          
+          <p>Instead of one large, general-purpose interface, create multiple smaller, more specific interfaces. Clients should only know about the methods they actually use.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>Small Interfaces:</strong> Many specific interfaces are better than one general-purpose interface</li>
+            <li><strong>Client-Specific:</strong> Design interfaces based on how clients use them</li>
+            <li><strong>No Unnecessary Dependencies:</strong> Classes don't depend on methods they don't use</li>
+          </ul>
+          
+          <h2>❌ Bad Example: Fat Interface</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">public interface IWorker
+{
+    void Work();
+    void Eat();
+    void Sleep();
+    void TakeSalary();
+}
+
+// Human worker implements all methods
+public class HumanWorker : IWorker
+{
+    public void Work() { /* ... */ }
+    public void Eat() { /* ... */ }
+    public void Sleep() { /* ... */ }
+    public void TakeSalary() { /* ... */ }
+}
+
+// Robot must implement methods it doesn't need!
+public class RobotWorker : IWorker
+{
+    public void Work() { /* ... */ }
+    public void Eat() { throw new NotImplementedException(); } // ❌
+    public void Sleep() { throw new NotImplementedException(); } // ❌
+    public void TakeSalary() { throw new NotImplementedException(); } // ❌
+}</code></pre>
+          
+          <h2>✅ Good Example: Segregated Interfaces</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Segregated interfaces
+public interface IWorkable
+{
+    void Work();
+}
+
+public interface IFeedable
+{
+    void Eat();
+}
+
+public interface ISleepable
+{
+    void Sleep();
+}
+
+public interface IPayable
+{
+    void TakeSalary();
+}
+
+// Human implements all relevant interfaces
+public class HumanWorker : IWorkable, IFeedable, ISleepable, IPayable
+{
+    public void Work() { /* ... */ }
+    public void Eat() { /* ... */ }
+    public void Sleep() { /* ... */ }
+    public void TakeSalary() { /* ... */ }
+}
+
+// Robot implements only what it needs
+public class RobotWorker : IWorkable
+{
+    public void Work() { /* ... */ }
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>Cleaner, more focused interfaces</li>
+            <li>Easier to understand and implement</li>
+            <li>Reduces coupling between clients and interfaces</li>
+            <li>More flexible and maintainable code</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Design interfaces from the client's perspective. If you find yourself creating implementations with empty methods or throwing <code>NotImplementedException</code>, it's a sign your interface is too large and should be segregated.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Split large interfaces into role-based interfaces (IReadable, IWritable)</li>
+            <li>Use C# interface inheritance to compose capabilities</li>
+            <li>Keep interfaces focused on single capabilities</li>
+            <li>Avoid God interfaces with dozens of methods</li>
+            <li>Use marker interfaces sparingly (prefer attributes/annotations)</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Separate read and write operations into different interfaces</li>
+            <li>Don't force batch processors to implement streaming methods</li>
+            <li>Create focused interfaces: IDataReader, IDataWriter, IDataValidator</li>
+            <li>Keep schema inference separate from data loading</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Segregate storage operations: IReadStorage, IWriteStorage, IMetadataStorage</li>
+            <li>Keep queue send/receive operations in separate interfaces</li>
+            <li>Don't bundle unrelated cloud operations in one interface</li>
+          </ul>
+        </section>
+        
+        <!-- Dependency Inversion Principle -->
+        <section id="dependency-inversion" role="article">
+          <h1>D - Dependency Inversion Principle (DIP)</h1>
+          <span class="badge">solid</span>
+          <span class="badge">dip</span>
+          <span class="badge">abstraction</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Depend upon abstractions, not concretions."</strong></p>
+          
+          <p>High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details; details should depend on abstractions.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>Abstractions:</strong> Define contracts through interfaces or abstract classes</li>
+            <li><strong>Inversion:</strong> Traditional dependencies are inverted - concrete details depend on abstractions</li>
+            <li><strong>Decoupling:</strong> High-level policy is independent of low-level implementation details</li>
+            <li><strong>Dependency Injection:</strong> Dependencies are provided from outside rather than created internally</li>
+          </ul>
+          
+          <h2>Visual Example: Inverting Dependencies</h2>
+          <div class="mermaid">
+graph TB
+    subgraph Before["BEFORE: Traditional Dependencies"]
+        BL1["High-Level Module<br/>BusinessLogic"]
+        LL1["Low-Level Module<br/>SqlDatabase"]
+        BL1 -->|depends on| LL1
+    end
+    
+    subgraph After["AFTER: Dependency Inversion"]
+        BL2["High-Level Module<br/>BusinessLogic"]
+        INT["Abstraction<br/>IDatabase"]
+        LL2["Low-Level Module<br/>SqlDatabase"]
+        LL3["Low-Level Module<br/>MongoDatabase"]
+        
+        BL2 -->|depends on| INT
+        INT -.-> LL2
+        INT -.-> LL3
+    end
+    
+    style BL1 fill:#fca5a5,stroke:#dc2626,stroke-width:2px
+    style LL1 fill:#fca5a5,stroke:#dc2626,stroke-width:2px
+    style Before fill:#ffebee,stroke:#c62828
+    style BL2 fill:#86efac,stroke:#16a34a,stroke-width:2px
+    style INT fill:#3b82f6,stroke:#2563eb,stroke-width:3px,color:#fff
+    style LL2 fill:#86efac,stroke:#16a34a,stroke-width:2px
+    style LL3 fill:#86efac,stroke:#16a34a,stroke-width:2px
+    style After fill:#e8f5e9,stroke:#2e7d32
+          </div>
+          
+          <h2>❌ Bad Example: Direct Dependencies</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Low-level module
+public class SqlDatabase
+{
+    public void SaveData(string data)
+    {
+        // SQL-specific code
+    }
+}
+
+// High-level module directly depends on low-level module
+public class BusinessLogic
+{
+    private SqlDatabase database;
+    
+    public BusinessLogic()
+    {
+        database = new SqlDatabase(); // Tight coupling!
+    }
+    
+    public void ProcessData(string data)
+    {
+        // Process data...
+        database.SaveData(data);
+    }
+}</code></pre>
+          
+          <p><em>Problem: Switching from SQL to MongoDB requires changing BusinessLogic class. Cannot test BusinessLogic without a real database.</em></p>
+          
+          <h2>✅ Good Example: Dependency Inversion</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Abstraction
+public interface IDatabase
+{
+    void SaveData(string data);
+}
+
+// Low-level modules depend on abstraction
+public class SqlDatabase : IDatabase
+{
+    public void SaveData(string data)
+    {
+        // SQL-specific code
+    }
+}
+
+public class MongoDatabase : IDatabase
+{
+    public void SaveData(string data)
+    {
+        // MongoDB-specific code
+    }
+}
+
+// High-level module depends on abstraction
+public class BusinessLogic
+{
+    private readonly IDatabase database;
+    
+    // Dependency injection through constructor
+    public BusinessLogic(IDatabase database)
+    {
+        this.database = database;
+    }
+    
+    public void ProcessData(string data)
+    {
+        // Process data...
+        database.SaveData(data);
+    }
+}
+
+// Usage
+var businessLogic = new BusinessLogic(new SqlDatabase());
+// Easy to swap: new BusinessLogic(new MongoDatabase());
+// Easy to test: new BusinessLogic(new MockDatabase());</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>Loose coupling between modules</li>
+            <li>Easy to swap implementations</li>
+            <li>Highly testable with mock objects</li>
+            <li>Flexible and maintainable architecture</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Use Dependency Injection frameworks (like .NET Core DI, Spring, or Dagger) to manage dependencies automatically. Design your abstractions first, then create concrete implementations. This leads to more flexible and testable code.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Use constructor injection for required dependencies</li>
+            <li>Register dependencies in DI container startup (.NET Core, Spring Boot)</li>
+            <li>Create interfaces for all external dependencies (database, API clients)</li>
+            <li>Use factory pattern when direct DI isn't possible</li>
+            <li>Avoid service locator pattern - prefer explicit injection</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Pass configuration objects instead of hardcoding connection strings</li>
+            <li>Create abstraction for data sources (IDataSource interface)</li>
+            <li>Inject catalog/schema names as parameters</li>
+            <li>Use notebook widgets for runtime dependency injection</li>
+            <li>Create abstract data readers/writers for testability</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Inject Azure SDK clients (BlobServiceClient, CosmosClient) via DI</li>
+            <li>Use Managed Identity instead of hardcoded connection strings</li>
+            <li>Create abstractions for Azure services (IStorageService, IQueueService)</li>
+            <li>Use Azure App Configuration for injecting runtime dependencies</li>
+            <li>Register Azure clients in DI with AddAzureClients()</li>
+          </ul>
+        </section>
+
+        <!-- DRY Principle Section -->
+        <section id="dry-principle" role="article">
+          <h1>💧 DRY - Don't Repeat Yourself</h1>
+          <span class="badge">dry</span>
+          <span class="badge">reusability</span>
+          <span class="badge">maintenance</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Every piece of knowledge must have a single, unambiguous, authoritative representation within a system."</strong></p>
+          
+          <p>The DRY principle, formulated by Andy Hunt and Dave Thomas in "The Pragmatic Programmer," states that duplication is waste. When you repeat code, data, or logic, you create multiple sources of truth that must be kept in sync.</p>
+          
+          <h2>What It Means</h2>
+          <ul>
+            <li><strong>Avoid Duplication:</strong> Don't copy-paste code; extract and reuse</li>
+            <li><strong>Single Source of Truth:</strong> Each piece of knowledge exists in exactly one place</li>
+            <li><strong>Centralize Logic:</strong> Common functionality lives in shared modules</li>
+          </ul>
+          
+          <h2>Types of Duplication</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Solution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Code Duplication</strong></td>
+                <td>Same code appears in multiple places</td>
+                <td>Extract to functions/methods</td>
+              </tr>
+              <tr>
+                <td><strong>Logic Duplication</strong></td>
+                <td>Same business rules implemented differently</td>
+                <td>Centralize in shared service</td>
+              </tr>
+              <tr>
+                <td><strong>Data Duplication</strong></td>
+                <td>Same data stored in multiple locations</td>
+                <td>Normalize data, use references</td>
+              </tr>
+              <tr>
+                <td><strong>Documentation Duplication</strong></td>
+                <td>Same information in code and comments</td>
+                <td>Self-documenting code, single docs</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h2>❌ Bad Example: Duplication</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Validation duplicated in multiple places
+public class UserService
+{
+    public void CreateUser(string email)
+    {
+        if (!email.Contains("@") || !email.Contains("."))
+            throw new ArgumentException("Invalid email");
+        // Create user...
+    }
+}
+
+public class EmailService
+{
+    public void SendEmail(string email, string message)
+    {
+        if (!email.Contains("@") || !email.Contains("."))
+            throw new ArgumentException("Invalid email");
+        // Send email...
+    }
+}
+
+public class NewsletterService
+{
+    public void Subscribe(string email)
+    {
+        if (!email.Contains("@") || !email.Contains("."))
+            throw new ArgumentException("Invalid email");
+        // Subscribe...
+    }
+}</code></pre>
+          
+          <p><em>Problem: Email validation is duplicated. If validation rules change (e.g., add regex check), we must update all three places.</em></p>
+          
+          <h2>✅ Good Example: DRY Implementation</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Centralized validation
+public class EmailValidator
+{
+    public static bool IsValid(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+            return false;
+            
+        var regex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        return regex.IsMatch(email);
+    }
+    
+    public static void ValidateOrThrow(string email)
+    {
+        if (!IsValid(email))
+            throw new ArgumentException("Invalid email format");
+    }
+}
+
+// Reuse everywhere
+public class UserService
+{
+    public void CreateUser(string email)
+    {
+        EmailValidator.ValidateOrThrow(email);
+        // Create user...
+    }
+}
+
+public class EmailService
+{
+    public void SendEmail(string email, string message)
+    {
+        EmailValidator.ValidateOrThrow(email);
+        // Send email...
+    }
+}
+
+public class NewsletterService
+{
+    public void Subscribe(string email)
+    {
+    EmailValidator.ValidateOrThrow(email);
+        // Subscribe...
+    }
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>✔ <strong>Reduces Redundancy:</strong> Write once, use everywhere</li>
+            <li>✔ <strong>Simplifies Updates:</strong> Change in one place affects all usages</li>
+            <li>✔ <strong>Fewer Bugs:</strong> No inconsistencies between duplicated code</li>
+            <li>✔ <strong>Easier Maintenance:</strong> Less code to understand and maintain</li>
+            <li>✔ <strong>Improved Consistency:</strong> Behavior is uniform across the system</li>
+          </ul>
+          
+          <h2>When NOT to Apply DRY</h2>
+          <div class="callout">
+            <strong>⚠️ Warning:</strong> Be careful not to over-apply DRY. Avoid premature abstraction when:
+            <ul>
+              <li>Code looks similar but represents different concepts (coincidental duplication)</li>
+              <li>Requirements for the "duplicated" code might diverge</li>
+              <li>The abstraction would be more complex than the duplication</li>
+              <li>The duplication is across different bounded contexts or modules</li>
+            </ul>
+            <p><em>"Duplication is far cheaper than the wrong abstraction." - Sandi Metz</em></p>
+          </div>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Use the "Rule of Three" - when you see duplication the first time, make a note. The second time, consider refactoring. By the third time, definitely extract the common code into a shared function or module.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Extract common validation logic into shared validators</li>
+            <li>Use utility classes for repeated operations (StringUtils, DateUtils)</li>
+            <li>Create base classes for common patterns (with caution)</li>
+            <li>Use extension methods (C#) or utility functions (Python) for reusable operations</li>
+            <li>Centralize configuration constants in one place</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Create utility notebooks with common transformation functions</li>
+            <li>Use %run to import shared notebook functions</li>
+            <li>Define schema definitions once, reuse across notebooks</li>
+            <li>Create reusable data quality check functions</li>
+            <li>Use Delta Live Tables (DLT) to define transformations once</li>
+            <li>Centralize connection logic and configurations</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Use ARM templates or Bicep modules for repeated infrastructure patterns</li>
+            <li>Create shared Azure Functions libraries for common operations</li>
+            <li>Use Azure API Management policies to avoid duplicating logic across backends</li>
+            <li>Centralize authentication/authorization logic</li>
+          </ul>
+        </section>
+        
+        <!-- KISS Principle Section -->
+        <section id="kiss-principle" role="article">
+          <h1>🎯 KISS - Keep It Simple, Stupid</h1>
+          <span class="badge">kiss</span>
+          <span class="badge">simplicity</span>
+          <span class="badge">clarity</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Simplicity should be a key goal in design, and unnecessary complexity should be avoided."</strong></p>
+          
+          <p>The KISS principle emphasizes that systems work best when they are kept simple rather than made complicated. Simpler solutions are easier to understand, maintain, debug, and extend.</p>
+          
+          <h2>What It Means</h2>
+          <ul>
+            <li><strong>Simplicity Wins:</strong> Choose the simplest solution that solves the problem</li>
+            <li><strong>Avoid Over-Engineering:</strong> Don't add complexity you don't need</li>
+            <li><strong>Clarity Over Cleverness:</strong> Readable code beats clever code</li>
+          </ul>
+          
+          <h2>Sources of Unnecessary Complexity</h2>
+          <ul>
+            <li>Over-abstraction and excessive layers</li>
+            <li>Premature optimization</li>
+            <li>Using advanced features when simple ones suffice</li>
+            <li>Building for hypothetical future requirements</li>
+            <li>Complex design patterns where simpler approaches work</li>
+            <li>Clever one-liners that sacrifice readability</li>
+          </ul>
+          
+          <h2>❌ Bad Example: Unnecessary Complexity</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Over-engineered solution with unnecessary abstractions
+public interface INumberProcessorFactory
+{
+    INumberProcessor CreateProcessor();
+}
+
+public interface INumberProcessor
+{
+    IProcessingResult Process(INumberInput input);
+}
+
+public interface INumberInput
+{
+    int GetValue();
+}
+
+public interface IProcessingResult
+{
+    int GetResult();
+}
+
+public class ConcreteNumberInput : INumberInput
+{
+    private int value;
+    public ConcreteNumberInput(int value) { this.value = value; }
+    public int GetValue() => value;
+}
+
+public class DoubleProcessor : INumberProcessor
+{
+    public IProcessingResult Process(INumberInput input)
+    {
+        return new ProcessingResult(input.GetValue() * 2);
+    }
+}
+
+// Usage becomes unnecessarily complex
+var factory = new NumberProcessorFactory();
+var processor = factory.CreateProcessor();
+var input = new ConcreteNumberInput(5);
+var result = processor.Process(input);
+int value = result.GetResult(); // Just to double a number!</code></pre>
+          
+          <h2>✅ Good Example: Simple and Clear</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Simple, straightforward solution
+public class MathUtils
+{
+    public static int Double(int number)
+    {
+        return number * 2;
+    }
+}
+
+// Usage is simple and clear
+int result = MathUtils.Double(5);</code></pre>
+          
+          <h2>❌ Complex: Clever But Confusing</h2>
+          <pre class="syntax-highlighted" data-language="python"><code class="language-python"># Overly clever one-liner
+result = list(map(lambda x: x[1], filter(lambda x: x[0] % 2 == 0, enumerate(data))))</code></pre>
+          
+          <h2>✅ Simple: Clear Intent</h2>
+          <pre class="syntax-highlighted" data-language="python"><code class="language-python"># Clear and readable
+result = []
+for index, value in enumerate(data):
+    if index % 2 == 0:
+        result.append(value)</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>✔ <strong>Faster Development:</strong> Simple solutions are quicker to implement</li>
+            <li>✔ <strong>Easier Onboarding:</strong> New team members understand code faster</li>
+            <li>✔ <strong>Fewer Bugs:</strong> Less complexity means fewer places for bugs to hide</li>
+            <li>✔ <strong>Better Maintainability:</strong> Changes are easier when code is simple</li>
+            <li>✔ <strong>Lower Cognitive Load:</strong> Developers can focus on business logic</li>
+          </ul>
+          
+          <h2>How to Keep It Simple</h2>
+          <div class="callout">
+            <strong>Guidelines for Simplicity:</strong>
+            <ul>
+              <li>Start with the simplest solution, add complexity only when needed</li>
+              <li>Prefer composition over inheritance</li>
+              <li>Use clear, descriptive names instead of comments</li>
+              <li>Write code for humans first, computers second</li>
+              <li>Question every abstraction: "Does this really add value?"</li>
+              <li>Avoid premature optimization - "Make it work, make it right, make it fast"</li>
+            </ul>
+          </div>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Build the simplest solution that solves the current problem first. Add complexity only when you have concrete evidence that it's needed. Remember: "Simple is not easy" - achieving simplicity requires thought and discipline.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Use LINQ/Streams for simple queries, not when traditional loops are clearer</li>
+            <li>Avoid nested ternary operators - use if/else for readability</li>
+            <li>Don't create elaborate class hierarchies for simple problems</li>
+            <li>Use descriptive variable names instead of clever abbreviations</li>
+            <li>Write straightforward code first, optimize only if needed</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Use SQL when possible instead of complex PySpark transformations</li>
+            <li>Keep notebook workflows linear and easy to follow</li>
+            <li>Avoid over-engineering with unnecessary abstractions for small pipelines</li>
+            <li>Use pandas for small datasets instead of distributed Spark</li>
+            <li>Don't build complex orchestration frameworks when simple notebook workflows suffice</li>
+            <li>Start with batch processing before implementing streaming (if batch works)</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Use managed services instead of building custom solutions</li>
+            <li>Start with monolithic architecture before splitting into microservices</li>
+            <li>Use built-in Azure authentication instead of custom auth</li>
+            <li>Keep Azure Functions simple - one function, one responsibility</li>
+          </ul>
+        </section>
+        
+        <!-- YAGNI Principle Section -->
+        <section id="yagni-principle" role="article">
+          <h1>🚫 YAGNI - You Aren't Gonna Need It</h1>
+          <span class="badge">yagni</span>
+          <span class="badge">agile</span>
+          <span class="badge">minimalism</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Don't implement something until it is necessary."</strong></p>
+          
+          <p>YAGNI is an Extreme Programming (XP) principle that states you should not add functionality until it is actually required. Focus on current requirements, not hypothetical future needs.</p>
+          
+          <h2>What It Means</h2>
+          <ul>
+            <li><strong>Build Only What's Needed:</strong> Implement features when they're required, not in anticipation</li>
+            <li><strong>Avoid Speculation:</strong> Don't guess at future requirements</li>
+            <li><strong>Iterative Development:</strong> Add functionality incrementally as needs arise</li>
+          </ul>
+          
+          <h2>Common YAGNI Violations</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Anti-Pattern</th>
+                <th>Example</th>
+                <th>Why It's Wrong</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Speculative Features</strong></td>
+                <td>"We might need export to PDF someday"</td>
+                <td>Wastes time on unused features</td>
+              </tr>
+              <tr>
+                <td><strong>Premature Generalization</strong></td>
+                <td>Building a plugin system for one use case</td>
+                <td>Adds unnecessary complexity</td>
+              </tr>
+              <tr>
+                <td><strong>Over-Abstraction</strong></td>
+                <td>Creating interfaces "for flexibility" without need</td>
+                <td>Makes code harder to understand</td>
+              </tr>
+              <tr>
+                <td><strong>Framework Building</strong></td>
+                <td>Creating reusable framework before understanding needs</td>
+                <td>Framework may not fit actual use cases</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h2>❌ Bad Example: Over-Engineering</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Current requirement: Store user preferences in memory
+// Developer thinks: "We might need database storage later!"
+
+public interface IPreferenceStore
+{
+    void Save(string key, string value);
+    string Load(string key);
+}
+
+public class InMemoryPreferenceStore : IPreferenceStore
+{
+    private Dictionary<string, string> preferences = new();
+    
+    public void Save(string key, string value)
+    {
+        preferences[key] = value;
+    }
+    
+    public string Load(string key)
+    {
+        return preferences.TryGetValue(key, out var value) ? value : null;
+    }
+}
+
+// Also builds database implementation "just in case"
+public class DatabasePreferenceStore : IPreferenceStore
+{
+    // 200 lines of database code that's never used...
+}
+
+// And file-based storage too!
+public class FilePreferenceStore : IPreferenceStore
+{
+    // Another 150 lines that's never used...
+}</code></pre>
+          
+          <p><em>Problem: Spent time building database and file storage when only in-memory storage was needed. Added complexity for no current benefit.</em></p>
+          
+          <h2>✅ Good Example: Build What You Need</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Current requirement: Store user preferences in memory
+// Solution: Implement exactly what's needed
+
+public class PreferenceManager
+{
+    private Dictionary<string, string> preferences = new();
+    
+    public void SavePreference(string key, string value)
+    {
+        preferences[key] = value;
+    }
+    
+    public string GetPreference(string key)
+    {
+        return preferences.TryGetValue(key, out var value) ? value : null;
+    }
+}
+
+// If database storage is needed later, THEN:
+// 1. Extract interface
+// 2. Create database implementation
+// 3. Refactor to use dependency injection
+// But don't do it until it's actually required!</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>✔ <strong>Saves Time:</strong> Don't waste effort on features you might never need</li>
+            <li>✔ <strong>Prevents Over-Engineering:</strong> Keep codebase lean and focused</li>
+            <li>✔ <strong>Reduces Maintenance:</strong> Less code means less to maintain and test</li>
+            <li>✔ <strong>Faster Delivery:</strong> Ship features quicker by focusing on essentials</li>
+            <li>✔ <strong>Better Design:</strong> Understand requirements before designing solutions</li>
+          </ul>
+          
+          <h2>YAGNI vs. Good Design</h2>
+          <div class="callout">
+            <strong>⚠️ Important Balance:</strong> YAGNI doesn't mean ignore good design principles!
+            <p><strong>DO:</strong></p>
+            <ul>
+              <li>Write clean, testable code</li>
+              <li>Follow SOLID principles</li>
+              <li>Make code easy to change</li>
+              <li>Use appropriate abstractions for current needs</li>
+            </ul>
+            <p><strong>DON'T:</strong></p>
+            <ul>
+              <li>Add features "just in case"</li>
+              <li>Build infrastructure for hypothetical scale</li>
+              <li>Create abstractions before understanding variation</li>
+              <li>Implement flexibility you don't need now</li>
+            </ul>
+          </div>
+          
+          <h2>Real-World Examples</h2>
+          <h3>❌ YAGNI Violation</h3>
+          <ul>
+            <li>Building multi-tenancy support when you have one customer</li>
+            <li>Implementing internationalization before expanding globally</li>
+            <li>Creating microservices architecture for a startup MVP</li>
+            <li>Adding caching layer before measuring performance</li>
+          </ul>
+          
+          <h3>✅ YAGNI Applied</h3>
+          <ul>
+            <li>Start with monolith, split into services when needed</li>
+            <li>Add caching after identifying bottlenecks</li>
+            <li>Implement localization when entering new markets</li>
+            <li>Add abstractions when you have multiple implementations</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Focus on current requirements, not hypothetical ones. Make your code easy to change (SOLID, clean code), then change it when requirements actually evolve. Remember: "The best code is the code you don't have to write."
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Don't build generic frameworks until you have 3+ use cases</li>
+            <li>Implement features when they're requested, not "just in case"</li>
+            <li>Start with concrete implementations, abstract only when needed</li>
+            <li>Don't add configuration options for hypothetical scenarios</li>
+            <li>Avoid building "future-proof" architectures - build for change instead</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Start with simple notebooks before implementing Delta Live Tables</li>
+            <li>Don't build for scale you haven't reached yet (start batch, not streaming)</li>
+            <li>Implement data quality checks as needed, not all possible checks upfront</li>
+            <li>Use basic orchestration before building complex workflows</li>
+            <li>Don't optimize performance before measuring bottlenecks</li>
+            <li>Build Bronze → Silver first, add Gold layer when business rules are clear</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Start with single region before implementing multi-region</li>
+            <li>Use standard SKUs before premium (upgrade when needed)</li>
+            <li>Implement caching after identifying performance issues</li>
+            <li>Don't build microservices until monolith becomes unmanageable</li>
+            <li>Add monitoring/alerting for actual problems, not all possible problems</li>
+          </ul>
+        </section>
+        
+        <!-- Separation of Concerns Section -->
+        <section id="separation-of-concerns" role="article">
+          <h1>🧩 Separation of Concerns (SoC)</h1>
+          <span class="badge">soc</span>
+          <span class="badge">architecture</span>
+          <span class="badge">modularity</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Separate a computer program into distinct sections, each addressing a separate concern."</strong></p>
+          
+          <p>A "concern" is a distinct feature or behavior of the software. Separation of Concerns is about organizing code so that each section handles one specific aspect of the application's functionality, making the system more modular and maintainable.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>Modularity:</strong> Divide system into independent, interchangeable modules</li>
+            <li><strong>Clear Boundaries:</strong> Each module has well-defined responsibilities</li>
+            <li><strong>Low Coupling:</strong> Modules interact through well-defined interfaces</li>
+            <li><strong>High Cohesion:</strong> Related functionality stays together</li>
+          </ul>
+          
+          <h2>Visual Example: Layered Architecture</h2>
+          <div class="mermaid">
+graph TD
+    subgraph Presentation["Presentation Layer"]
+        UI["Controllers, Views, UI Components"]
+    end
+    
+    subgraph Business["Business Logic Layer"]
+        Services["Services, Domain Models, Business Rules"]
+    end
+    
+    subgraph Data["Data Access Layer"]
+        Repos["Repositories, DAOs, ORMs"]
+    end
+    
+    subgraph Infrastructure["Infrastructure Layer"]
+        CrossCut["Logging, Caching, Configuration"]
+    end
+    
+    UI -->|User interactions| Services
+    Services -->|Data operations| Repos
+    Services -->|Cross-cutting| CrossCut
+    Repos -->|Uses| CrossCut
+    
+    style Presentation fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+    style Business fill:#bbf7d0,stroke:#16a34a,stroke-width:2px
+    style Data fill:#fde68a,stroke:#f59e0b,stroke-width:2px
+    style Infrastructure fill:#e9d5ff,stroke:#9333ea,stroke-width:2px
+          </div>
+          
+          <h2>Common Separations in Software</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Layer/Concern</th>
+                <th>Responsibility</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Presentation</strong></td>
+                <td>User interface and user interaction</td>
+                <td>Views, Controllers, UI Components</td>
+              </tr>
+              <tr>
+                <td><strong>Business Logic</strong></td>
+                <td>Core application rules and workflows</td>
+                <td>Services, Domain Models, Business Rules</td>
+              </tr>
+              <tr>
+                <td><strong>Data Access</strong></td>
+                <td>Database operations and persistence</td>
+                <td>Repositories, DAOs, ORMs</td>
+              </tr>
+              <tr>
+                <td><strong>Infrastructure</strong></td>
+                <td>Cross-cutting concerns and utilities</td>
+                <td>Logging, Caching, Configuration</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h2>❌ Bad Example: Mixed Concerns</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Everything mixed together in one class
+public class UserController
+{
+    public void RegisterUser(string username, string password, string email)
+    {
+        // Presentation concern: Input validation
+        if (string.IsNullOrEmpty(username))
+        {
+            Console.WriteLine("Username is required!"); // UI logic
+            return;
+        }
+        
+        // Business logic concern: Password hashing
+        var hashedPassword = BCrypt.HashPassword(password);
+        
+        // Data access concern: Direct database code
+        using (var connection = new SqlConnection("connection-string"))
+        {
+            connection.Open();
+            var command = new SqlCommand(
+                "INSERT INTO Users (Username, Password, Email) VALUES (@u, @p, @e)",
+                connection);
+            command.Parameters.AddWithValue("@u", username);
+            command.Parameters.AddWithValue("@p", hashedPassword);
+            command.Parameters.AddWithValue("@e", email);
+            command.ExecuteNonQuery();
+        }
+        
+        // Infrastructure concern: Logging
+        File.AppendAllText("log.txt", $"User {username} registered\n");
+        
+        // Infrastructure concern: Email sending
+        var smtpClient = new SmtpClient("smtp.server.com");
+        smtpClient.Send("noreply@app.com", email, "Welcome", "Thanks for registering!");
+    }
+}</code></pre>
+          
+          <p><em>Problems: Changes to UI, business rules, database, logging, or email all require modifying this single class. Testing is difficult. Code is not reusable.</em></p>
+          
+          <h2>✅ Good Example: Separated Concerns</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Presentation Layer
+public class UserController
+{
+    private readonly IUserService userService;
+    
+    public UserController(IUserService userService)
+    {
+        this.userService = userService;
+    }
+    
+    public IActionResult Register(RegisterRequest request)
+    {
+        if (!ModelState.IsValid) // Validation handled by framework
+            return BadRequest(ModelState);
+            
+        var result = userService.RegisterUser(request.Username, request.Password, request.Email);
+        
+        if (result.Success)
+            return Ok("User registered successfully");
+        else
+            return BadRequest(result.Error);
+    }
+}
+
+// Business Logic Layer
+public class UserService : IUserService
+{
+    private readonly IUserRepository repository;
+    private readonly IPasswordHasher passwordHasher;
+    private readonly IEmailService emailService;
+    private readonly ILogger logger;
+    
+    public UserService(
+        IUserRepository repository,
+        IPasswordHasher passwordHasher,
+        IEmailService emailService,
+        ILogger logger)
+    {
+        this.repository = repository;
+        this.passwordHasher = passwordHasher;
+        this.emailService = emailService;
+        this.logger = logger;
+    }
+    
+    public OperationResult RegisterUser(string username, string password, string email)
+    {
+        // Business logic only
+        var hashedPassword = passwordHasher.Hash(password);
+        var user = new User(username, hashedPassword, email);
+        
+        repository.Add(user);
+        
+        logger.LogInformation($"User {username} registered");
+        emailService.SendWelcomeEmail(email);
+        
+        return OperationResult.Success();
+    }
+}
+
+// Data Access Layer
+public class UserRepository : IUserRepository
+{
+    private readonly DbContext context;
+    
+    public void Add(User user)
+    {
+        context.Users.Add(user);
+        context.SaveChanges();
+    }
+}
+
+// Infrastructure Layer
+public class EmailService : IEmailService
+{
+    public void SendWelcomeEmail(string email)
+    {
+        // Email sending logic
+    }
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>✔ <strong>Maintainability:</strong> Changes to one concern don't affect others</li>
+            <li>✔ <strong>Testability:</strong> Each concern can be tested independently</li>
+            <li>✔ <strong>Reusability:</strong> Modules can be reused in different contexts</li>
+            <li>✔ <strong>Parallel Development:</strong> Different teams can work on different concerns</li>
+            <li>✔ <strong>Flexibility:</strong> Easy to swap implementations (e.g., change database)</li>
+          </ul>
+          
+          <h2>Architectural Patterns Based on SoC</h2>
+          <ul>
+            <li><strong>Layered Architecture:</strong> Presentation, Business, Data layers</li>
+            <li><strong>MVC (Model-View-Controller):</strong> Separates data, UI, and control logic</li>
+            <li><strong>MVVM (Model-View-ViewModel):</strong> Separates UI from business logic</li>
+            <li><strong>Clean Architecture:</strong> Concentric layers with dependency inversion</li>
+            <li><strong>Microservices:</strong> Separate services for separate business capabilities</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> When designing a system, identify the different concerns first. Create clear boundaries between them using interfaces. This makes your architecture resilient to change and easier to reason about.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Use layered architecture: Presentation → Business → Data</li>
+            <li>Implement MVC/MVVM patterns to separate UI from logic</li>
+            <li>Keep controllers thin - move logic to services</li>
+            <li>Separate validation, business rules, and data access</li>
+            <li>Use separate projects/packages for different layers</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Implement Medallion Architecture: Bronze → Silver → Gold layers</li>
+            <li>Separate notebooks by concern: ingestion, transformation, serving</li>
+            <li>Keep orchestration separate from data processing</li>
+            <li>Separate schema definitions from transformation logic</li>
+            <li>Use different catalogs/schemas for different data zones</li>
+            <li>Isolate data quality checks in dedicated notebooks</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Separate infrastructure (Bicep/Terraform) from application code</li>
+            <li>Use API Management to separate API concerns from backend services</li>
+            <li>Separate authentication/authorization from business logic</li>
+            <li>Keep Azure Functions focused on single triggers</li>
+            <li>Use different Azure subscriptions/resource groups for different environments</li>
+          </ul>
+        </section>
+        
+        <!-- Composition Over Inheritance Section -->
+        <section id="composition-over-inheritance" role="article">
+          <h1>🔗 Composition Over Inheritance</h1>
+          <span class="badge">composition</span>
+          <span class="badge">oop</span>
+          <span class="badge">flexibility</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Favor object composition over class inheritance to achieve code reuse and flexibility."</strong></p>
+          
+          <p>Instead of building functionality through inheritance hierarchies ("is-a" relationships), compose objects with smaller, focused behaviors ("has-a" relationships). This principle is from the Gang of Four Design Patterns book.</p>
+          
+          <h2>Key Concepts</h2>
+          <ul>
+            <li><strong>Composition:</strong> Build complex objects by combining simpler ones</li>
+            <li><strong>Delegation:</strong> Forward requests to composed objects</li>
+            <li><strong>Flexibility:</strong> Change behavior at runtime by swapping composed objects</li>
+            <li><strong>Interface-Based:</strong> Depend on abstractions, not concrete classes</li>
+          </ul>
+          
+          <h2>Visual Comparison: Inheritance vs Composition</h2>
+          <div class="mermaid">
+graph TD
+    subgraph Inheritance["INHERITANCE: Rigid Hierarchy"]
+        V["Vehicle"]
+        C["Car"]
+        EC["ElectricCar"]
+        SDEC["SelfDrivingElectricCar"]
+        
+        V --> C
+        C --> EC
+        EC --> SDEC
+    end
+    
+    subgraph Composition["COMPOSITION: Flexible Assembly"]
+        Car["Car"]
+        
+        IEngine["IEngine interface"]
+        IDrive["IDrivingSystem interface"]
+        IPower["IPowerSource interface"]
+        
+        GasEng["GasEngine"]
+        ElecEng["ElectricEngine"]
+        
+        Manual["ManualDriving"]
+        Auto["AutopilotDriving"]
+        
+        Tank["GasTank"]
+        Battery["Battery"]
+        
+        Car -->|has-a| IEngine
+        Car -->|has-a| IDrive
+        Car -->|has-a| IPower
+        
+        IEngine -.-> GasEng
+        IEngine -.-> ElecEng
+        IDrive -.-> Manual
+        IDrive -.-> Auto
+        IPower -.-> Tank
+        IPower -.-> Battery
+    end
+    
+    style Inheritance fill:#fecaca,stroke:#dc2626,stroke-width:2px
+    style Composition fill:#d1fae5,stroke:#16a34a,stroke-width:2px
+    style Car fill:#3b82f6,stroke:#2563eb,stroke-width:2px,color:#fff
+          </div>
+          
+          <h2>Problems with Inheritance</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Problem</th>
+                <th>Description</th>
+                <th>Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tight Coupling</strong></td>
+                <td>Subclass tightly bound to parent implementation</td>
+                <td>Changes to parent break subclasses</td>
+              </tr>
+              <tr>
+                <td><strong>Fragile Base Class</strong></td>
+                <td>Modifying base class can break all subclasses</td>
+                <td>Fear of making changes</td>
+              </tr>
+              <tr>
+                <td><strong>Limited Flexibility</strong></td>
+                <td>Inheritance hierarchy fixed at compile time</td>
+                <td>Can't change behavior at runtime</td>
+              </tr>
+              <tr>
+                <td><strong>Multiple Inheritance Issues</strong></td>
+                <td>Diamond problem, complexity</td>
+                <td>Most languages avoid/restrict it</td>
+              </tr>
+              <tr>
+                <td><strong>Inappropriate Relationships</strong></td>
+                <td>Using inheritance for code reuse, not "is-a"</td>
+                <td>Violates Liskov Substitution Principle</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <h2>❌ Bad Example: Inheritance Abuse</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Deep inheritance hierarchy
+public class Vehicle
+{
+    public void Start() { /* ... */ }
+    public void Stop() { /* ... */ }
+}
+
+public class Car : Vehicle
+{
+    public void Drive() { /* ... */ }
+}
+
+public class ElectricCar : Car
+{
+    public void Charge() { /* ... */ }
+}
+
+public class SelfDrivingElectricCar : ElectricCar
+{
+    public void EnableAutopilot() { /* ... */ }
+}
+
+// What if we need a self-driving gas car?
+// Or a regular electric car that's not self-driving?
+// The hierarchy becomes unwieldy!
+
+// Problems:
+// 1. Can't easily mix and match features
+// 2. Changes to Vehicle affect all subclasses
+// 3. Adding new feature combinations requires new classes
+// 4. Explosion of subclasses</code></pre>
+          
+          <h2>✅ Good Example: Composition</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Define interfaces for behaviors
+public interface IEngine
+{
+    void Start();
+    void Stop();
+}
+
+public interface IDrivingSystem
+{
+    void Drive();
+}
+
+public interface IPowerSource
+{
+    void Refuel();
+}
+
+// Concrete implementations
+public class GasEngine : IEngine
+{
+    public void Start() { /* Gas engine start */ }
+    public void Stop() { /* Gas engine stop */ }
+}
+
+public class ElectricEngine : IEngine
+{
+    public void Start() { /* Electric engine start */ }
+    public void Stop() { /* Electric engine stop */ }
+}
+
+public class ManualDriving : IDrivingSystem
+{
+    public void Drive() { /* Manual driving */ }
+}
+
+public class AutopilotDriving : IDrivingSystem
+{
+    public void Drive() { /* Autonomous driving */ }
+}
+
+public class GasTank : IPowerSource
+{
+    public void Refuel() { /* Fill gas */ }
+}
+
+public class Battery : IPowerSource
+{
+    public void Refuel() { /* Charge battery */ }
+}
+
+// Compose a car from parts
+public class Car
+{
+    private readonly IEngine engine;
+    private readonly IDrivingSystem drivingSystem;
+    private readonly IPowerSource powerSource;
+    
+    public Car(IEngine engine, IDrivingSystem drivingSystem, IPowerSource powerSource)
+    {
+        this.engine = engine;
+        this.drivingSystem = drivingSystem;
+        this.powerSource = powerSource;
+    }
+    
+    public void Start() => engine.Start();
+    public void Stop() => engine.Stop();
+    public void Drive() => drivingSystem.Drive();
+    public void Refuel() => powerSource.Refuel();
+}
+
+// Easy to create any combination!
+var regularCar = new Car(
+    new GasEngine(),
+    new ManualDriving(),
+    new GasTank());
+
+var selfDrivingElectric = new Car(
+    new ElectricEngine(),
+    new AutopilotDriving(),
+    new Battery());
+
+var selfDrivingGas = new Car(
+    new GasEngine(),
+    new AutopilotDriving(),
+    new GasTank());</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>✔ <strong>Flexibility:</strong> Mix and match behaviors at runtime</li>
+            <li>✔ <strong>Loose Coupling:</strong> Components are independent</li>
+            <li>✔ <strong>Better Encapsulation:</strong> Internal details are hidden</li>
+            <li>✔ <strong>Easier Testing:</strong> Mock composed objects easily</li>
+            <li>✔ <strong>Single Responsibility:</strong> Each component has one job</li>
+            <li>✔ <strong>Reusability:</strong> Components can be reused in different contexts</li>
+          </ul>
+          
+          <h2>When to Use Inheritance</h2>
+          <div class="callout">
+            <strong>⚠️ Inheritance is appropriate when:</strong>
+            <ul>
+              <li>There's a genuine "is-a" relationship (a Dog IS-A Animal)</li>
+              <li>You're extending functionality, not just reusing code</li>
+              <li>The Liskov Substitution Principle is satisfied</li>
+              <li>The hierarchy is shallow (1-2 levels deep)</li>
+              <li>You're designing abstract base classes or interfaces for polymorphism</li>
+            </ul>
+            <p><strong>Default to composition.</strong> Use inheritance only when it's clearly the right choice.</p>
+          </div>
+          
+          <h2>Design Patterns Using Composition</h2>
+          <ul>
+            <li><strong>Strategy Pattern:</strong> Swap algorithms at runtime</li>
+            <li><strong>Decorator Pattern:</strong> Add responsibilities dynamically</li>
+            <li><strong>Observer Pattern:</strong> Loosely coupled event handling</li>
+            <li><strong>Composite Pattern:</strong> Tree structures with uniform interface</li>
+            <li><strong>Dependency Injection:</strong> Compose dependencies from outside</li>
+          </ul>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> When designing a class, ask: "Does this class need to inherit this behavior, or can it delegate to another object?" If delegation works, prefer it. Composition gives you more flexibility and keeps your code loosely coupled.
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Use Strategy pattern instead of subclassing for varying behaviors</li>
+            <li>Compose objects with interfaces rather than extending classes</li>
+            <li>Use dependency injection to compose objects at runtime</li>
+            <li>Favor mixins/traits over deep inheritance hierarchies</li>
+            <li>Use Decorator pattern to add functionality dynamically</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Compose data transformations from small, focused functions</li>
+            <li>Use function composition instead of class hierarchies</li>
+            <li>Build pipelines by composing readers, transformers, and writers</li>
+            <li>Use configuration objects to compose pipeline behaviors</li>
+            <li>Prefer functional programming patterns over OOP hierarchies</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Compose Azure services instead of inheriting from base classes</li>
+            <li>Use middleware composition in ASP.NET Core</li>
+            <li>Build solutions by composing Azure Functions/Logic Apps</li>
+            <li>Use Azure Policy composition instead of hierarchical definitions</li>
+          </ul>
+        </section>
+        
+        <!-- Law of Demeter Section -->
+        <section id="law-of-demeter" role="article">
+          <h1>👥 Law of Demeter (LoD)</h1>
+          <span class="badge">lod</span>
+          <span class="badge">coupling</span>
+          <span class="badge">encapsulation</span>
+          
+          <h2>Definition</h2>
+          <p><strong>"Only talk to your immediate friends, not to strangers."</strong></p>
+          
+          <p>Also known as the <strong>Principle of Least Knowledge</strong>, the Law of Demeter states that an object should only call methods on:</p>
+          <ul>
+            <li>Itself</li>
+            <li>Objects passed as parameters</li>
+            <li>Objects it creates</li>
+            <li>Its direct component objects (fields)</li>
+          </ul>
+          
+          <h2>The Rule</h2>
+          <p>A method <code>M</code> of an object <code>O</code> should only call methods of:</p>
+          <ol>
+            <li><code>O</code> itself</li>
+            <li>Parameters of <code>M</code></li>
+            <li>Objects created within <code>M</code></li>
+            <li>Direct components (fields) of <code>O</code></li>
+          </ol>
+          
+          <p><strong>Don't call methods on objects returned by other methods!</strong> This creates unnecessary coupling.</p>
+          
+          <h2>Visual Example: Train Wreck vs Clean Calls</h2>
+          <div class="mermaid">
+sequenceDiagram
+    participant OP as OrderProcessor
+    participant O as Order
+    participant C as Customer
+    participant A as Address
+    
+    Note over OP,A: BAD: Train Wreck Multiple Hops
+    OP->>O: getCustomer()
+    O-->>OP: customer
+    OP->>C: getAddress()
+    C-->>OP: address
+    OP->>A: getStreet()
+    A-->>OP: street
+    Note over OP: Coupled to all objects
+    
+    Note over OP,A: GOOD: Talk to Friends Only
+    OP->>O: getShippingAddress()
+    Note over O: Encapsulates navigation
+    O->>C: getShippingAddress()
+    C->>A: getFormattedAddress()
+    A-->>C: formatted
+    C-->>O: formatted
+    O-->>OP: shippingAddress
+    Note over OP: Only coupled to Order
+          </div>
+          
+          <h2>❌ Bad Example: Violating Law of Demeter</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Method chaining through multiple objects ("Train Wreck")
+public class OrderProcessor
+{
+    public void ProcessOrder(Order order)
+    {
+        // Violates LoD: Reaching through multiple objects
+        var street = order.GetCustomer().GetAddress().GetStreet();
+        var city = order.GetCustomer().GetAddress().GetCity();
+        var zipCode = order.GetCustomer().GetAddress().GetZipCode();
+        
+        // More violations
+        var discountRate = order.GetCustomer().GetMembership().GetTier().GetDiscountRate();
+        
+        // Problems:
+        // 1. Coupled to internal structure of Order, Customer, Address, Membership, Tier
+        // 2. If any intermediate object changes, this code breaks
+        // 3. Hard to test - need to create entire object graph
+        // 4. Violates encapsulation
+    }
+}</code></pre>
+          
+          <p><em>This creates a chain of dependencies. Changes to Address, Customer, Membership, or Tier classes all impact OrderProcessor.</em></p>
+          
+          <h2>✅ Good Example: Following Law of Demeter</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">// Encapsulate behavior, don't expose structure
+public class Order
+{
+    private Customer customer;
+    
+    // Provide direct methods instead of exposing internal objects
+    public string GetShippingAddress()
+    {
+        return customer.GetShippingAddress();
+    }
+    
+    public decimal GetApplicableDiscount()
+    {
+        return customer.GetDiscountRate();
+    }
+}
+
+public class Customer
+{
+    private Address address;
+    private Membership membership;
+    
+    // Encapsulate address details
+    public string GetShippingAddress()
+    {
+        return address.GetFormattedAddress();
+    }
+    
+    // Encapsulate membership benefits
+    public decimal GetDiscountRate()
+    {
+        return membership.GetDiscountRate();
+    }
+}
+
+public class Address
+{
+    private string street;
+    private string city;
+    private string zipCode;
+    
+    public string GetFormattedAddress()
+    {
+        return $"{street}, {city}, {zipCode}";
+    }
+}
+
+// Now OrderProcessor talks only to Order
+public class OrderProcessor
+{
+    public void ProcessOrder(Order order)
+    {
+        // Clean - only talks to immediate friend (order)
+        var shippingAddress = order.GetShippingAddress();
+        var discount = order.GetApplicableDiscount();
+        
+        // OrderProcessor is decoupled from Customer, Address, Membership
+    }
+}</code></pre>
+          
+          <h2>Benefits</h2>
+          <ul>
+            <li>✔ <strong>Reduced Coupling:</strong> Classes are less dependent on each other's internal structure</li>
+            <li>✔ <strong>Better Encapsulation:</strong> Internal details remain hidden</li>
+            <li>✔ <strong>Easier Maintenance:</strong> Changes are localized</li>
+            <li>✔ <strong>Improved Testability:</strong> Fewer dependencies to mock</li>
+            <li>✔ <strong>More Flexible:</strong> Can change internal implementations without affecting clients</li>
+          </ul>
+          
+          <h2>Spotting Violations</h2>
+          <div class="callout">
+            <strong>🚨 Warning Signs:</strong>
+            <p><strong>Train Wrecks</strong> - Multiple dots/arrows in a single statement:</p>
+            <pre><code>// Violations
+obj.getA().getB().getC().doSomething();
+customer.getAddress().getZipCode();
+order.getCustomer().getMembership().getRenewalDate();</code></pre>
+            
+            <p>If you see this pattern, you're probably violating the Law of Demeter.</p>
+          </div>
+          
+          <h2>Exceptions and Practical Considerations</h2>
+          <div class="callout">
+            <strong>⚖️ Pragmatic Exceptions:</strong>
+            <ul>
+              <li><strong>Fluent Interfaces:</strong> Builder pattern with method chaining is acceptable
+                <pre><code>builder.SetName("John").SetAge(30).Build();</code></pre>
+              </li>
+              <li><strong>Data Structures:</strong> Simple DTOs without behavior can expose properties
+                <pre><code>var city = addressDTO.City; // OK for pure data</code></pre>
+              </li>
+              <li><strong>Framework APIs:</strong> Some frameworks require method chaining
+                <pre><code>query.Where(x => x.Active).OrderBy(x => x.Name).ToList();</code></pre>
+              </li>
+            </ul>
+            <p>The key distinction: Are you navigating through behavior (bad) or through data (acceptable)?</p>
+          </div>
+          
+          <h2>Refactoring Violations</h2>
+          <h3>Pattern: Tell, Don't Ask</h3>
+          <p>Instead of asking for data and acting on it, tell objects what to do:</p>
+          
+          <h4>❌ Ask:</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">if (customer.GetMembership().IsActive())
+{
+    customer.GetMembership().Renew();
+}</code></pre>
+          
+          <h4>✅ Tell:</h4>
+          <pre class="syntax-highlighted" data-language="csharp"><code class="language-csharp">customer.RenewMembershipIfActive();</code></pre>
+          
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> When you find yourself chaining method calls, stop and ask: "Should this object provide a method that does what I need?" Refactor to add that method. This keeps coupling low and encapsulation high. Remember: "Talk to friends, not to strangers!"
+          </div>
+          
+          <h2>Practical Guidance</h2>
+          
+          <h3>General Programming</h3>
+          <ul>
+            <li>Avoid method chains like obj.getA().getB().getC().doSomething()</li>
+            <li>Provide wrapper methods that encapsulate multi-step operations</li>
+            <li>Use Facade pattern to hide complex object graphs</li>
+            <li>Apply "Tell, Don't Ask" - tell objects what to do, don't query their state</li>
+            <li>Limit method calls to: this, parameters, created objects, direct fields</li>
+          </ul>
+          
+          <h3>Databricks / Data Engineering</h3>
+          <ul>
+            <li>Encapsulate DataFrame column access in wrapper functions</li>
+            <li>Don't chain through nested configuration objects</li>
+            <li>Provide high-level methods that hide internal data structures</li>
+            <li>Use configuration objects with flat interfaces</li>
+            <li>Avoid accessing nested catalog.schema.table.column chains</li>
+          </ul>
+          
+          <h3>Cloud Development (Azure/AWS)</h3>
+          <ul>
+            <li>Don't chain through nested configuration: app.settings.section.subsection.value</li>
+            <li>Provide service methods that encapsulate Azure SDK calls</li>
+            <li>Use strongly-typed configuration objects with flat properties</li>
+            <li>Hide complex Azure client interactions behind simple interfaces</li>
+          </ul>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" role="article">
+          <h1>📚 Resources</h1>
+          <span class="badge">docs</span>
+          <span class="badge">community</span>
+          <span class="badge">links</span>
+          
+          <h2>Essential Books</h2>
+          <ul>
+            <li><strong>"Clean Code" by Robert C. Martin</strong> - Comprehensive guide to writing clean, maintainable code</li>
+            <li><strong>"The Pragmatic Programmer" by Andy Hunt & Dave Thomas</strong> - Source of DRY principle and many others</li>
+            <li><strong>"Design Patterns" by Gang of Four</strong> - Classic patterns that embody these principles</li>
+            <li><strong>"Refactoring" by Martin Fowler</strong> - How to improve code design incrementally</li>
+            <li><strong>"Domain-Driven Design" by Eric Evans</strong> - Strategic design principles for complex systems</li>
+          </ul>
+          
+          <h2>Online Resources</h2>
+          <ul>
+            <li><a href="https://www.digitalocean.com/community/conceptual_articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design" target="_blank" rel="noopener">SOLID Principles Explained - DigitalOcean</a></li>
+            <li><a href="https://martinfowler.com/" target="_blank" rel="noopener">Martin Fowler's Blog</a> - Software design insights</li>
+            <li><a href="https://refactoring.guru/design-patterns" target="_blank" rel="noopener">Refactoring Guru</a> - Design patterns and principles</li>
+            <li><a href="https://sourcemaking.com/" target="_blank" rel="noopener">SourceMaking</a> - Design patterns and anti-patterns</li>
+            <li><a href="https://www.principles-wiki.net/" target="_blank" rel="noopener">Principles Wiki</a> - Comprehensive list of software principles</li>
+          </ul>
+          
+          <h2>Video Courses & Talks</h2>
+          <ul>
+            <li><strong>Robert C. Martin (Uncle Bob)</strong> - Clean Code and SOLID principles lectures on YouTube</li>
+            <li><strong>Pluralsight / LinkedIn Learning</strong> - SOLID Principles courses</li>
+            <li><strong>"The Art of Code" by Dylan Beattie</strong> - Entertaining talk on code quality</li>
+          </ul>
+          
+          <h2>Practice & Application</h2>
+          <div class="callout">
+            <strong>💪 Level Up Your Skills:</strong>
+            <ul>
+              <li><strong>Code Reviews:</strong> Look for violations of these principles in your team's code</li>
+              <li><strong>Refactoring Exercises:</strong> Take existing code and apply these principles</li>
+              <li><strong>Kata Practice:</strong> Sites like Exercism.io or Codewars for focused practice</li>
+              <li><strong>Open Source:</strong> Study well-designed open-source projects</li>
+              <li><strong>Design Discussions:</strong> Debate design decisions with your team</li>
+            </ul>
+          </div>
+          
+          <h2>Key Takeaways</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Principle</th>
+                <th>Remember This</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>SOLID</strong></td>
+                <td>Foundation of object-oriented design - apply all five together</td>
+              </tr>
+              <tr>
+                <td><strong>DRY</strong></td>
+                <td>Single source of truth - but avoid premature abstraction</td>
+              </tr>
+              <tr>
+                <td><strong>KISS</strong></td>
+                <td>Simplicity wins - clarity over cleverness</td>
+              </tr>
+              <tr>
+                <td><strong>YAGNI</strong></td>
+                <td>Build what you need now - not what you might need later</td>
+              </tr>
+              <tr>
+                <td><strong>Separation of Concerns</strong></td>
+                <td>Each module handles one distinct responsibility - organize by concern</td>
+              </tr>
+              <tr>
+                <td><strong>Composition Over Inheritance</strong></td>
+                <td>Favor "has-a" over "is-a" - compose behaviors for flexibility</td>
+              </tr>
+              <tr>
+                <td><strong>Law of Demeter</strong></td>
+                <td>Talk to friends, not strangers - avoid chaining through objects</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="callout">
+            <strong>🎯 Final Thoughts:</strong>
+            <p>Design principles are guidelines, not rigid rules. Use judgment to apply them appropriately for your context. They work best together - SOLID provides structure, DRY eliminates duplication, KISS keeps it understandable, YAGNI keeps it lean, Separation of Concerns organizes your architecture, Composition gives you flexibility, and Law of Demeter keeps coupling low.</p>
+            <p><em>"Any fool can write code that a computer can understand. Good programmers write code that humans can understand." - Martin Fowler</em></p>
+          </div>
+
+          <hr />
+          <div class="document-footer">
+            <p>
+              <strong>Last Updated:</strong> January 2026 | 
+              <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+            </p>
+          </div>
+        </section>
+
+       
+        </div>
+      </main>
+    </div>
+    
+    <nav class="controls" role="navigation" aria-label="Pagination">
+      <div class="btn-group" role="group">
+        <button class="btn btn-outline-info btn-sm" id="prevBtn" title="Previous" aria-label="Previous concept">&nbsp;&lt;&nbsp;</button>
+        <button class="btn btn-outline-info btn-sm" id="nextBtn" title="Next" aria-label="Next concept">&nbsp;&gt;&nbsp;</button>
+      </div>
+    </nav>
+  </div>  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarLabel">Contents</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="list-group list-group-flush w-100" id="tocMobile"></ul>
+    </div>
+  </div>
+
+  <script>
+    // ---- Mermaid Initialization ----
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.mermaid) {
+        window.mermaid.contentLoaded();
+      }
+    });
+
+    // ---- Configuration ----
+    const sectionConfig = [
+      { id: "overview", title: "📖 Overview", tags: ["intro", "overview", "basics"] },
+      { id: "solid-principles", title: "🧱 SOLID Principles", tags: ["solid", "architecture", "oop"] },
+      { id: "single-responsibility", title: "SRP - Single Responsibility Principle", tags: ["solid", "srp", "responsibility"] },
+      { id: "open-closed", title: "OCP - Open/Closed Principle", tags: ["solid", "ocp", "extension"] },
+      { id: "liskov-substitution", title: "LSP - Liskov Substitution Principle", tags: ["solid", "lsp", "polymorphism"] },
+      { id: "interface-segregation", title: "ISP - Interface Segregation Principle", tags: ["solid", "isp", "interfaces"] },
+      { id: "dependency-inversion", title: "DIP - Dependency Inversion Principle", tags: ["solid", "dip", "abstraction"] },
+      { id: "dry-principle", title: "💧 DRY - Don't Repeat Yourself", tags: ["dry", "reusability", "maintenance"] },
+      { id: "kiss-principle", title: "🎯 KISS - Keep It Simple, Stupid", tags: ["kiss", "simplicity", "clarity"] },
+      { id: "yagni-principle", title: "🚫 YAGNI - You Aren't Gonna Need It", tags: ["yagni", "agile", "minimalism"] },
+      { id: "separation-of-concerns", title: "🧩 Separation of Concerns (SoC)", tags: ["soc", "architecture", "modularity"] },
+      { id: "composition-over-inheritance", title: "🔗 Composition Over Inheritance", tags: ["composition", "oop", "flexibility"] },
+      { id: "law-of-demeter", title: "👥 Law of Demeter (LoD)", tags: ["lod", "coupling", "encapsulation"] },
+      { id: "resources", title: "📚 Resources", tags: ["docs", "community", "links"] }
+    ];
+
+    // ---- State & rendering ----
+    const state = {
+      index: 0,
+      filtered: sectionConfig.map((_, i) => i), // indices
+    };
+
+    const els = {
+      toc: document.getElementById('toc'),
+      tocMobile: document.getElementById('tocMobile'),
+      prev: document.getElementById('prevBtn'),
+      next: document.getElementById('nextBtn'),
+      toggleSidebar: document.getElementById('toggleSidebar'),
+      themeToggle: document.getElementById('themeToggle'),
+      main: document.getElementById('main'),
+      sidebar: document.querySelector('nav.sidebar'),
+      sidebarOffcanvas: document.getElementById('sidebarOffcanvas')
+    };
+
+    function buildTOC(){
+      // Clear both TOC lists
+      els.toc.innerHTML = '';
+      els.tocMobile.innerHTML = '';
+      
+      state.filtered.forEach((idx) => {
+        const s = sectionConfig[idx];
+        
+        // Check if this is a sub-item (SOLID principles)
+        const isSubItem = ['single-responsibility', 'open-closed', 'liskov-substitution', 'interface-segregation', 'dependency-inversion'].includes(s.id);
+        
+        // Desktop sidebar
+        const liDesktop = document.createElement('li');
+        liDesktop.className = isSubItem ? 'list-group-sub-item' : 'list-group-item';
+        const aDesktop = document.createElement('a');
+        aDesktop.href = `#${s.id}`;
+        aDesktop.textContent = s.title;
+        aDesktop.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liDesktop.appendChild(aDesktop);
+        els.toc.appendChild(liDesktop);
+        
+        // Mobile offcanvas
+        const liMobile = document.createElement('li');
+        liMobile.className = isSubItem ? 'list-group-sub-item' : 'list-group-item';
+        const aMobile = document.createElement('a');
+        aMobile.href = `#${s.id}`;
+        aMobile.textContent = s.title;
+        aMobile.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liMobile.appendChild(aMobile);
+        els.tocMobile.appendChild(liMobile);
+      });
+      highlightActiveTOC();
+    }
+
+    function setActiveByIndex(i){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      const id = ids[i];
+      const active = document.getElementById(id);
+      if (active){
+        active.classList.add('active');
+        active.setAttribute('tabindex', '-1');
+        active.focus({preventScroll:true});
+      }
+      updateControls();
+      highlightActiveTOC();
+      updateURLHash(id);
+    }
+
+    function updateControls(){
+      const count = state.filtered.length;
+      els.prev.disabled = state.index <= 0;
+      els.next.disabled = state.index >= count - 1;
+    }
+
+    function filterTOC(query){
+      const q = query.trim().toLowerCase();
+      state.filtered = sectionConfig
+        .map((s, i) => ({s, i}))
+        .filter(({s}) => s.title.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q)))
+        .map(({i}) => i);
+
+      state.index = Math.min(state.index, Math.max(0, state.filtered.length - 1));
+      buildTOC();
+      setActiveByIndex(state.index);
+    }
+
+    function navigate(delta){
+      const count = state.filtered.length;
+      const nextIndex = Math.min(Math.max(state.index + delta, 0), count - 1);
+      if (nextIndex !== state.index){
+        state.index = nextIndex;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      }
+    }
+
+    function navigateToId(id){
+      const idxInFiltered = state.filtered.findIndex(fi => sectionConfig[fi].id === id);
+      if (idxInFiltered !== -1){
+        state.index = idxInFiltered;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      } else {
+        state.filtered = sectionConfig.map((_, i) => i);
+        buildTOC();
+        navigateToId(id);
+      }
+    }
+
+    function updateURLHash(id){
+      const url = new URL(window.location);
+      url.hash = id;
+      history.replaceState(null, '', url);
+    }
+
+    function highlightActiveTOC(){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      const activeId = ids[state.index];
+      // Highlight desktop sidebar
+      els.toc.querySelectorAll('a').forEach(a => {
+        const isActive = a.getAttribute('href') === `#${activeId}`;
+        a.classList.toggle('active', isActive);
+        // Also toggle active on parent li for sub-items
+        if (a.parentElement.classList.contains('list-group-sub-item')) {
+          a.parentElement.classList.toggle('active', isActive);
+        }
+      });
+      // Highlight mobile offcanvas
+      els.tocMobile.querySelectorAll('a').forEach(a => {
+        const isActive = a.getAttribute('href') === `#${activeId}`;
+        a.classList.toggle('active', isActive);
+        // Also toggle active on parent li for sub-items
+        if (a.parentElement.classList.contains('list-group-sub-item')) {
+          a.parentElement.classList.toggle('active', isActive);
+        }
+      });
+    }
+
+    function openSidebar(){
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById('sidebarOffcanvas'));
+      offcanvas.show();
+    }
+    function closeSidebar(){
+      const offcanvasElement = document.getElementById('sidebarOffcanvas');
+      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if(offcanvas) offcanvas.hide();
+    }
+
+    // ---- Events ----
+    els.prev.addEventListener('click', () => navigate(-1));
+    els.next.addEventListener('click', () => navigate(1));
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+      else if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Deep linking on load/hash change
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#','');
+      if (id) navigateToId(id);
+    });
+
+    // Sidebar toggle (mobile)
+    els.toggleSidebar.addEventListener('click', () => {
+      openSidebar();
+    });
+
+    // Restore theme
+    (function(){
+      try {
+        const saved = localStorage.getItem('concepts-theme');
+        if (saved) { 
+          document.documentElement.setAttribute('data-theme', saved);
+          els.themeToggle.textContent = saved === 'light' ? '🌗' : '🌙';
+        }
+      } catch {}
+    })();
+
+    // Initial render
+    buildTOC();
+    
+    // Navigate to hash if present, otherwise show first section
+    const initialId = location.hash.replace('#','');
+    if (initialId){ 
+    navigateToId(initialId); 
+    } else {
+    setActiveByIndex(0);
+    // Scroll content to top on initial load
+    const contentEl = document.querySelector('.content');
+    if (contentEl) contentEl.scrollTop = 0;
+    }
+
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

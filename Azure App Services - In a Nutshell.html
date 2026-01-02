@@ -1,0 +1,2890 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Azure App Services - In a Nutshell</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cdefs%3E%3CradialGradient id='e' cx='13428.81' cy='3518.86' r='56.67' gradientTransform='translate(-2005.33 -518.83) scale(0.15)'%3E%3Cstop offset='0.18' stop-color='%235ea0ef'/%3E%3Cstop offset='1' stop-color='%230078d4'/%3E%3C/radialGradient%3E%3ClinearGradient id='b' x1='4.4' y1='11.48' x2='4.37' y2='7.53'%3E%3Cstop offset='0' stop-color='%23ccc'/%3E%3Cstop offset='1' stop-color='%23fcfcfc'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' x1='10.13' y1='15.45' x2='10.13' y2='11.9'%3E%3Cstop offset='0' stop-color='%23ccc'/%3E%3Cstop offset='1' stop-color='%23fcfcfc'/%3E%3C/linearGradient%3E%3ClinearGradient id='d' x1='14.18' y1='11.15' x2='14.18' y2='7.38'%3E%3Cstop offset='0' stop-color='%23ccc'/%3E%3Cstop offset='1' stop-color='%23fcfcfc'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M14.21,15.72A8.5,8.5,0,0,1,3.79,2.28l.09-.06a8.5,8.5,0,0,1,10.33,13.5' fill='url(%23e)'/%3E%3Cpath d='M6.69,7.23A13,13,0,0,1,15.6,3.65a8.47,8.47,0,0,0-1.49-1.44,14.34,14.34,0,0,0-4.69,1.1A12.54,12.54,0,0,0,5.34,6.13,2.76,2.76,0,0,1,6.69,7.23Z' fill='%23fff' opacity='0.6'/%3E%3Cpath d='M2.48,10.65a17.86,17.86,0,0,0-.83,2.62,7.82,7.82,0,0,0,.62.92c.18.23.35.44.55.65A17.94,17.94,0,0,1,3.9,11.37,2.76,2.76,0,0,1,2.48,10.65Z' fill='%23fff' opacity='0.6'/%3E%3Cpath d='M3.46,6.11a12,12,0,0,1-.69-2.94,8.15,8.15,0,0,0-1.1,1.45A12.69,12.69,0,0,0,2.24,7,2.69,2.69,0,0,1,3.46,6.11Z' fill='%23f2f2f2' opacity='0.55'/%3E%3Ccircle cx='4.38' cy='8.68' r='2.73' fill='url(%23b)'/%3E%3Cpath d='M8.36,13.67A1.77,1.77,0,0,1,8.9,12.4a11.88,11.88,0,0,1-2.53-1.86,2.74,2.74,0,0,1-1.49.83,13.1,13.1,0,0,0,1.45,1.28A12.12,12.12,0,0,0,8.38,13.9,1.79,1.79,0,0,1,8.36,13.67Z' fill='%23f2f2f2' opacity='0.55'/%3E%3Cpath d='M14.66,13.88a12,12,0,0,1-2.76-.32.41.41,0,0,1,0,.11,1.75,1.75,0,0,1-.51,1.24,13.69,13.69,0,0,0,3.42.24A8.21,8.21,0,0,0,16,13.81,11.5,11.5,0,0,1,14.66,13.88Z' fill='%23f2f2f2' opacity='0.55'/%3E%3Ccircle cx='10.13' cy='13.67' r='1.78' fill='url(%23c)'/%3E%3Cpath d='M12.32,8.93a1.83,1.83,0,0,1,.61-1A25.5,25.5,0,0,1,8.47,3.79a16.91,16.91,0,0,1-2-2.92,7.64,7.64,0,0,0-1.09.42A18.14,18.14,0,0,0,7.53,4.47,26.44,26.44,0,0,0,12.32,8.93Z' fill='%23f2f2f2' opacity='0.7'/%3E%3Ccircle cx='14.18' cy='9.27' r='1.89' fill='url(%23d)'/%3E%3Cpath d='M17.35,10.54,17,10.37l0,0-.3-.16-.06,0L16.38,10l-.07,0L16,9.8a1.76,1.76,0,0,1-.64.92c.12.08.25.15.38.22l.08.05.35.19,0,0,.86.45h0a8.63,8.63,0,0,0,.29-1.11Z' fill='%23f2f2f2' opacity='0.55'/%3E%3C/svg%3E" />
+  <meta name="description" content="A comprehensive guide to Azure App Services." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --border: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-fg: #0f172a;
+      --code-bg: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
+      --focus: #10b981;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+      --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    
+    /* Bootstrap Gradient Utility Classes */
+    .bg-gradient-blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; }
+    .bg-gradient-green { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important; }
+    .bg-gradient-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; }
+    .bg-gradient-pink { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important; }
+    .bg-gradient-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%) !important; }
+    .bg-gradient-teal { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important; }
+    .bg-gradient-blue-dark { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-gradient-gray { background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important; }
+    .bg-gradient-purple-dark { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important; }
+    .bg-gradient-teal-dark { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important; }
+    .bg-gradient-green-dark { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; }
+    .bg-gradient-green-light { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; }
+    .bg-gradient-blue-sky { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; }
+    .bg-gradient-red-dark { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+    .bg-gradient-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; }
+    .bg-gradient-green-medium { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important; }
+    .bg-gradient-violet { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important; }
+    .bg-gradient-lime { background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%) !important; }
+    .bg-gradient-sky { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; }
+    
+    /* Apply theme colors to Bootstrap elements */
+    body { background-color: var(--bg); color: var(--fg); overflow: hidden; }
+    .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+    .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+    .navbar-toggler-icon { 
+      filter: invert(1);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn-outline-secondary { border-color: var(--border) !important; color: var(--fg) !important; }
+    .btn-outline-secondary:hover { background-color: var(--accent-light) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+    
+    /* Sidebar - Modern Design */
+    nav.sidebar { 
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%); 
+      border-right: 1px solid rgba(0, 0, 0, 0.05) !important;  
+      overflow-y: auto; 
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      padding-top: 0;
+    }
+    
+    .menu-header {  
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1) 100%);
+      font-weight: bold; 
+      padding: 1.25rem 1.25rem; 
+      letter-spacing: 0px; 
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-bottom: 2px solid #a5aab3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: #0c346c;
+      text-shadow: none;
+      margin: 0;
+      text-transform: none;
+    }
+    .menu-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    .menu-header:hover::before {
+      left: 100%;
+    }
+    .menu-header::after {
+      content: '📋';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      opacity: 0.9;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+    
+    .toc { 
+      list-style: none; 
+      padding: 0rem 0; 
+      margin: 0; 
+      background: transparent;
+    }
+    .toc li { 
+      margin: 0; 
+    }
+    
+    /* Section grouping */
+    .toc li[data-group="overview"] { margin-bottom: 0.75rem; }
+    .toc li[data-group="solid"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(59, 130, 246, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="other-principles"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(16, 185, 129, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="resources"] { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(100, 116, 139, 0.15);
+      padding-top: 1rem;
+    }
+    
+    .list-group-item { 
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0; 
+      margin: 0.25rem 0.75rem; 
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+    }
+    .list-group-item a { 
+      color: #1f2937; 
+      text-decoration: none; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 0.4rem; 
+      border-left: 3px solid transparent; 
+      padding: 0.85rem 1.25rem; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .list-group-item a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+    }
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::before {
+      transform: scaleY(1);
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Sub-items tree connectors */
+    .list-group-sub-item a::before { 
+      content: '├─';
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      color: #6b7280;
+      z-index: 1;
+      position: relative;
+    }
+    
+    /* Sub-items styling - similar to main items but smaller and indented */
+    .list-group-sub-item {
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0px; 
+      margin: 0.2rem 0.75rem 0.2rem 1.5rem;
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+      position: relative;
+      list-style-type: none;
+    }
+    .list-group-sub-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+      z-index: 1;
+    }
+    .list-group-sub-item a {
+      color: #1f2937; 
+      text-decoration: none; 
+      display: block;
+      border-left: 3px solid transparent; 
+      padding: 0.65rem 1rem 0.65rem 2.00rem;
+      transition: all 0.2s ease; 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Sub-items hover and active states - same as main items */
+    .list-group-sub-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-sub-item:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-sub-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-sub-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    
+    .list-group-sub-item.active::before {
+      transform: scaleY(1);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-sub-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-sub-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-sub-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Badge styling */
+    .badge { font-size: 0.8rem; padding: 0.15rem 0.4rem; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; border-radius: 0.25rem; font-style: normal; line-height: 1.2; opacity: 0.9; }
+    .badge { background: var(--accent); color: white; border: none; font-size: 0.6rem; padding: 0.25rem 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 0.5rem; margin-right: 0.35rem; }
+    .list-group-item a:hover .badge { opacity: 1; background: var(--accent); color: white; }
+    .list-group-item a.active .badge { background: rgba(255, 255, 255, 0.3); color: white; border-color: rgba(255, 255, 255, 0.6); font-weight: 600; opacity: 1; }
+        
+    /* Content */
+    .content { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+    section { display: none !important; margin-bottom: 2rem; }
+    section.active { display: block !important; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0 0.25rem 0; letter-spacing: -0.5px; color: var(--fg); display: block; border: none; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: var(--fg); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 1rem 0 0.5rem 0; }
+    h4 { font-size: 0.8rem; color: var(--fg); font-weight: 600; margin: 0.75rem 0 0.4rem 0; }
+    p { margin: 1rem 0; line-height: 1.65; color: var(--fg); }
+    ul, ol { margin: 1rem 0; padding-left: 2rem; }
+    li { margin: 0.5rem 0; color: var(--fg); }
+    
+    code { background: var(--code-bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; font-size: 0.9em; color: var(--accent); border-radius: 0.5rem; }
+    pre { background: var(--code-bg); border: 0px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow: auto; box-shadow: var(--shadow-sm); margin: 1rem 0; }
+    pre code { padding: 0; background: transparent; border: none; color: var(--fg); }
+    
+    .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0.5rem; box-shadow: var(--shadow-sm); font-weight: 500; color: var(--fg); }
+    
+    /* Table styling */
+    .table { color: var(--fg); }
+    .table thead th { background: var(--accent-light); color: var(--accent); border-color: var(--border); font-weight: 600; }
+    .table tbody td { border-color: var(--border); }
+    .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.02); }
+    .table-striped tbody tr:hover { background-color: var(--accent-light); }
+    
+    /* Controls/Pagination */
+    .controls { opacity: 0.5; position: fixed; bottom: 0.25rem; right: 1rem; width: auto; z-index: 1000; background: transparent; display: flex; align-items: center; justify-content: center; gap: 0rem; padding: 0; min-height: 40px; }
+    @media (max-width: 991px) {
+      .controls { bottom: 0.25rem; right: 1rem; }
+      .menu-header { color: var(--focus); }
+    }
+    .controls:hover { opacity: 1; }
+    
+    .page-indicator { color: var(--accent); font-weight: 600; font-size: 0.875rem; }
+    .btn-group .btn { margin: 0px 2px; padding: 0.2rem 0.5rem; background: var(--accent); color: white; border-color: var(--accent); font-size: 1rem; font-weight: bold; }
+    .btn-group .btn:hover { background: var(--accent); }
+    .btn-group .btn + .btn { margin-left: -1px; }
+    
+    /* Mobile/Offcanvas */
+    .offcanvas { background: var(--bg) !important; }
+    .offcanvas-header { border-bottom: 1px solid var(--border); }
+    .offcanvas-title { color: var(--fg); font-weight: 600; }
+    .btn-close { color: var(--fg); }
+    
+    /* Scrollbar */
+    nav.sidebar::-webkit-scrollbar { width: 6px; }
+    nav.sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+    nav.sidebar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 0px; }
+    nav.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+    
+    /* Mermaid Diagrams */
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      position: relative;
+    }
+    .mermaid.rendered {
+      min-height: 0;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      min-height: 300px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+    .mermaid.zoomed {
+      overflow: auto;
+      cursor: grab;
+    }
+    .mermaid.zoomed:active {
+      cursor: grabbing;
+    }
+    .mermaid svg text {
+      font-size: 14px !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+    
+    /* Mermaid title styling */
+    .mermaid svg text, .diagram-modal-content svg text {
+      font-size: 1rem !important;
+      font-weight: bold !important;
+      fill: var(--fg) !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+
+    .mermaid svg *
+    {
+        color: #333;
+    }
+
+    .mermaid[data-processed="true"] {
+      min-height: 0;
+    }
+    
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+    
+    /* Zoom controls */
+    .zoom-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .mermaid:hover .zoom-controls {
+      opacity: 1;
+    }
+    .zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+
+    /* Modal for diagram zoom */
+    .diagram-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .diagram-modal.active {
+      display: flex;
+    }
+    .diagram-modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 0;
+      padding: 3rem 3rem 3rem 3rem;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .diagram-modal-content svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .modal-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+      z-index: 10000;
+    }
+    .modal-close:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+    .modal-zoom-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10000;
+      padding: 0rem;
+      border-radius: 0.4rem;
+    }
+    .modal-zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .modal-zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+    
+    /* Utilities */
+    .search { height: 0; overflow: hidden; padding: 0 !important; }
+    .search input { display: none; }
+    .min-vh-100 { min-height: 100vh; }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: static; width: auto; height: auto; padding: 0.4rem 0.6rem; background: var(--accent); color: white; border-radius: 0.4rem; }
+    
+    /* Override Bootstrap defaults for theme */
+    a { color: var(--accent); }
+    a:hover { color: var(--accent); text-decoration: underline; }
+    
+    /* Responsive - keep sidebar visible on desktop, offcanvas on mobile */
+    @media (max-width: 991px) {
+      nav.sidebar { display: none; }
+      #main { width: 100%; }
+      .row { --bs-gutter-x: 0; }
+    }
+    
+    /* Layout - prevent unnecessary scrolling */
+    html, body { height: 100%; margin: 0; }
+    #appContainer { display: flex; flex-direction: column; height: calc(100vh - 50px); }
+    #mainRow { flex: 1; overflow: hidden; display: flex; }
+    nav.sidebar { overflow-y: auto; max-height: 100%; position: relative; padding-bottom: 0px; }
+    #main { overflow: hidden; display: flex; flex-direction: column; height: 100%; -webkit-tap-highlight-color: transparent; outline: none; border: none; }
+    #main:focus { outline: none; }
+    .content { overflow-y: auto; flex: 1; width: 100%; min-height: 0; padding: 0rem 1.5rem 0rem 1.5rem; }
+    
+    /* Contact Info */
+    .contact-info {
+      font-weight: 400 !important;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      margin: 0;
+      opacity: 0.5;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .contact-info:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+    @media (max-width: 991px) {
+      .navbar-brand {
+        font-size: 1rem !important;
+        flex: 1;
+      }
+      .contact-info {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 0.9rem !important;
+      }
+      .contact-info {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+
+    .list-style-none {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* JSON Syntax Highlighting */
+    pre code.language-json {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-json .json-key {
+      color: #0451a5;
+      font-weight: 500;
+    }
+
+    pre code.language-json .json-string {
+      color: #a31515;
+    }
+
+    pre code.language-json .json-number {
+      color: #098658;
+    }
+
+    pre code.language-json .json-boolean {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-null {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-punctuation {
+      color: #333;
+    }
+
+    /* SQL Syntax Highlighting */
+    pre code.language-sql {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-sql .sql-keyword {
+      color: #0000ff;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    pre code.language-sql .sql-string {
+      color: #a31515;
+    }
+
+    pre code.language-sql .sql-number {
+      color: #098658;
+    }
+
+    pre code.language-sql .sql-comment {
+      color: #008000;
+      font-style: italic;
+    }
+
+    pre code.language-sql .sql-function {
+      color: #795e26;
+      font-weight: 500;
+    }
+
+    pre code.language-sql .sql-operator {
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Language Label for Code Blocks */
+    pre[data-language]::before {
+      content: attr(data-language);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.75em;
+      color: #6a737d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Enhanced pre/code styling for syntax highlighted blocks */
+    pre.syntax-highlighted {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+      margin: 1rem 0;
+    }
+
+    pre.syntax-highlighted code {
+      background: transparent;
+      padding: 0;
+      border: none;
+      color: var(--fg);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    ul
+    {
+        list-style-type: none;
+    }
+  /* Document Footer */
+    .document-footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .document-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    .document-footer strong {
+      color: #495057;
+    }  
+  </style>
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid with proper configuration
+    document.addEventListener('DOMContentLoaded', function() {
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'loose',
+        logLevel: 'error',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      // Render all diagrams
+      renderMermaidDiagrams();
+    });
+    
+    async function renderMermaidDiagrams() {
+      const diagrams = document.querySelectorAll('.mermaid');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.textContent.trim();
+        
+        // Store original code
+        if (!diagram.hasAttribute('data-original-code')) {
+          diagram.setAttribute('data-original-code', code);
+        }
+        
+        try {
+          const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+          diagram.innerHTML = svg;
+          diagram.setAttribute('data-processed', 'true');
+          
+          // Add zoom controls
+          addZoomControls(diagram);
+        } catch (error) {
+          console.error('Mermaid rendering error for diagram ' + i + ':', error);
+          diagram.innerHTML = '<div style="color: red; padding: 1rem; border: 2px solid red; border-radius: 0.5rem;">Error rendering diagram: ' + error.message + '</div>';
+        }
+      }
+    }
+    
+    // Add zoom controls to mermaid diagrams
+    function addZoomControls(diagram) {
+      const controls = document.createElement('div');
+      controls.className = 'zoom-controls';
+      controls.innerHTML = `
+        <button class="zoom-btn" data-action="expand" title="Expand View">⛶</button>
+      `;
+      
+      diagram.style.position = 'relative';
+      diagram.insertBefore(controls, diagram.firstChild);
+      
+      // Expand to modal
+      controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.zoom-btn');
+        if (!btn) return;
+        
+        openDiagramModal(diagram);
+      });
+    }
+
+    // Open diagram in modal
+    function openDiagramModal(diagram) {
+      // Create modal if it doesn't exist
+      let modal = document.getElementById('diagram-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'diagram-modal';
+        modal.className = 'diagram-modal';
+        modal.innerHTML = `
+          <button class="modal-close" id="modal-close">×</button>
+          <div class="diagram-modal-content" id="modal-diagram-content"></div>
+          <div class="modal-zoom-controls">
+            <button class="modal-zoom-btn" data-action="zoom-in" title="Zoom In">+</button>
+            <button class="modal-zoom-btn" data-action="zoom-out" title="Zoom Out">−</button>
+            <button class="modal-zoom-btn" data-action="reset" title="Reset Zoom">⟲</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal handlers
+        modal.querySelector('#modal-close').addEventListener('click', closeDiagramModal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeDiagramModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeDiagramModal();
+          }
+        });
+        
+        // Zoom controls in modal
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        
+        modal.querySelector('.modal-zoom-controls').addEventListener('click', (e) => {
+          const btn = e.target.closest('.modal-zoom-btn');
+          if (!btn) return;
+          
+          const action = btn.dataset.action;
+          const svg = modal.querySelector('svg');
+          if (!svg) return;
+          
+          if (action === 'zoom-in') {
+            scale = Math.min(scale + 0.1, 5);
+          } else if (action === 'zoom-out') {
+            scale = Math.max(scale - 0.1, 0.5);
+          } else if (action === 'reset') {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+          }
+          
+          svg.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+        });
+      }
+      
+      // Clone diagram content
+      const svg = diagram.querySelector('svg');
+      if (svg) {
+        const content = modal.querySelector('#modal-diagram-content');
+        content.innerHTML = '';
+        const clonedSvg = svg.cloneNode(true);
+        clonedSvg.style.transform = 'scale(1)';
+        clonedSvg.style.maxWidth = '100%';
+        clonedSvg.style.height = 'auto';
+        content.appendChild(clonedSvg);
+      }
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDiagramModal() {
+      const modal = document.getElementById('diagram-modal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Re-render on theme change
+    window.rerenderMermaid = async function() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? 'base' : 'base',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      const diagrams = document.querySelectorAll('.mermaid[data-processed="true"]');
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.getAttribute('data-original-code');
+        
+        if (code) {
+          try {
+            const { svg } = await mermaid.render('mermaid-diagram-rerender-' + i + '-' + Date.now(), code);
+            diagram.innerHTML = svg;
+          } catch (error) {
+            console.error('Mermaid re-rendering error:', error);
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top" aria-label="Top bar">
+    <div class="container-fluid d-flex align-items-center">
+      <button class="navbar-toggler me-2" id="toggleSidebar" type="button" aria-label="Toggle sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+<span class="navbar-brand mb-0 h1 me-auto"><?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" id="b70acf0a-34b4-4bdf-9024-7496043ff915" width="18.0" height="18.0" viewBox="0 0 18 18"><defs><radialGradient id="e2cf8746-c9a8-4eee-86c2-4951983c6032" cx="13428.81" cy="3518.86" r="56.67" gradientTransform="translate(-2005.33 -518.83) scale(0.15)" gradientUnits="userSpaceOnUse"><stop offset="0.18" stop-color="#5ea0ef" /><stop offset="1" stop-color="#0078d4" /></radialGradient><linearGradient id="bdd213dd-d313-473c-8ff4-0133fd3a9033" x1="4.4" y1="11.48" x2="4.37" y2="7.53" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ccc" /><stop offset="1" stop-color="#fcfcfc" /></linearGradient><linearGradient id="afcc63c5-3649-4476-a742-bcb53a569f3c" x1="10.13" y1="15.45" x2="10.13" y2="11.9" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ccc" /><stop offset="1" stop-color="#fcfcfc" /></linearGradient><linearGradient id="bd873f0b-9954-4aa5-a3df-9f4c64e8729d" x1="14.18" y1="11.15" x2="14.18" y2="7.38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ccc" /><stop offset="1" stop-color="#fcfcfc" /></linearGradient></defs><title>Icon-web-41</title><path id="ee75dd06-1aca-4f76-9d11-d05a284020ad" d="M14.21,15.72A8.5,8.5,0,0,1,3.79,2.28l.09-.06a8.5,8.5,0,0,1,10.33,13.5" fill="url(#e2cf8746-c9a8-4eee-86c2-4951983c6032)" /><path d="M6.69,7.23A13,13,0,0,1,15.6,3.65a8.47,8.47,0,0,0-1.49-1.44,14.34,14.34,0,0,0-4.69,1.1A12.54,12.54,0,0,0,5.34,6.13,2.76,2.76,0,0,1,6.69,7.23Z" fill="#fff" opacity="0.6" /><path d="M2.48,10.65a17.86,17.86,0,0,0-.83,2.62,7.82,7.82,0,0,0,.62.92c.18.23.35.44.55.65A17.94,17.94,0,0,1,3.9,11.37,2.76,2.76,0,0,1,2.48,10.65Z" fill="#fff" opacity="0.6" /><path d="M3.46,6.11a12,12,0,0,1-.69-2.94,8.15,8.15,0,0,0-1.1,1.45A12.69,12.69,0,0,0,2.24,7,2.69,2.69,0,0,1,3.46,6.11Z" fill="#f2f2f2" opacity="0.55" /><circle cx="4.38" cy="8.68" r="2.73" fill="url(#bdd213dd-d313-473c-8ff4-0133fd3a9033)" /><path d="M8.36,13.67A1.77,1.77,0,0,1,8.9,12.4a11.88,11.88,0,0,1-2.53-1.86,2.74,2.74,0,0,1-1.49.83,13.1,13.1,0,0,0,1.45,1.28A12.12,12.12,0,0,0,8.38,13.9,1.79,1.79,0,0,1,8.36,13.67Z" fill="#f2f2f2" opacity="0.55" /><path d="M14.66,13.88a12,12,0,0,1-2.76-.32.41.41,0,0,1,0,.11,1.75,1.75,0,0,1-.51,1.24,13.69,13.69,0,0,0,3.42.24A8.21,8.21,0,0,0,16,13.81,11.5,11.5,0,0,1,14.66,13.88Z" fill="#f2f2f2" opacity="0.55" /><circle cx="10.13" cy="13.67" r="1.78" fill="url(#afcc63c5-3649-4476-a742-bcb53a569f3c)" /><path d="M12.32,8.93a1.83,1.83,0,0,1,.61-1A25.5,25.5,0,0,1,8.47,3.79a16.91,16.91,0,0,1-2-2.92,7.64,7.64,0,0,0-1.09.42A18.14,18.14,0,0,0,7.53,4.47,26.44,26.44,0,0,0,12.32,8.93Z" fill="#f2f2f2" opacity="0.7" /><circle cx="14.18" cy="9.27" r="1.89" fill="url(#bd873f0b-9954-4aa5-a3df-9f4c64e8729d)" /><path d="M17.35,10.54,17,10.37l0,0-.3-.16-.06,0L16.38,10l-.07,0L16,9.8a1.76,1.76,0,0,1-.64.92c.12.08.25.15.38.22l.08.05.35.19,0,0,.86.45h0a8.63,8.63,0,0,0,.29-1.11Z" fill="#f2f2f2" opacity="0.55" /><circle cx="4.38" cy="8.68" r="2.73" fill="url(#bdd213dd-d313-473c-8ff4-0133fd3a9033)" /><circle cx="10.13" cy="13.67" r="1.78" fill="url(#afcc63c5-3649-4476-a742-bcb53a569f3c)" /></svg> 
+    Azure App Services - In a Nutshell</span>
+<span class="contact-info mb-0">🤝 Curated by Murthy Vepa</span>
+    </div>      
+  </nav>
+
+  <div id="appContainer">
+    <div class="row g-0" id="mainRow">
+      <nav class="col-lg-3 border-end sidebar" id="sidebar" aria-label="Table of contents">
+        <div class="menu-header py-2">Contents</div>
+        <ul class="list-group list-group-flush toc" id="toc"></ul>
+      </nav>
+
+      <main id="main" class="col-lg-9 d-flex flex-column" tabindex="-1">
+        <div class="content" id="content">
+        <!-- Overview Section -->
+        <section id="overview" role="article">
+          <h1>📖 Overview</h1>
+          <span class="badge">intro</span>
+          <span class="badge">overview</span>
+          <span class="badge">basics</span>
+          
+          <p>Azure App Service is an <strong>HTTP-based service for hosting web applications, REST APIs, and mobile back ends</strong>. You can develop in your favorite language, be it .NET, .NET Core, Java, Node.js, PHP, or Python. Applications run and scale with ease on both Windows and Linux-based environments.</p>
+          
+          <div class="callout">
+            <strong>🎯 Core Purpose</strong><br />
+            App Service not only adds the power of Microsoft Azure to your application, such as security, load balancing, autoscaling, and automated management, but also enables DevOps capabilities like continuous deployment from Azure DevOps, GitHub, Docker Hub, and other sources, package management, staging environments, custom domain, and TLS/SSL certificates.
+          </div>
+
+          <h2>Why App Service?</h2>
+          
+          <h3>🚀 Multiple Languages and Frameworks</h3>
+          <p>App Service has first-class support for ASP.NET, ASP.NET Core, Java, Ruby, Node.js, PHP, or Python. You can also run PowerShell and other scripts or executables as background services.</p>
+
+          <h3>🔄 DevOps Integration</h3>
+          <p>Continuous integration and deployment with Azure DevOps, GitHub, BitBucket, Docker Hub, or Azure Container Registry. Promote updates through test and staging environments. Manage your apps using Azure PowerShell or cross-platform CLI.</p>
+
+          <h3>🌍 Global Scale with High Availability</h3>
+          <p>Scale up or out manually or automatically. Host your apps anywhere in Microsoft's global datacenter infrastructure with built-in load balancing and Traffic Manager for high availability.</p>
+
+          <h3>🔗 Connections to SaaS & On-Premises</h3>
+          <p>Connect to enterprise systems (SAP), SaaS services (Salesforce), and internet services (Facebook). Access on-premises data using Hybrid Connections and Azure Virtual Networks.</p>
+
+          <h3>🔒 Security and Compliance</h3>
+          <p>App Service is ISO, SOC, and PCI compliant. Authenticate users with Microsoft Entra ID, Google, Facebook, X, or Microsoft account. Create IP address restrictions and manage service identities.</p>
+
+          <h3>📱 Application Templates</h3>
+          <p>Choose from an extensive list of application templates in the Azure Marketplace, such as WordPress, Joomla, and Drupal.</p>
+
+          <h3>💻 Visual Studio and VS Code Integration</h3>
+          <p>Dedicated tools in Visual Studio and Visual Studio Code streamline creating, deploying, and debugging.</p>
+
+          <h3>🔌 API and Mobile Features</h3>
+          <p>App Service provides turn-key CORS support for RESTful API scenarios. Built-in authentication, offline data sync, push notifications, and more for mobile app scenarios.</p>
+
+          <h3>⚡ Serverless Code</h3>
+          <p>Run a code snippet or script on-demand without having to explicitly provision or manage infrastructure, and pay only for the compute time your code actually uses.</p>
+
+          <h2>App Service Components</h2>
+          
+          <div class="mermaid">
+%%{ init: { 
+    "theme": "base", 
+    "themeVariables": {
+      "fontFamily": "Segoe UI"
+    }, 
+    "flowchart": { 
+      "useMaxWidth": true, 
+      "htmlLabels": true, 
+      "curve": "basis" 
+    } 
+  } 
+}%%
+graph TB
+    subgraph "`**App Service Plan**`"
+        PLAN[Compute Resources<br/>Pricing Tier<br/>Scaling Settings]
+    end
+    
+    subgraph "`**App Services**`"
+        WEB[Web Apps<br/>.NET, Java, Node.js, Python]
+        API[API Apps<br/>RESTful APIs]
+        MOBILE[Mobile Apps<br/>Backend Services]
+        FUNCTION[Function Apps<br/>Serverless]
+    end
+    
+    subgraph "`**App Service Environment**`"
+        ASE[Isolated Environment<br/>Dedicated VNet<br/>High Scale]
+    end
+    
+    subgraph "`**Supporting Services**`"
+        SLOT[Deployment Slots<br/>Staging, Testing]
+        DOMAIN[Custom Domains<br/>SSL/TLS Certificates]
+        AUTH[Authentication<br/>Microsoft Entra ID, OAuth]
+        MONITOR[Application Insights<br/>Monitoring & Diagnostics]
+    end
+    
+    PLAN --> WEB
+    PLAN --> API
+    PLAN --> MOBILE
+    PLAN --> FUNCTION
+    
+    ASE --> PLAN
+    
+    WEB --> SLOT
+    API --> SLOT
+    
+    WEB --> DOMAIN
+    API --> DOMAIN
+    
+    WEB --> AUTH
+    API --> AUTH
+    MOBILE --> AUTH
+    
+    WEB --> MONITOR
+    API --> MONITOR
+    MOBILE --> MONITOR
+    FUNCTION --> MONITOR
+    
+    style PLAN fill:#3b82f6,color:#fff
+    style WEB fill:#10b981,color:#fff
+    style API fill:#10b981,color:#fff
+    style ASE fill:#f59e0b,color:#fff
+          </div>
+
+          <h2>Common Use Cases</h2>
+          <ul>
+            <li><strong>Web Applications</strong> - Host production web applications with autoscaling and high availability</li>
+            <li><strong>RESTful APIs</strong> - Build and host RESTful APIs with CORS support and API versioning</li>
+            <li><strong>Mobile Backends</strong> - Backend services for mobile apps with authentication and push notifications</li>
+            <li><strong>Background Processing</strong> - WebJobs for background tasks and scheduled jobs</li>
+            <li><strong>Microservices</strong> - Deploy containerized microservices with built-in load balancing</li>
+            <li><strong>Enterprise Applications</strong> - Line-of-business apps with VNet integration and compliance</li>
+          </ul>
+        </section>
+
+        <!-- App Service Plans Section -->
+        <section id="app-service-plans" role="article">
+          <h1>💎 App Service Plans</h1>
+          <span class="badge">plans</span>
+          <span class="badge">pricing</span>
+          <span class="badge">tiers</span>
+          <span class="badge">scaling</span>
+          
+          <p>An App Service plan defines a set of compute resources for a web app to run. These compute resources are analogous to the server farm in conventional web hosting. One or more apps can be configured to run on the same computing resources (or in the same App Service plan).</p>
+
+          <h2>📊 Pricing Tiers</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Use Case</th>
+                <th>Features</th>
+                <th>Scale Limit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Free (F1)</strong></td>
+                <td>Development & Testing</td>
+                <td>Shared compute, 60 min/day, No custom domains</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td><strong>Shared (D1)</strong></td>
+                <td>Dev/Test with custom domain</td>
+                <td>Shared compute, 240 min/day, Custom domains</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td><strong>Basic (B1, B2, B3)</strong></td>
+                <td>Low-traffic apps</td>
+                <td>Dedicated compute, Manual scale, Custom domain + SSL</td>
+                <td>Up to 3 instances</td>
+              </tr>
+              <tr>
+                <td><strong>Standard (S1, S2, S3)</strong></td>
+                <td>Production workloads</td>
+                <td>Auto-scale, Staging slots (5), Daily backups</td>
+                <td>Up to 10 instances</td>
+              </tr>
+              <tr>
+                <td><strong>Premium (P1v3, P2v3, P3v3)</strong></td>
+                <td>High-performance</td>
+                <td>Enhanced performance, More slots (20), VNet integration</td>
+                <td>Up to 30 instances</td>
+              </tr>
+              <tr>
+                <td><strong>Isolated (I1v2, I2v2, I3v2)</strong></td>
+                <td>High security & isolation</td>
+                <td>App Service Environment, Network isolation, Max scale</td>
+                <td>Up to 100 instances</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <strong>💡 Plan Sharing</strong><br />
+            Multiple apps can share the same App Service plan, which means they share the same compute resources. This is cost-effective but requires careful capacity planning.
+          </div>
+
+          <h2>⚖️ Scaling Options</h2>
+          
+          <h3>Scale Up (Vertical Scaling)</h3>
+          <p>Get more CPU, memory, disk space, and extra features like dedicated VMs, custom domains and certificates, staging slots, autoscaling, and more.</p>
+
+          <h3>Scale Out (Horizontal Scaling)</h3>
+          <p>Increase the number of VM instances that run your app. Standard tier allows up to 10 instances, Premium allows up to 30, and Isolated allows up to 100.</p>
+
+          <h3>Autoscale Configuration</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Configure autoscale based on CPU
+az monitor autoscale create \
+  --resource-group MyResourceGroup \
+  --resource MyWebApp \
+  --resource-type Microsoft.Web/serverfarms \
+  --name AutoscaleSetting \
+  --min-count 2 \
+  --max-count 10 \
+  --count 2
+
+# Add scale-out rule
+az monitor autoscale rule create \
+  --resource-group MyResourceGroup \
+  --autoscale-name AutoscaleSetting \
+  --condition "Percentage CPU > 70 avg 5m" \
+  --scale out 1
+
+# Add scale-in rule
+az monitor autoscale rule create \
+  --resource-group MyResourceGroup \
+  --autoscale-name AutoscaleSetting \
+  --condition "Percentage CPU < 30 avg 5m" \
+  --scale in 1</code></pre>
+        </section>
+
+        <!-- Deployment Slots Section -->
+        <section id="deployment-slots" role="article">
+          <h1>🎭 Deployment Slots</h1>
+          <span class="badge">slots</span>
+          <span class="badge">staging</span>
+          <span class="badge">swap</span>
+          <span class="badge">blue-green</span>
+          
+          <p>Deployment slots are live apps with their own host names. App content and configurations elements can be swapped between two deployment slots, including the production slot.</p>
+
+          <h2>🎯 Benefits of Deployment Slots</h2>
+          <ul>
+            <li><strong>Zero-downtime deployment</strong> - Swap staging to production without downtime</li>
+            <li><strong>Warm-up before swap</strong> - All instances are warmed up before being swapped into production</li>
+            <li><strong>Easy rollback</strong> - If issues arise, swap back to the previous version instantly</li>
+            <li><strong>A/B testing</strong> - Route a percentage of traffic to different slots</li>
+            <li><strong>Staged validation</strong> - Test in production-like environment before going live</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { 
+    "theme": "base", 
+    "themeVariables": {
+      "fontFamily": "Segoe UI"
+    }, 
+    "flowchart": { 
+      "useMaxWidth": true, 
+      "htmlLabels": true, 
+      "curve": "basis" 
+    } 
+  } 
+}%%
+graph LR
+    DEV[Development] -->|Deploy| STAGING[Staging Slot]
+    STAGING -->|Test & Validate| STAGING
+    STAGING -->|Swap| PROD[Production Slot]
+    PROD -->|Rollback if needed| STAGING
+    
+    style DEV fill:#64748b,color:#fff
+    style STAGING fill:#f59e0b,color:#fff
+    style PROD fill:#10b981,color:#fff
+          </div>
+
+          <h3>Slot Settings</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create a deployment slot
+az webapp deployment slot create \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot staging
+
+# Swap slots
+az webapp deployment slot swap \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot staging \
+  --target-slot production
+
+# Configure slot-specific settings
+az webapp config appsettings set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot staging \
+  --slot-settings ENVIRONMENT=staging \
+  --settings API_KEY=test-key-123</code></pre>
+
+          <h2>🔄 Traffic Routing & Testing in Production</h2>
+          <p>Route a percentage of production traffic to a slot for A/B testing or gradual rollout.</p>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Route 20% of traffic to staging slot
+az webapp traffic-routing set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --distribution staging=20
+
+# Check traffic routing
+az webapp traffic-routing show \
+  --name MyWebApp \
+  --resource-group MyResourceGroup
+
+# Clear traffic routing
+az webapp traffic-routing clear \
+  --name MyWebApp \
+  --resource-group MyResourceGroup</code></pre>
+        </section>
+
+        <!-- App Service Environment Section -->
+        <section id="app-service-environment" role="article">
+          <h1>🏢 App Service Environment (ASE)</h1>
+          <span class="badge">ASE</span>
+          <span class="badge">isolation</span>
+          <span class="badge">vnet</span>
+          <span class="badge">compliance</span>
+          
+          <p>App Service Environment is an Azure App Service feature that provides a fully isolated and dedicated environment for securely running App Service apps at high scale.</p>
+
+          <h2>🔐 ASE Features</h2>
+          <ul>
+            <li><strong>Network Isolation</strong> - Deployed into your Azure Virtual Network subnet</li>
+            <li><strong>High Scale</strong> - Support for up to 200 total App Service plan instances</li>
+            <li><strong>Single Tenant</strong> - Dedicated to your subscription only</li>
+            <li><strong>ILB or External</strong> - Internal Load Balancer or internet-facing endpoint</li>
+            <li><strong>WAF Integration</strong> - Deploy behind Application Gateway with WAF</li>
+            <li><strong>Compliance</strong> - Meets regulatory compliance requirements for isolation</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { 
+    "theme": "base", 
+    "themeVariables": {
+      "fontFamily": "Segoe UI"
+    }, 
+    "flowchart": { 
+      "useMaxWidth": true, 
+      "htmlLabels": true, 
+      "curve": "basis" 
+    } 
+  } 
+}%%
+graph TB
+    subgraph "`**Azure Virtual Network**`"
+        subgraph "`**App Service Environment**`"
+            ILB[Internal Load Balancer]
+            ASP1[App Service Plan 1]
+            ASP2[App Service Plan 2]
+            WA1[Web App 1]
+            WA2[Web App 2]
+            WA3[Web App 3]
+        end
+        
+        AG[Application Gateway<br/>WAF]
+        NSG[Network Security Group]
+    end
+    
+    INTERNET[Internet] --> AG
+    AG --> ILB
+    ILB --> ASP1
+    ILB --> ASP2
+    ASP1 --> WA1
+    ASP1 --> WA2
+    ASP2 --> WA3
+    
+    NSG -.Controls.-> ILB
+    
+    style AG fill:#f59e0b,color:#fff
+    style ILB fill:#3b82f6,color:#fff
+    style WA1 fill:#10b981,color:#fff
+    style WA2 fill:#10b981,color:#fff
+    style WA3 fill:#10b981,color:#fff
+          </div>
+
+          <h3>ASE v3 Improvements</h3>
+          <ul>
+            <li>✅ Deploy into smaller subnets (/27 or larger)</li>
+            <li>✅ Faster scaling operations (minutes instead of hours)</li>
+            <li>✅ Zone redundancy support</li>
+            <li>✅ More instance sizes available</li>
+            <li>✅ Simplified pricing model</li>
+            <li>✅ No additional infrastructure fee</li>
+          </ul>
+        </section>
+
+        <!-- Configuration Section -->
+        <section id="configuration" role="article">
+          <h1>⚙️ Configuration Management</h1>
+          <span class="badge">configuration</span>
+          <span class="badge">app-settings</span>
+          <span class="badge">app-configuration</span>
+          
+          <p>Azure App Service provides flexible configuration management with application settings, connection strings, and integration with Azure App Configuration service.</p>
+
+          <h2>⚙️ Application Settings</h2>
+          <p>Application settings are passed as environment variables to your application code at runtime.</p>
+          
+          <pre class="syntax-highlighted" data-language="bash"><code># Set application settings
+az webapp config appsettings set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --settings \
+    DATABASE_URL="Server=myserver.database.windows.net;Database=mydb;" \
+    API_KEY="your-api-key-here" \
+    ENVIRONMENT="production"
+
+# List all settings
+az webapp config appsettings list \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --output table</code></pre>
+
+          <h2>🔗 Connection Strings</h2>
+          <p>Connection strings are available as environment variables, prefixed by connection type (SQL, MySQL, Custom, etc.).</p>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Set connection string
+az webapp config connection-string set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --connection-string-type SQLAzure \
+  --settings \
+    MyDbConnection="Server=tcp:myserver.database.windows.net,1433;Initial Catalog=mydb;"</code></pre>
+
+          <h2>📦 App Configuration Integration</h2>
+          <p>For centralized configuration management, integrate with Azure App Configuration service.</p>
+
+          <pre class="syntax-highlighted" data-language="csharp"><code>// .NET Core - Startup.cs
+public static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                var settings = config.Build();
+                config.AddAzureAppConfiguration(options =>
+                {
+                    options.Connect(settings["ConnectionStrings:AppConfig"])
+                           .UseFeatureFlags();
+                });
+            });
+            webBuilder.UseStartup<Startup>();
+        });</code></pre>
+        </section>
+
+        <!-- Security Section -->
+        <section id="security" role="article">
+          <h1>🔒 Authentication & Security</h1>
+          <span class="badge">security</span>
+          <span class="badge">authentication</span>
+          <span class="badge">key-vault</span>
+          <span class="badge">ssl</span>
+          
+          <p>Azure App Service provides comprehensive security features including built-in authentication, Key Vault integration, managed identities, and SSL/TLS certificate management.</p>
+
+          <h2>🔑 Key Vault Integration</h2>
+          <p>Reference secrets from Azure Key Vault directly in your app settings using special syntax.</p>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Enable managed identity
+az webapp identity assign \
+  --name MyWebApp \
+  --resource-group MyResourceGroup
+
+# Grant access to Key Vault
+az keyvault set-policy \
+  --name MyKeyVault \
+  --object-id <managed-identity-object-id> \
+  --secret-permissions get list
+
+# Reference Key Vault secret in app setting
+az webapp config appsettings set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --settings \
+    DB_PASSWORD="@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/DbPassword/)"</code></pre>
+
+          <h3>Key Vault References in Code</h3>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// Settings are automatically resolved from Key Vault
+var password = Configuration["DB_PASSWORD"]; // Retrieved from Key Vault
+
+// Check if reference was resolved
+var isKeyVaultReference = Configuration["DB_PASSWORD"].StartsWith("@Microsoft.KeyVault");</code></pre>
+
+          <h2>🆔 Managed Identities</h2>
+          <p>Managed identities provide an automatically managed identity in Microsoft Entra ID for applications to use when connecting to resources that support Microsoft Entra authentication.</p>
+
+          <h3>Types of Managed Identities</h3>
+          <ul>
+            <li><strong>System-assigned</strong> - Tied to the lifecycle of the app service, deleted when app is deleted</li>
+            <li><strong>User-assigned</strong> - Standalone resource that can be assigned to multiple apps</li>
+          </ul>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Enable system-assigned identity
+az webapp identity assign \
+  --name MyWebApp \
+  --resource-group MyResourceGroup
+
+# Create user-assigned identity
+az identity create \
+  --name MyUserIdentity \
+  --resource-group MyResourceGroup
+
+# Assign user-assigned identity to app
+az webapp identity assign \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --identities /subscriptions/<sub-id>/resourcegroups/MyResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/MyUserIdentity</code></pre>
+
+          <h3>Using Managed Identity in Code</h3>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// Access Azure SQL using managed identity
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+
+// Create client using DefaultAzureCredential (uses managed identity in Azure)
+var client = new SecretClient(
+    new Uri("https://myvault.vault.azure.net/"),
+    new DefaultAzureCredential());
+
+// Retrieve secret
+KeyVaultSecret secret = await client.GetSecretAsync("DbPassword");
+string password = secret.Value;</code></pre>
+
+          <h2>🔐 Authentication & Authorization (Easy Auth)</h2>
+          <p>App Service provides built-in authentication and authorization support, so you can sign in users and access data with minimal or no code.</p>
+
+          <h3>Supported Identity Providers</h3>
+          <ul>
+            <li>Microsoft Entra ID (formerly Azure AD)</li>
+            <li>Microsoft Account</li>
+            <li>Facebook</li>
+            <li>Google</li>
+            <li>Twitter</li>
+            <li>OpenID Connect providers</li>
+            <li>GitHub</li>
+          </ul>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Enable Microsoft Entra ID authentication
+az webapp auth update \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --enabled true \
+  --action LoginWithAzureActiveDirectory \
+  --aad-client-id <client-id> \
+  --aad-client-secret <client-secret> \
+  --aad-token-issuer-url https://sts.windows.net/<tenant-id>/</code></pre>
+
+          <h2>🔒 Custom Domains & SSL/TLS</h2>
+          
+          <h3>Custom Domain Setup</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Map custom domain
+az webapp config hostname add \
+  --webapp-name MyWebApp \
+  --resource-group MyResourceGroup \
+  --hostname www.contoso.com
+
+# Bind SSL certificate
+az webapp config ssl bind \
+  --certificate-thumbprint <thumbprint> \
+  --ssl-type SNI \
+  --name MyWebApp \
+  --resource-group MyResourceGroup
+
+# Create managed certificate (Free)
+az webapp config ssl create \
+  --resource-group MyResourceGroup \
+  --name MyWebApp \
+  --hostname www.contoso.com</code></pre>
+
+          <h3>TLS/SSL Options</h3>
+          <ul>
+            <li><strong>App Service Managed Certificate</strong> - Free, auto-renewed SSL certificate</li>
+            <li><strong>App Service Certificate</strong> - Purchased through Azure, stored in Key Vault</li>
+            <li><strong>Import Certificate</strong> - Upload your own certificate</li>
+            <li><strong>Minimum TLS Version</strong> - Configure TLS 1.0, 1.1, 1.2, or 1.3</li>
+          </ul>
+
+          <h2>📜 Certificate Management</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Record Type</th>
+                <th>Host</th>
+                <th>Value</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A</td>
+                <td>@</td>
+                <td>App Service IP address</td>
+                <td>Root domain mapping</td>
+              </tr>
+              <tr>
+                <td>TXT</td>
+                <td>asuid.www</td>
+                <td>Custom verification ID</td>
+                <td>Domain ownership verification</td>
+              </tr>
+              <tr>
+                <td>CNAME</td>
+                <td>www</td>
+                <td>myapp.azurewebsites.net</td>
+                <td>Subdomain mapping</td>
+              </tr>
+              <tr>
+                <td>TXT</td>
+                <td>@</td>
+                <td>Custom verification ID</td>
+                <td>Root domain verification</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Import certificate from PFX file
+az webapp config ssl upload \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --certificate-file certificate.pfx \
+  --certificate-password <password>
+
+# List certificates
+az webapp config ssl list \
+  --resource-group MyResourceGroup
+
+# Bind certificate to hostname
+az webapp config ssl bind \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --certificate-thumbprint <thumbprint> \
+  --ssl-type SNI</code></pre>
+
+          <div class="callout">
+            <strong>🔒 Managed Certificate Limitations</strong><br />
+            • Only supports apex domains and www subdomains<br />
+            • Not exportable<br />
+            • Not supported in App Service Environment<br />
+            • Requires Standard tier or higher
+          </div>
+        </section>
+
+        <!-- Networking Section -->
+        <section id="networking" role="article">
+          <h1>🌐 Networking & Connectivity</h1>
+          <span class="badge">networking</span>
+          <span class="badge">vnet</span>
+          <span class="badge">private-endpoint</span>
+          <span class="badge">hybrid</span>
+          
+          <p>Azure App Service provides comprehensive networking features for connecting to virtual networks, on-premises resources, and securing inbound/outbound traffic.</p>
+
+          <h2>🌐 VNet Integration</h2>
+          <p>Connect your app to Azure Virtual Network to access resources in or through a VNet.</p>
+          
+          <pre class="syntax-highlighted" data-language="bash"><code># Enable VNet integration
+az webapp vnet-integration add \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --vnet MyVNet \
+  --subnet MySubnet</code></pre>
+
+          <h2>🔗 Hybrid Connections</h2>
+          <p>Access on-premises resources without requiring a VPN. Each Hybrid Connection correlates to a single TCP host:port combination.</p>
+
+          <h2>🔒 Private Endpoints</h2>
+          <p>Use Azure Private Link to access your web app privately from your VNet, eliminating exposure from the public internet.</p>
+
+          <div class="callout">
+            <strong>🌐 Networking Capabilities by Tier</strong><br />
+            • <strong>Basic/Free/Shared:</strong> IP Restrictions only<br />
+            • <strong>Standard:</strong> + Hybrid Connections (up to 5)<br />
+            • <strong>Premium:</strong> + VNet Integration, Private Endpoints<br />
+            • <strong>Isolated (ASE):</strong> Full network isolation with ILB
+          </div>
+        </section>
+
+        <!-- Deployment Section -->
+        <section id="deployment" role="article">
+          <h1>🚀 Deployment & CI/CD</h1>
+          <span class="badge">deployment</span>
+          <span class="badge">ci-cd</span>
+          <span class="badge">github-actions</span>
+          <span class="badge">devops</span>
+          
+          <p>Azure App Service supports multiple deployment methods and integrates seamlessly with modern CI/CD pipelines.</p>
+
+          <h2>📦 Deployment Sources</h2>
+          <ul>
+            <li><strong>Azure Repos</strong> - Git and TFVC repositories</li>
+            <li><strong>GitHub</strong> - Public and private repositories with GitHub Actions</li>
+            <li><strong>Bitbucket</strong> - Git repositories</li>
+            <li><strong>Local Git</strong> - Push from local Git repository</li>
+            <li><strong>OneDrive</strong> - Sync files from OneDrive</li>
+            <li><strong>Dropbox</strong> - Sync files from Dropbox</li>
+            <li><strong>Container Registries</strong> - Azure Container Registry, Docker Hub</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🔄 Deployment Center</strong><br />
+            The Deployment Center in Azure Portal provides a unified experience to configure continuous deployment from your chosen source control system.
+          </div>
+
+          <h2>🚀 Language-Specific Quickstarts</h2>
+
+          <h3>🔵 .NET / ASP.NET Core</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create resource group
+az group create --name MyResourceGroup --location eastus
+
+# Create App Service plan
+az appservice plan create \
+  --name MyAppServicePlan \
+  --resource-group MyResourceGroup \
+  --sku B1 \
+  --is-linux
+
+# Create web app
+az webapp create \
+  --name MyUniqueAppName \
+  --resource-group MyResourceGroup \
+  --plan MyAppServicePlan \
+  --runtime "DOTNET|8.0"
+
+# Deploy from local Git
+az webapp deployment source config-local-git \
+  --name MyUniqueAppName \
+  --resource-group MyResourceGroup
+
+# Deploy code
+git remote add azure <deployment-url>
+git push azure main</code></pre>
+
+          <h4>Visual Studio Deployment</h4>
+          <pre class="syntax-highlighted" data-language="plaintext"><code>1. Right-click project → Publish
+2. Select Azure → Azure App Service (Windows/Linux)
+3. Create new App Service or select existing
+4. Configure:
+   - Subscription
+   - Resource Group
+   - App Service Plan
+   - Region
+5. Click "Finish" then "Publish"</code></pre>
+
+          <h3>📜 Node.js</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create web app with Node.js runtime
+az webapp create \
+  --name MyNodeApp \
+  --resource-group MyResourceGroup \
+  --plan MyAppServicePlan \
+  --runtime "NODE|20-lts"
+
+# Deploy from GitHub
+az webapp deployment source config \
+  --name MyNodeApp \
+  --resource-group MyResourceGroup \
+  --repo-url https://github.com/user/repo \
+  --branch main \
+  --manual-integration
+
+# Configure startup command
+az webapp config set \
+  --name MyNodeApp \
+  --resource-group MyResourceGroup \
+  --startup-file "npm start"</code></pre>
+
+          <h4>Express.js Minimal App</h4>
+          <pre class="syntax-highlighted" data-language="javascript"><code>// app.js
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello from Azure App Service!');
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'healthy' });
+});
+
+app.listen(port, () => {
+  console.log(`App listening on port ${port}`);
+});
+
+// package.json
+{
+  "name": "azure-app-service-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0"
+  }
+}</code></pre>
+
+          <h3>🐍 Python</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create web app with Python runtime
+az webapp create \
+  --name MyPythonApp \
+  --resource-group MyResourceGroup \
+  --plan MyAppServicePlan \
+  --runtime "PYTHON|3.11"
+
+# Configure startup command for Flask/Django
+az webapp config set \
+  --name MyPythonApp \
+  --resource-group MyResourceGroup \
+  --startup-file "gunicorn --bind=0.0.0.0:8000 --timeout 600 app:app"</code></pre>
+
+          <h4>Flask Minimal App</h4>
+          <pre class="syntax-highlighted" data-language="python"><code># app.py
+from flask import Flask, jsonify
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return 'Hello from Azure App Service with Python!'
+
+@app.route('/health')
+def health():
+    return jsonify({'status': 'healthy'})
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
+
+# requirements.txt
+Flask==3.0.0
+gunicorn==21.2.0</code></pre>
+
+          <h3>☕ Java</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create web app with Java runtime
+az webapp create \
+  --name MyJavaApp \
+  --resource-group MyResourceGroup \
+  --plan MyAppServicePlan \
+  --runtime "JAVA|17-java17"
+
+# Deploy WAR file
+az webapp deploy \
+  --name MyJavaApp \
+  --resource-group MyResourceGroup \
+  --src-path target/myapp.war \
+  --type war
+
+# Or deploy JAR for Spring Boot
+az webapp deploy \
+  --name MyJavaApp \
+  --resource-group MyResourceGroup \
+  --src-path target/myapp.jar \
+  --type jar</code></pre>
+
+          <h4>Spring Boot Configuration</h4>
+          <pre class="syntax-highlighted" data-language="yaml"><code># application.yml
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: azure-app-service-demo
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always</code></pre>
+
+          <h3>🐳 Docker Container</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Create web app for containers
+az webapp create \
+  --name MyContainerApp \
+  --resource-group MyResourceGroup \
+  --plan MyAppServicePlan \
+  --deployment-container-image-name mcr.microsoft.com/appsvc/staticsite:latest
+
+# Configure with Azure Container Registry
+az webapp config container set \
+  --name MyContainerApp \
+  --resource-group MyResourceGroup \
+  --docker-custom-image-name myregistry.azurecr.io/myimage:latest \
+  --docker-registry-server-url https://myregistry.azurecr.io \
+  --docker-registry-server-user <username> \
+  --docker-registry-server-password <password>
+
+# Enable continuous deployment (webhook)
+az webapp deployment container config \
+  --name MyContainerApp \
+  --resource-group MyResourceGroup \
+  --enable-cd true</code></pre>
+
+          <h4>Sample Dockerfile</h4>
+          <pre class="syntax-highlighted" data-language="dockerfile"><code># Dockerfile
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["MyApp.csproj", "./"]
+RUN dotnet restore
+COPY . .
+RUN dotnet build -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MyApp.dll"]</code></pre>
+
+          <h2>Step-by-Step Tutorials</h2>
+
+          <h3>1️⃣ Deploy with GitHub Actions</h3>
+          <pre class="syntax-highlighted" data-language="yaml"><code># .github/workflows/deploy.yml
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: MyWebApp
+  NODE_VERSION: '20.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        npm install
+        npm run build --if-present
+    
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: .</code></pre>
+
+          <h3>2️⃣ Blue-Green Deployment with Slots</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Step 1: Create staging slot
+az webapp deployment slot create \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot staging
+
+# Step 2: Deploy to staging
+az webapp deployment source config \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot staging \
+  --repo-url https://github.com/user/repo \
+  --branch develop \
+  --manual-integration
+
+# Step 3: Test staging environment
+curl https://mywebapp-staging.azurewebsites.net/health
+
+# Step 4: Swap staging to production (with auto-swap if configured)
+az webapp deployment slot swap \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot staging \
+  --target-slot production
+
+# Step 5: If issues, rollback by swapping back
+az webapp deployment slot swap \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --slot production \
+  --target-slot staging</code></pre>
+
+          <h3>3️⃣ Configure Custom Domain with SSL</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Step 1: Get verification ID
+az webapp show \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --query customDomainVerificationId \
+  --output tsv
+
+# Step 2: Add DNS records in your domain registrar:
+# - TXT record: asuid.www → <verification-id>
+# - CNAME record: www → mywebapp.azurewebsites.net
+
+# Step 3: Map custom domain
+az webapp config hostname add \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --hostname www.contoso.com
+
+# Step 4: Create managed SSL certificate (free)
+az webapp config ssl create \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --hostname www.contoso.com
+
+# Step 5: Enforce HTTPS
+az webapp update \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --https-only true</code></pre>
+
+          <h3>4️⃣ Connect to Azure SQL Database</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Step 1: Create Azure SQL Server and Database
+az sql server create \
+  --name mydbserver \
+  --resource-group MyResourceGroup \
+  --location eastus \
+  --admin-user sqladmin \
+  --admin-password <strong-password>
+
+az sql db create \
+  --name mydb \
+  --server mydbserver \
+  --resource-group MyResourceGroup \
+  --service-objective S0
+
+# Step 2: Configure firewall to allow App Service
+az sql server firewall-rule create \
+  --name AllowAppService \
+  --server mydbserver \
+  --resource-group MyResourceGroup \
+  --start-ip-address 0.0.0.0 \
+  --end-ip-address 0.0.0.0
+
+# Step 3: Enable managed identity
+az webapp identity assign \
+  --name MyWebApp \
+  --resource-group MyResourceGroup
+
+# Step 4: Grant database access to managed identity
+# Connect to database and run:
+# CREATE USER [MyWebApp] FROM EXTERNAL PROVIDER;
+# ALTER ROLE db_datareader ADD MEMBER [MyWebApp];
+# ALTER ROLE db_datawriter ADD MEMBER [MyWebApp];
+
+# Step 5: Configure connection string
+az webapp config connection-string set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --connection-string-type SQLAzure \
+  --settings MyDbConnection="Server=tcp:mydbserver.database.windows.net,1433;Database=mydb;Authentication=Active Directory Default;"</code></pre>
+
+          <h3>5️⃣ Configure VNet Integration</h3>
+          <pre class="syntax-highlighted" data-language="bash"><code># Step 1: Create VNet and subnet
+az network vnet create \
+  --name MyVNet \
+  --resource-group MyResourceGroup \
+  --address-prefix 10.0.0.0/16 \
+  --subnet-name AppServiceSubnet \
+  --subnet-prefix 10.0.1.0/24
+
+# Step 2: Delegate subnet to App Service
+az network vnet subnet update \
+  --name AppServiceSubnet \
+  --vnet-name MyVNet \
+  --resource-group MyResourceGroup \
+  --delegations Microsoft.Web/serverFarms
+
+# Step 3: Enable VNet integration
+az webapp vnet-integration add \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --vnet MyVNet \
+  --subnet AppServiceSubnet
+
+# Step 4: Route all traffic through VNet
+az webapp config set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --vnet-route-all-enabled true
+
+# Step 5: Verify integration
+az webapp vnet-integration list \
+  --name MyWebApp \
+  --resource-group MyResourceGroup</code></pre>
+
+          <div class="callout">
+            <strong>📚 Additional Learning Resources</strong><br />
+            • <a href="https://learn.microsoft.com/azure/app-service/" target="_blank">Official Documentation</a><br />
+            • <a href="https://learn.microsoft.com/training/paths/deploy-a-website-with-azure-app-service/" target="_blank">Microsoft Learn Path</a><br />
+            • <a href="https://github.com/Azure-Samples?q=app-service" target="_blank">Azure Samples on GitHub</a><br />
+            • <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/bg-p/AppsonAzureBlog" target="_blank">Apps on Azure Blog</a>
+          </div>
+        </section>
+
+        <!-- Monitoring Section -->
+        <section id="monitoring" role="article">
+          <h1>📊 Monitoring & Diagnostics</h1>
+          <span class="badge">monitoring</span>
+          <span class="badge">logging</span>
+          <span class="badge">application-insights</span>
+          <span class="badge">diagnostics</span>
+          
+          <p>Azure App Service provides comprehensive monitoring and diagnostics capabilities through Application Insights, diagnostic logging, and health checks.</p>
+
+          <h2>📊 Diagnostic Logging</h2>
+          
+          <h3>Log Types</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Log Type</th>
+                <th>Platform</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Application Logging</td>
+                <td>Windows, Linux</td>
+                <td>Messages logged by application code</td>
+              </tr>
+              <tr>
+                <td>Web Server Logging</td>
+                <td>Windows, Linux</td>
+                <td>Raw HTTP request data in W3C format</td>
+              </tr>
+              <tr>
+                <td>Detailed Error Messages</td>
+                <td>Windows</td>
+                <td>HTML error pages (HTTP status 400+)</td>
+              </tr>
+              <tr>
+                <td>Failed Request Tracing</td>
+                <td>Windows</td>
+                <td>Detailed trace information for failed requests</td>
+              </tr>
+              <tr>
+                <td>Deployment Logging</td>
+                <td>Windows, Linux</td>
+                <td>Logs for deployment activities</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Enable application logging
+az webapp log config \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --application-logging true \
+  --level verbose \
+  --web-server-logging filesystem
+
+# Stream logs in real-time
+az webapp log tail \
+  --name MyWebApp \
+  --resource-group MyResourceGroup
+
+# Download logs
+az webapp log download \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --log-file logs.zip</code></pre>
+
+          <h2>📈 Application Insights</h2>
+          <p>Deep application performance monitoring (APM) service for web applications with automatic instrumentation.</p>
+
+          <h3>Key Features</h3>
+          <ul>
+            <li><strong>Live Metrics</strong> - Real-time application performance metrics</li>
+            <li><strong>Application Map</strong> - Visual topology of distributed applications</li>
+            <li><strong>Transaction Diagnostics</strong> - End-to-end transaction tracking</li>
+            <li><strong>Failures Analysis</strong> - Exception tracking and failure diagnostics</li>
+            <li><strong>Performance</strong> - Response times, dependency calls, throughput</li>
+            <li><strong>Custom Events & Metrics</strong> - Track business-specific telemetry</li>
+            <li><strong>Availability Tests</strong> - Synthetic monitoring from multiple locations</li>
+          </ul>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Enable Application Insights
+az webapp config appsettings set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --settings \
+    APPLICATIONINSIGHTS_CONNECTION_STRING="InstrumentationKey=<key>;IngestionEndpoint=https://..."
+
+# For .NET apps, enable auto-instrumentation
+az webapp config set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --always-on true</code></pre>
+
+          <h3>Custom Telemetry</h3>
+          <pre class="syntax-highlighted" data-language="csharp"><code>using Microsoft.ApplicationInsights;
+
+// Track custom event
+telemetryClient.TrackEvent("OrderPlaced", 
+    properties: new Dictionary<string, string> 
+    {
+        { "OrderId", orderId },
+        { "Customer", customerId }
+    },
+    metrics: new Dictionary<string, double> 
+    {
+        { "OrderValue", orderValue }
+    });
+
+// Track custom metric
+telemetryClient.TrackMetric("QueueLength", queue.Count);
+
+// Track dependency
+telemetryClient.TrackDependency("HTTP", "ExternalApi", 
+    "GET /api/data", startTime, timer.Elapsed, success: true);</code></pre>
+
+          <h2>❤️ Health Checks</h2>
+          <p>Configure health check endpoints to monitor app instances. Unhealthy instances are removed from load balancer rotation.</p>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Configure health check
+az webapp config set \
+  --name MyWebApp \
+  --resource-group MyResourceGroup \
+  --health-check-path "/api/health"</code></pre>
+
+          <h3>ASP.NET Core Health Check Implementation</h3>
+          <pre class="syntax-highlighted" data-language="csharp"><code>// Program.cs
+builder.Services.AddHealthChecks()
+    .AddCheck("database", () => CheckDatabaseConnection())
+    .AddCheck("external-api", () => CheckExternalApiHealth());
+
+app.MapHealthChecks("/api/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var response = new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(e => new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString()
+            })
+        };
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+    }
+});</code></pre>
+
+          <h2>💾 Backup and Restore</h2>
+          <p>Available in Standard tier and higher. Backup up to 10 GB of app and database content.</p>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># Configure automated backup
+az webapp config backup update \
+  --resource-group MyResourceGroup \
+  --webapp-name MyWebApp \
+  --container-url "https://mybackupstorage.blob.core.windows.net/backups?<SAS-token>" \
+  --frequency 1d \
+  --retain-one true \
+  --retention 30
+
+# Create on-demand backup
+az webapp config backup create \
+  --resource-group MyResourceGroup \
+  --webapp-name MyWebApp \
+  --container-url "https://mybackupstorage.blob.core.windows.net/backups?<SAS-token>" \
+  --backup-name manual-backup-$(date +%Y%m%d%H%M%S)
+
+# Restore from backup
+az webapp config backup restore \
+  --resource-group MyResourceGroup \
+  --webapp-name MyWebApp \
+  --container-url "https://mybackupstorage.blob.core.windows.net/backups?<SAS-token>" \
+  --backup-name backup-name \
+  --overwrite</code></pre>
+
+          <h3>What Gets Backed Up</h3>
+          <ul>
+            <li>App configuration</li>
+            <li>File content</li>
+            <li>Azure SQL Database or Azure Database for MySQL (if configured)</li>
+            <li>Custom domains & SSL certificates</li>
+          </ul>
+        </section>
+
+        <!-- Best Practices Section -->
+        <section id="best-practices" role="article">
+          <h1>✨ Best Practices</h1>
+          <span class="badge">best-practices</span>
+          <span class="badge">recommendations</span>
+          <span class="badge">architecture</span>
+          
+          <p>Follow these best practices to build secure, scalable, and reliable applications on Azure App Service.</p>
+
+          <h2>🏗️ Architecture & Design</h2>
+          <ul>
+            <li><strong>Separate environments</strong> - Use deployment slots for dev, staging, and production</li>
+            <li><strong>Stateless applications</strong> - Store session state in Redis or Azure Storage</li>
+            <li><strong>Connection pooling</strong> - Reuse database connections to avoid exhaustion</li>
+            <li><strong>Asynchronous patterns</strong> - Use async/await to maximize thread pool efficiency</li>
+            <li><strong>Microservices readiness</strong> - Design apps to be independently deployable</li>
+          </ul>
+
+          <h2>🔒 Security Best Practices</h2>
+          <ul>
+            <li><strong>Use managed identities</strong> - Eliminate credentials from code and configuration</li>
+            <li><strong>Store secrets in Key Vault</strong> - Never hardcode sensitive data</li>
+            <li><strong>Enable HTTPS only</strong> - Enforce TLS 1.2 or higher</li>
+            <li><strong>Implement Easy Auth</strong> - Use built-in authentication when possible</li>
+            <li><strong>Network isolation</strong> - Use VNet integration and Private Endpoints for sensitive workloads</li>
+            <li><strong>Regular updates</strong> - Keep runtime versions and frameworks current</li>
+          </ul>
+
+          <h2>⚡ Performance Optimization</h2>
+          <ul>
+            <li><strong>Enable Always On</strong> - Prevent cold starts for production apps (Standard tier+)</li>
+            <li><strong>Configure autoscale</strong> - Scale based on metrics, not schedules</li>
+            <li><strong>Use CDN</strong> - Offload static content to Azure CDN or Azure Front Door</li>
+            <li><strong>Optimize database queries</strong> - Use connection pooling and proper indexing</li>
+            <li><strong>Enable response compression</strong> - Reduce payload size for faster transfers</li>
+            <li><strong>Implement caching</strong> - Use Azure Cache for Redis for frequently accessed data</li>
+          </ul>
+
+          <h2>🔄 Deployment Best Practices</h2>
+          <ul>
+            <li><strong>Use CI/CD pipelines</strong> - Automate builds and deployments with GitHub Actions or Azure DevOps</li>
+            <li><strong>Slot swaps for zero downtime</strong> - Test in staging, then swap to production</li>
+            <li><strong>Slot-specific settings</strong> - Mark environment-specific settings as slot settings</li>
+            <li><strong>Pre-swap validation</strong> - Use auto-swap with warm-up to catch issues before production</li>
+            <li><strong>Rollback strategy</strong> - Keep previous deployment ready for instant rollback</li>
+            <li><strong>Blue-green deployments</strong> - Validate in parallel before switching traffic</li>
+          </ul>
+
+          <h2>📊 Monitoring & Operations</h2>
+          <ul>
+            <li><strong>Enable Application Insights</strong> - Monitor performance, failures, and dependencies</li>
+            <li><strong>Configure alerts</strong> - Set up proactive alerts for critical metrics</li>
+            <li><strong>Implement health checks</strong> - Auto-heal unhealthy instances</li>
+            <li><strong>Diagnostic logging</strong> - Enable appropriate logging levels for troubleshooting</li>
+            <li><strong>Regular backups</strong> - Schedule automated backups (Standard tier+)</li>
+            <li><strong>Cost monitoring</strong> - Track resource usage and optimize App Service Plans</li>
+          </ul>
+
+          <h2>💰 Cost Optimization</h2>
+          <ul>
+            <li><strong>Right-size your plan</strong> - Start with Basic/Standard, scale up only when needed</li>
+            <li><strong>Share App Service Plans</strong> - Run multiple apps on same plan when possible</li>
+            <li><strong>Use autoscale rules</strong> - Scale down during off-peak hours</li>
+            <li><strong>Stop dev/test apps</strong> - Stop non-production apps when not in use</li>
+            <li><strong>Use free managed certificates</strong> - Avoid paying for SSL certificates</li>
+            <li><strong>Reserved instances</strong> - Purchase Reserved Capacity for predictable workloads (Premium/Isolated)</li>
+          </ul>
+
+          <h2>🌐 High Availability & Disaster Recovery</h2>
+          <ul>
+            <li><strong>Zone redundancy</strong> - Deploy across availability zones (Premium v3, ASE v3)</li>
+            <li><strong>Multi-region deployment</strong> - Use Azure Front Door or Traffic Manager</li>
+            <li><strong>Health probes</strong> - Configure proper health endpoints for load balancers</li>
+            <li><strong>Regular testing</strong> - Test backup restoration and failover procedures</li>
+            <li><strong>Data replication</strong> - Use geo-replication for databases</li>
+            <li><strong>Documented runbooks</strong> - Maintain clear disaster recovery procedures</li>
+          </ul>
+
+          <div class="callout">
+            <strong>⭐ Golden Rules</strong><br />
+            1. Never hardcode secrets - use Key Vault + Managed Identity<br />
+            2. Always use deployment slots for production deployments<br />
+            3. Enable Application Insights from day one<br />
+            4. Configure autoscaling before you need it<br />
+            5. Test disaster recovery procedures regularly
+          </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" role="article">
+          <h1>📚 Resources</h1>
+          <span class="badge">docs</span>
+          <span class="badge">community</span>
+          <span class="badge">links</span>
+          
+          <h2>Official Documentation</h2>
+          <ul class="list-style-none">
+            <li>📚 <a href="https://learn.microsoft.com/azure/app-service/" target="_blank" rel="noopener">Azure App Service Documentation</a></li>
+            <li>🎯 <a href="https://learn.microsoft.com/azure/app-service/overview" target="_blank" rel="noopener">App Service Overview</a></li>
+            <li>🔌 <a href="https://learn.microsoft.com/azure/app-service/deploy-best-practices" target="_blank" rel="noopener">Deployment Best Practices</a></li>
+            <li>🚀 <a href="https://learn.microsoft.com/azure/app-service/manage-scale-up" target="_blank" rel="noopener">Scale Up & Scale Out</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/app-service/overview-security" target="_blank" rel="noopener">Security in App Service</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/azure/app-service/networking-features" target="_blank" rel="noopener">Networking Features</a></li>
+          </ul>
+
+          <h2>Getting Started by Language</h2>
+          <ul class="list-style-none">
+            <li>💠 <a href="https://learn.microsoft.com/azure/app-service/quickstart-dotnetcore" target="_blank" rel="noopener">.NET / ASP.NET Core Quickstart</a></li>
+            <li>📜 <a href="https://learn.microsoft.com/azure/app-service/quickstart-nodejs" target="_blank" rel="noopener">Node.js Quickstart</a></li>
+            <li>🐍 <a href="https://learn.microsoft.com/azure/app-service/quickstart-python" target="_blank" rel="noopener">Python Quickstart</a></li>
+            <li>☕ <a href="https://learn.microsoft.com/azure/app-service/quickstart-java" target="_blank" rel="noopener">Java Quickstart</a></li>
+            <li>🐘 <a href="https://learn.microsoft.com/azure/app-service/quickstart-php" target="_blank" rel="noopener">PHP Quickstart</a></li>
+            <li>💎 <a href="https://learn.microsoft.com/azure/app-service/quickstart-ruby" target="_blank" rel="noopener">Ruby Quickstart</a></li>
+            <li>🐳 <a href="https://learn.microsoft.com/azure/app-service/quickstart-custom-container" target="_blank" rel="noopener">Custom Container Quickstart</a></li>
+          </ul>
+
+          <h2>Deployment & DevOps</h2>
+          <ul class="list-style-none">
+            <li>🔄 <a href="https://learn.microsoft.com/azure/app-service/deploy-continuous-deployment" target="_blank" rel="noopener">Continuous Deployment</a></li>
+            <li>🎭 <a href="https://learn.microsoft.com/azure/app-service/deploy-staging-slots" target="_blank" rel="noopener">Deployment Slots</a></li>
+            <li>🐙 <a href="https://learn.microsoft.com/azure/app-service/deploy-github-actions" target="_blank" rel="noopener">GitHub Actions Deployment</a></li>
+            <li>🔧 <a href="https://learn.microsoft.com/azure/app-service/deploy-azure-pipelines" target="_blank" rel="noopener">Azure Pipelines Deployment</a></li>
+            <li>📦 <a href="https://learn.microsoft.com/azure/app-service/deploy-zip" target="_blank" rel="noopener">ZIP Deployment</a></li>
+            <li>🐳 <a href="https://learn.microsoft.com/azure/app-service/deploy-container-github-action" target="_blank" rel="noopener">Container Deployment with GitHub Actions</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/azure/app-service/deploy-local-git" target="_blank" rel="noopener">Local Git Deployment</a></li>
+          </ul>
+
+          <h2>Configuration & Management</h2>
+          <ul class="list-style-none">
+            <li>⚙️ <a href="https://learn.microsoft.com/azure/app-service/configure-common" target="_blank" rel="noopener">Configure Common Settings</a></li>
+            <li>🔑 <a href="https://learn.microsoft.com/azure/app-service/app-service-key-vault-references" target="_blank" rel="noopener">Key Vault References</a></li>
+            <li>🆔 <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity" target="_blank" rel="noopener">Managed Identities</a></li>
+            <li>🔒 <a href="https://learn.microsoft.com/azure/app-service/configure-ssl-certificate" target="_blank" rel="noopener">SSL/TLS Certificates</a></li>
+            <li>🌍 <a href="https://learn.microsoft.com/azure/app-service/app-service-web-tutorial-custom-domain" target="_blank" rel="noopener">Custom Domains</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/app-service/overview-authentication-authorization" target="_blank" rel="noopener">Authentication & Authorization</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/app-service/troubleshoot-diagnostic-logs" target="_blank" rel="noopener">Diagnostic Logging</a></li>
+          </ul>
+
+          <h2>Networking</h2>
+          <ul class="list-style-none">
+            <li>🌐 <a href="https://learn.microsoft.com/azure/app-service/overview-vnet-integration" target="_blank" rel="noopener">VNet Integration</a></li>
+            <li>🔗 <a href="https://learn.microsoft.com/azure/app-service/app-service-hybrid-connections" target="_blank" rel="noopener">Hybrid Connections</a></li>
+            <li>🔒 <a href="https://learn.microsoft.com/azure/app-service/networking/private-endpoint" target="_blank" rel="noopener">Private Endpoints</a></li>
+            <li>🚪 <a href="https://learn.microsoft.com/azure/app-service/app-service-ip-restrictions" target="_blank" rel="noopener">IP Restrictions</a></li>
+            <li>🌍 <a href="https://learn.microsoft.com/azure/app-service/app-service-best-practices" target="_blank" rel="noopener">Networking Best Practices</a></li>
+          </ul>
+
+          <h2>App Service Environment (ASE)</h2>
+          <ul class="list-style-none">
+            <li>🏢 <a href="https://learn.microsoft.com/azure/app-service/environment/overview" target="_blank" rel="noopener">ASE Overview</a></li>
+            <li>🆕 <a href="https://learn.microsoft.com/azure/app-service/environment/overview-zone-redundancy" target="_blank" rel="noopener">ASE v3 Zone Redundancy</a></li>
+            <li>🔧 <a href="https://learn.microsoft.com/azure/app-service/environment/creation" target="_blank" rel="noopener">Create an ASE</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/azure/app-service/environment/networking" target="_blank" rel="noopener">ASE Networking</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/app-service/environment/using" target="_blank" rel="noopener">Using an ASE</a></li>
+          </ul>
+
+          <h2>Monitoring & Diagnostics</h2>
+          <ul class="list-style-none">
+            <li>📊 <a href="https://learn.microsoft.com/azure/app-service/web-sites-monitor" target="_blank" rel="noopener">Monitor App Service</a></li>
+            <li>🔍 <a href="https://learn.microsoft.com/azure/azure-monitor/app/azure-web-apps" target="_blank" rel="noopener">Application Insights Integration</a></li>
+            <li>⚠️ <a href="https://learn.microsoft.com/azure/app-service/troubleshoot-diagnostic-logs" target="_blank" rel="noopener">Enable Diagnostics Logging</a></li>
+            <li>🏥 <a href="https://learn.microsoft.com/azure/app-service/monitor-instances-health-check" target="_blank" rel="noopener">Health Check Monitoring</a></li>
+            <li>📈 <a href="https://learn.microsoft.com/azure/app-service/overview-diagnostics" target="_blank" rel="noopener">App Service Diagnostics</a></li>
+          </ul>
+
+          <h2>Performance & Scaling</h2>
+          <ul class="list-style-none">
+            <li>🚀 <a href="https://learn.microsoft.com/azure/app-service/manage-automatic-scaling" target="_blank" rel="noopener">Automatic Scaling</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/azure/app-service/manage-scale-up" target="_blank" rel="noopener">Scale Up App Service Plan</a></li>
+            <li>📈 <a href="https://learn.microsoft.com/azure/azure-monitor/autoscale/autoscale-get-started" target="_blank" rel="noopener">Autoscale Best Practices</a></li>
+            <li>💾 <a href="https://learn.microsoft.com/azure/app-service/manage-backup" target="_blank" rel="noopener">Backup and Restore</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/azure/app-service/configure-language-dotnet-framework" target="_blank" rel="noopener">Performance Tuning</a></li>
+          </ul>
+
+          <h2>Security & Compliance</h2>
+          <ul class="list-style-none">
+            <li>🔒 <a href="https://learn.microsoft.com/azure/app-service/overview-security" target="_blank" rel="noopener">Security Overview</a></li>
+            <li>🛡️ <a href="https://learn.microsoft.com/azure/app-service/overview-authentication-authorization" target="_blank" rel="noopener">Authentication & Authorization</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/app-service/configure-authentication-provider-aad" target="_blank" rel="noopener">Microsoft Entra ID Authentication</a></li>
+            <li>🔑 <a href="https://learn.microsoft.com/azure/app-service/app-service-key-vault-references" target="_blank" rel="noopener">Key Vault Integration</a></li>
+            <li>🎫 <a href="https://learn.microsoft.com/azure/app-service/overview-managed-identity" target="_blank" rel="noopener">Managed Identity</a></li>
+            <li>📜 <a href="https://learn.microsoft.com/azure/app-service/overview-patch-os-runtime" target="_blank" rel="noopener">OS & Runtime Patching</a></li>
+          </ul>
+
+          <h2>Architecture & Design</h2>
+          <ul class="list-style-none">
+            <li>🏗️ <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/basic-web-app" target="_blank" rel="noopener">Basic Web App Reference Architecture</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/multi-region" target="_blank" rel="noopener">Multi-Region Web App</a></li>
+            <li>🔒 <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/app-service-web-app/app-service-web-app-private-connectivity" target="_blank" rel="noopener">Web App with Private Connectivity</a></li>
+            <li>⚡ <a href="https://learn.microsoft.com/azure/app-service/app-service-best-practices" target="_blank" rel="noopener">App Service Best Practices</a></li>
+            <li>💡 <a href="https://learn.microsoft.com/azure/well-architected/service-guides/app-service-web-apps" target="_blank" rel="noopener">Well-Architected Framework for App Service</a></li>
+          </ul>
+
+          <h2>Learning Resources</h2>
+          <ul class="list-style-none">
+            <li>🎓 <a href="https://learn.microsoft.com/training/paths/deploy-a-website-with-azure-app-service/" target="_blank" rel="noopener">Learning Path: Deploy a Website with Azure App Service</a></li>
+            <li>📝 <a href="https://learn.microsoft.com/training/modules/host-a-web-app-with-azure-app-service/" target="_blank" rel="noopener">Module: Host a Web App with App Service</a></li>
+            <li>🔄 <a href="https://learn.microsoft.com/training/modules/stage-deploy-app-service-deployment-slots/" target="_blank" rel="noopener">Module: Stage & Deploy with Deployment Slots</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/training/modules/introduction-to-azure-app-service/" target="_blank" rel="noopener">Module: Introduction to Azure App Service</a></li>
+            <li>📺 <a href="https://www.youtube.com/results?search_query=azure+app+service" target="_blank" rel="noopener">Video Tutorials (YouTube)</a></li>
+          </ul>
+
+          <h2>Tools & CLI</h2>
+          <ul class="list-style-none">
+            <li>🔧 <a href="https://learn.microsoft.com/cli/azure/webapp" target="_blank" rel="noopener">Azure CLI - az webapp</a></li>
+            <li>💻 <a href="https://learn.microsoft.com/powershell/module/az.websites/" target="_blank" rel="noopener">Azure PowerShell - Az.Websites</a></li>
+            <li>🎨 <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice" target="_blank" rel="noopener">VS Code Extension</a></li>
+            <li>🔵 <a href="https://visualstudio.microsoft.com/vs/features/azure/" target="_blank" rel="noopener">Visual Studio Azure Tools</a></li>
+            <li>🐙 <a href="https://github.com/Azure/azure-quickstart-templates/tree/master/quickstarts/microsoft.web/webapp-basic-linux" target="_blank" rel="noopener">ARM Templates & Bicep</a></li>
+          </ul>
+
+          <h2>Sample Code & Templates</h2>
+          <ul class="list-style-none">
+            <li>📦 <a href="https://github.com/Azure-Samples?q=app-service" target="_blank" rel="noopener">Azure Samples (GitHub)</a></li>
+            <li>🎨 <a href="https://github.com/Azure/azure-quickstart-templates" target="_blank" rel="noopener">Azure Quickstart Templates</a></li>
+            <li>🔄 <a href="https://github.com/Azure/actions-workflow-samples" target="_blank" rel="noopener">GitHub Actions Workflow Samples</a></li>
+            <li>🐳 <a href="https://github.com/Azure-Samples/docker-django-webapp-linux" target="_blank" rel="noopener">Docker Container Samples</a></li>
+          </ul>
+
+          <h2>Community & Support</h2>
+          <ul class="list-style-none">
+            <li>💬 <a href="https://learn.microsoft.com/answers/tags/191/azure-app-service" target="_blank" rel="noopener">Microsoft Q&A</a></li>
+            <li>💡 <a href="https://stackoverflow.com/questions/tagged/azure-app-service" target="_blank" rel="noopener">Stack Overflow</a></li>
+            <li>🐦 <a href="https://twitter.com/AzureSupport" target="_blank" rel="noopener">Twitter @AzureSupport</a></li>
+            <li>📧 <a href="https://azure.microsoft.com/support/options/" target="_blank" rel="noopener">Azure Support Plans</a></li>
+            <li>💭 <a href="https://feedback.azure.com/d365community/forum/79b1327d-d925-ec11-b6e6-000d3a4f06a4" target="_blank" rel="noopener">Azure Feedback</a></li>
+            <li>📰 <a href="https://techcommunity.microsoft.com/t5/apps-on-azure-blog/bg-p/AppsonAzureBlog" target="_blank" rel="noopener">Apps on Azure Blog</a></li>
+          </ul>
+
+          <h2>Pricing & Planning</h2>
+          <ul class="list-style-none">
+            <li>💰 <a href="https://azure.microsoft.com/pricing/details/app-service/windows/" target="_blank" rel="noopener">Pricing Calculator</a></li>
+            <li>📊 <a href="https://learn.microsoft.com/azure/app-service/overview-hosting-plans" target="_blank" rel="noopener">App Service Plans Overview</a></li>
+            <li>🆓 <a href="https://azure.microsoft.com/free/" target="_blank" rel="noopener">Free Azure Account</a></li>
+            <li>📈 <a href="https://learn.microsoft.com/azure/app-service/manage-costs" target="_blank" rel="noopener">Cost Optimization</a></li>
+          </ul>
+
+          <h2>Troubleshooting & FAQ</h2>
+          <ul class="list-style-none">
+            <li>🔍 <a href="https://learn.microsoft.com/azure/app-service/troubleshoot-diagnostic-logs" target="_blank" rel="noopener">Troubleshooting Guide</a></li>
+            <li>❓ <a href="https://learn.microsoft.com/azure/app-service/faq-configuration-and-management" target="_blank" rel="noopener">Configuration & Management FAQ</a></li>
+            <li>🌐 <a href="https://learn.microsoft.com/azure/app-service/faq-availability-performance" target="_blank" rel="noopener">Availability & Performance FAQ</a></li>
+            <li>🐛 <a href="https://learn.microsoft.com/azure/app-service/faq-deployment" target="_blank" rel="noopener">Deployment FAQ</a></li>
+            <li>🔐 <a href="https://learn.microsoft.com/azure/app-service/faq-open-source-technologies" target="_blank" rel="noopener">Open Source Technologies FAQ</a></li>
+          </ul>
+
+          <h2>Service Limits & Quotas</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Resource</th>
+                <th>Free/Shared</th>
+                <th>Basic</th>
+                <th>Standard</th>
+                <th>Premium</th>
+                <th>Isolated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Apps per plan</td>
+                <td>10 / 100</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+                <td>Unlimited</td>
+              </tr>
+              <tr>
+                <td>Max instances</td>
+                <td>N/A</td>
+                <td>3</td>
+                <td>10</td>
+                <td>30</td>
+                <td>100</td>
+              </tr>
+              <tr>
+                <td>Deployment slots</td>
+                <td>0</td>
+                <td>0</td>
+                <td>5</td>
+                <td>20</td>
+                <td>20</td>
+              </tr>
+              <tr>
+                <td>Custom domains</td>
+                <td>0 / 0</td>
+                <td>500</td>
+                <td>500</td>
+                <td>500</td>
+                <td>500</td>
+              </tr>
+              <tr>
+                <td>SSL connections</td>
+                <td>Not supported</td>
+                <td>SNI only</td>
+                <td>SNI + 1 IP SSL</td>
+                <td>SNI + 1 IP SSL</td>
+                <td>SNI + 1 IP SSL</td>
+              </tr>
+              <tr>
+                <td>VNet Integration</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td>Private Endpoints</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout">
+            <strong>🎯 Quick Reference</strong><br />
+            • <strong>Portal:</strong> <a href="https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites" target="_blank">App Services in Azure Portal</a><br />
+            • <strong>Status:</strong> <a href="https://azure.status.microsoft/status" target="_blank">Azure Status Dashboard</a><br />
+            • <strong>Updates:</strong> <a href="https://azure.microsoft.com/updates/?product=app-service" target="_blank">What's New in App Service</a><br />
+            • <strong>Roadmap:</strong> <a href="https://azure.microsoft.com/roadmap/" target="_blank">Azure Roadmap</a>
+          </div>
+          <hr />
+          <div class="document-footer">
+            <p>
+              <strong>Last Updated:</strong> January 2026 | 
+              <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+            </p>
+          </div>
+        </section>
+        </div>
+      </main>
+    </div>
+    
+    <nav class="controls" role="navigation" aria-label="Pagination">
+      <div class="btn-group" role="group">
+        <button class="btn btn-outline-info btn-sm" id="prevBtn" title="Previous" aria-label="Previous concept">&nbsp;&lt;&nbsp;</button>
+        <button class="btn btn-outline-info btn-sm" id="nextBtn" title="Next" aria-label="Next concept">&nbsp;&gt;&nbsp;</button>
+      </div>
+    </nav>
+  </div>  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarLabel">Contents</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="list-group list-group-flush w-100" id="tocMobile"></ul>
+    </div>
+  </div>
+
+  <script>
+    // ---- Mermaid Initialization ----
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.mermaid) {
+        window.mermaid.contentLoaded();
+      }
+    });
+
+    // ---- Configuration ----
+    const sectionConfig = [
+      { id: "overview", title: "📖 Overview", tags: ["intro", "overview", "basics"] },
+      { id: "app-service-plans", title: "💎 App Service Plans", tags: ["plans", "pricing", "tiers", "scaling"] },
+      { id: "deployment-slots", title: "🎭 Deployment Slots", tags: ["slots", "staging", "deployment", "blue-green"] },
+      { id: "app-service-environment", title: "🏢 App Service Environment", tags: ["ase", "isolation", "enterprise", "vnet"] },
+      { id: "configuration", title: "⚙️ Configuration & Settings", tags: ["config", "settings", "app-config", "keyvault"] },
+      { id: "security", title: "🔒 Authentication & Security", tags: ["security", "auth", "identity", "ssl", "certificates"] },
+      { id: "networking", title: "🌐 Networking", tags: ["networking", "vnet", "hybrid", "private-endpoint"] },
+      { id: "deployment", title: "🚀 Deployment & CI/CD", tags: ["deployment", "cicd", "github", "devops"] },
+      { id: "monitoring", title: "📊 Monitoring & Diagnostics", tags: ["monitoring", "diagnostics", "insights", "logging"] },
+      { id: "best-practices", title: "✨ Best Practices", tags: ["best-practices", "performance", "reliability"] },
+      { id: "resources", title: "📚 Resources", tags: ["docs", "community", "links"] }
+    ];
+
+    // ---- State & rendering ----
+    const state = {
+      index: 0,
+      filtered: sectionConfig.map((_, i) => i), // indices
+    };
+
+    const els = {
+      toc: document.getElementById('toc'),
+      tocMobile: document.getElementById('tocMobile'),
+      prev: document.getElementById('prevBtn'),
+      next: document.getElementById('nextBtn'),
+      toggleSidebar: document.getElementById('toggleSidebar'),
+      themeToggle: document.getElementById('themeToggle'),
+      main: document.getElementById('main'),
+      sidebar: document.querySelector('nav.sidebar'),
+      sidebarOffcanvas: document.getElementById('sidebarOffcanvas')
+    };
+
+    function buildTOC(){
+      // Clear both TOC lists
+      els.toc.innerHTML = '';
+      els.tocMobile.innerHTML = '';
+      
+      state.filtered.forEach((idx) => {
+        const s = sectionConfig[idx];
+        
+        // Desktop sidebar
+        const liDesktop = document.createElement('li');
+        liDesktop.className = 'list-group-item';
+        const aDesktop = document.createElement('a');
+        aDesktop.href = `#${s.id}`;
+        aDesktop.textContent = s.title;
+        aDesktop.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liDesktop.appendChild(aDesktop);
+        els.toc.appendChild(liDesktop);
+        
+        // Mobile offcanvas
+        const liMobile = document.createElement('li');
+        liMobile.className = 'list-group-item';
+        const aMobile = document.createElement('a');
+        aMobile.href = `#${s.id}`;
+        aMobile.textContent = s.title;
+        aMobile.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liMobile.appendChild(aMobile);
+        els.tocMobile.appendChild(liMobile);
+      });
+      highlightActiveTOC();
+    }
+
+    function setActiveByIndex(i){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      const id = ids[i];
+      const active = document.getElementById(id);
+      if (active){
+        active.classList.add('active');
+        active.setAttribute('tabindex', '-1');
+        active.focus({preventScroll:true});
+      }
+      updateControls();
+      highlightActiveTOC();
+      updateURLHash(id);
+    }
+
+    function updateControls(){
+      const count = state.filtered.length;
+      els.prev.disabled = state.index <= 0;
+      els.next.disabled = state.index >= count - 1;
+    }
+
+    function filterTOC(query){
+      const q = query.trim().toLowerCase();
+      state.filtered = sectionConfig
+        .map((s, i) => ({s, i}))
+        .filter(({s}) => s.title.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q)))
+        .map(({i}) => i);
+
+      state.index = Math.min(state.index, Math.max(0, state.filtered.length - 1));
+      buildTOC();
+      setActiveByIndex(state.index);
+    }
+
+    function navigate(delta){
+      const count = state.filtered.length;
+      const nextIndex = Math.min(Math.max(state.index + delta, 0), count - 1);
+      if (nextIndex !== state.index){
+        state.index = nextIndex;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      }
+    }
+
+    function navigateToId(id){
+      const idxInFiltered = state.filtered.findIndex(fi => sectionConfig[fi].id === id);
+      if (idxInFiltered !== -1){
+        state.index = idxInFiltered;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      } else {
+        state.filtered = sectionConfig.map((_, i) => i);
+        buildTOC();
+        navigateToId(id);
+      }
+    }
+
+    function updateURLHash(id){
+      const url = new URL(window.location);
+      url.hash = id;
+      history.replaceState(null, '', url);
+    }
+
+    function highlightActiveTOC(){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      const activeId = ids[state.index];
+      // Highlight desktop sidebar
+      els.toc.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+      // Highlight mobile offcanvas
+      els.tocMobile.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+    }
+
+    function openSidebar(){
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById('sidebarOffcanvas'));
+      offcanvas.show();
+    }
+    function closeSidebar(){
+      const offcanvasElement = document.getElementById('sidebarOffcanvas');
+      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if(offcanvas) offcanvas.hide();
+    }
+
+    // ---- Events ----
+    els.prev.addEventListener('click', () => navigate(-1));
+    els.next.addEventListener('click', () => navigate(1));
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+      else if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Deep linking on load/hash change
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#','');
+      if (id) navigateToId(id);
+    });
+
+    // Sidebar toggle (mobile)
+    els.toggleSidebar.addEventListener('click', () => {
+      openSidebar();
+    });
+
+    // Restore theme
+    (function(){
+      try {
+        const saved = localStorage.getItem('concepts-theme');
+        if (saved) { 
+          document.documentElement.setAttribute('data-theme', saved);
+          els.themeToggle.textContent = saved === 'light' ? '🌗' : '🌙';
+        }
+      } catch {}
+    })();
+
+    // Initial render
+    buildTOC();
+    
+    // Navigate to hash if present, otherwise show first section
+    const initialId = location.hash.replace('#','');
+    if (initialId){ 
+      navigateToId(initialId); 
+    } else {
+      setActiveByIndex(0);
+      // Scroll content to top on initial load
+      const contentEl = document.querySelector('.content');
+      if (contentEl) contentEl.scrollTop = 0;
+    }
+
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

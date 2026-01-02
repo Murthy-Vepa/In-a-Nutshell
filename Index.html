@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>In a Nutshell - Knowledge Hub</title>
+  <meta name="description" content="Comprehensive collection of technology guides and knowledge resources.">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .main-wrapper {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      width: 280px;
+      background: white;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 2rem 1.5rem;
+      border-bottom: 2px solid #e2e8f0;
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+    }
+
+    .sidebar-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-header p {
+      font-size: 0.875rem;
+      opacity: 0.95;
+      margin: 0;
+    }
+
+    .category-menu {
+      flex: 1;
+      padding: 1rem 0;
+    }
+
+    .menu-item {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-left: 4px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-item:hover {
+      background: #f8f9fa;
+    }
+
+    .menu-item.active {
+      background: #f0f9ff;
+      border-left-color: #3b82f6;
+    }
+
+    .menu-item.azure.active { border-left-color: #06b6d4; background: #ecfeff; }
+    .menu-item.dev.active { border-left-color: #10b981; background: #d1fae5; }
+    .menu-item.method.active { border-left-color: #f59e0b; background: #fef3c7; }
+    .menu-item.design.active { border-left-color: #8b5cf6; background: #f5f3ff; }
+    .menu-item.domain.active { border-left-color: #ec4899; background: #fce7f3; }
+
+    .menu-icon {
+      font-size: 1.5rem;
+    }
+
+    .menu-text {
+      flex: 1;
+    }
+
+    .menu-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+
+    .menu-count {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    .content-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .category-content {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      margin-bottom: 2rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #e2e8f0;
+    }
+
+    .category-icon {
+      font-size: 2.5rem;
+      margin-right: 1rem;
+    }
+
+    .category-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0;
+      color: #1e293b;
+    }
+
+    .azure .category-title { color: #06b6d4; }
+    .dev .category-title { color: #10b981; }
+    .method .category-title { color: #f59e0b; }
+    .design .category-title { color: #8b5cf6; }
+    .domain .category-title { color: #ec4899; }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .guide-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: #1e293b;
+      transition: all 0.2s ease;
+      display: block;
+    }
+
+    .guide-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border-color: #06b6d4;
+      background: linear-gradient(135deg, #ffffff 0%, #ecfeff 100%);
+      text-decoration: none;
+    }
+
+    .guide-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #1e293b;
+    }
+
+    .guide-description {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      padding: 2rem;
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .main-wrapper {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .main-content {
+        height: auto;
+        padding: 1rem;
+      }
+
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h1>🌰 In a Nutshell</h1>
+        <p>Knowledge Hub</p>
+      </div>
+      <div class="category-menu">
+        <div class="menu-item azure active" onclick="showCategory('azure')">
+          <span class="menu-icon">☁️</span>
+          <div class="menu-text">
+            <div class="menu-title">Azure Services</div>
+            <div class="menu-count">7 guides</div>
+          </div>
+        </div>
+        <div class="menu-item dev" onclick="showCategory('dev')">
+          <span class="menu-icon">💻</span>
+          <div class="menu-text">
+            <div class="menu-title">Dev Tools</div>
+            <div class="menu-count">5 guides</div>
+          </div>
+        </div>
+        <div class="menu-item method" onclick="showCategory('method')">
+          <span class="menu-icon">🎯</span>
+          <div class="menu-text">
+            <div class="menu-title">Methodologies</div>
+            <div class="menu-count">4 guides</div>
+          </div>
+        </div>
+        <div class="menu-item design" onclick="showCategory('design')">
+          <span class="menu-icon">🏗️</span>
+          <div class="menu-text">
+            <div class="menu-title">Design & Architecture</div>
+            <div class="menu-count">2 guides</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Azure Services -->
+      <div id="azure-section" class="content-section active">
+        <div class="category-content azure">
+          <div class="category-header">
+            <span class="category-icon">☁️</span>
+            <h2 class="category-title">Azure Services</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Azure API Management - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔌 Azure API Management</div>
+              <p class="guide-description">API gateway, management, and developer portal for secure API publishing</p>
+            </a>
+            <a href="Azure App Services - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🚀 Azure App Services</div>
+              <p class="guide-description">PaaS for building and hosting web apps, mobile backends, and RESTful APIs</p>
+            </a>
+            <a href="Azure Cosmos DB - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🌍 Azure Cosmos DB</div>
+              <p class="guide-description">Globally distributed, multi-model database service</p>
+            </a>
+            <a href="Bootstrap Azure Cosmos DB - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">⚡ Bootstrap Azure Cosmos DB</div>
+              <p class="guide-description">Quick start guide for setting up and configuring Cosmos DB</p>
+            </a>
+            <a href="Azure Entra - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔐 Azure Entra (Identity)</div>
+              <p class="guide-description">Identity and access management with SSO and multi-factor authentication</p>
+            </a>
+            <a href="Azure Functions - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">⚡ Azure Functions</div>
+              <p class="guide-description">Serverless compute for event-driven applications</p>
+            </a>
+            <a href="Azure Service Bus - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📨 Azure Service Bus</div>
+              <p class="guide-description">Enterprise messaging with queues, topics, and reliable delivery</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Development Tools & Frameworks -->
+      <div id="dev-section" class="content-section">
+        <div class="category-content dev">
+          <div class="category-header">
+            <span class="category-icon">💻</span>
+            <h2 class="category-title">Development Tools & Frameworks</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="GitHub Copilot - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🤖 GitHub Copilot</div>
+              <p class="guide-description">AI-powered coding assistant with completion, chat, and agent capabilities</p>
+            </a>
+            <a href="GitHub SpecKit - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📋 GitHub SpecKit</div>
+              <p class="guide-description">Specification-driven development toolkit for building from requirements</p>
+            </a>
+            <a href="ReactJs - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">⚛️ React.js</div>
+              <p class="guide-description">JavaScript library for building user interfaces with components</p>
+            </a>
+            <a href="Playwright - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🎭 Playwright</div>
+              <p class="guide-description">End-to-end testing framework with cross-browser support</p>
+            </a>
+            <a href="Microsoft Power BI - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📊 Microsoft Power BI</div>
+              <p class="guide-description">Business analytics for data visualization and dashboards</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Methodologies & Practices -->
+      <div id="method-section" class="content-section">
+        <div class="category-content method">
+          <div class="category-header">
+            <span class="category-icon">🎯</span>
+            <h2 class="category-title">Methodologies & Practices</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Agile Scrum - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🏃 Agile Scrum</div>
+              <p class="guide-description">Iterative framework for managing complex projects with sprints</p>
+            </a>
+            <a href="BMad Method - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🎨 BMad Method</div>
+              <p class="guide-description">Business model and design methodology for innovation</p>
+            </a>
+            <a href="Engineering Excellence - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">⚙️ Engineering Excellence</div>
+              <p class="guide-description">Best practices for building high-quality software systems</p>
+            </a>
+            <a href="Product Mindset - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🧠 Product Mindset</div>
+              <p class="guide-description">Product thinking and customer-centric development approach</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design & Architecture -->
+      <div id="design-section" class="content-section">
+        <div class="category-content design">
+          <div class="category-header">
+            <span class="category-icon">🏗️</span>
+            <h2 class="category-title">Design & Architecture</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Design Principles - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📐 Design Principles</div>
+              <p class="guide-description">SOLID, DRY, KISS, and fundamental principles for clean code</p>
+            </a>
+            <a href="Gang of Four Design Patterns - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔧 Gang of Four Design Patterns</div>
+              <p class="guide-description">Classic software design patterns for object-oriented programming</p>
+            </a>            
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <div class="footer">
+        <p>Last Updated: January 2026 | Curated with ❤️ by Murthy Vepa</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showCategory(category) {
+      // Hide all content sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Remove active class from all menu items
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Show selected content section
+      document.getElementById(category + '-section').classList.add('active');
+      
+      // Add active class to selected menu item
+      document.querySelector('.menu-item.' + category).classList.add('active');
+      
+      // Scroll to top of content
+      document.querySelector('.main-content').scrollTop = 0;
+    }
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

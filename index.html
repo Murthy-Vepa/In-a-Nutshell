@@ -24,8 +24,8 @@
     .main-wrapper {
       display: flex;
       min-height: 100vh;
-      max-width: 1600px;
-      margin: 0 auto;
+      max-width: 100%;
+      margin: 0 0;
     }
 
     /* Left Sidebar */
@@ -114,7 +114,7 @@
     /* Main Content */
     .main-content {
       flex: 1;
-      padding: 2rem;
+      padding: 1.5rem;
       overflow-y: auto;
       height: 100vh;
     }
@@ -187,9 +187,32 @@
     .guide-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+    }
+
+    .azure .guide-card:hover {
       border-color: #06b6d4;
       background: linear-gradient(135deg, #ffffff 0%, #ecfeff 100%);
-      text-decoration: none;
+    }
+
+    .dev .guide-card:hover {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #ffffff 0%, #d1fae5 100%);
+    }
+
+    .method .guide-card:hover {
+      border-color: #f59e0b;
+      background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+    }
+
+    .design .guide-card:hover {
+      border-color: #8b5cf6;
+      background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
+    }
+
+    .domain .guide-card:hover {
+      border-color: #ec4899;
+      background: linear-gradient(135deg, #ffffff 0%, #fce7f3 100%);
     }
 
     .guide-title {
@@ -242,22 +265,24 @@
     <!-- Left Sidebar -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h1>🌰 In a Nutshell</h1>
-        <p>Knowledge Hub</p>
+        <h1>In a Nutshell</h1> 
+        <h6>Knowledge 🌰 Hub</h6>
+        <br>
+        <p>Curated with ❤️ by Murthy Vepa</p>
       </div>
       <div class="category-menu">
         <div class="menu-item azure active" onclick="showCategory('azure')">
           <span class="menu-icon">☁️</span>
           <div class="menu-text">
             <div class="menu-title">Azure Services</div>
-            <div class="menu-count">7 guides</div>
+            <div class="menu-count">6 guides</div>
           </div>
         </div>
         <div class="menu-item dev" onclick="showCategory('dev')">
           <span class="menu-icon">💻</span>
           <div class="menu-text">
             <div class="menu-title">Dev Tools</div>
-            <div class="menu-count">5 guides</div>
+            <div class="menu-count">8 guides</div>
           </div>
         </div>
         <div class="menu-item method" onclick="showCategory('method')">
@@ -271,7 +296,7 @@
           <span class="menu-icon">🏗️</span>
           <div class="menu-text">
             <div class="menu-title">Design & Architecture</div>
-            <div class="menu-count">2 guides</div>
+            <div class="menu-count">3 guides</div>
           </div>
         </div>
       </div>
@@ -298,10 +323,6 @@
             <a href="Azure Cosmos DB - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">🌍 Azure Cosmos DB</div>
               <p class="guide-description">Globally distributed, multi-model database service</p>
-            </a>
-            <a href="Bootstrap Azure Cosmos DB - In a Nutshell.html" target="_blank" class="guide-card">
-              <div class="guide-title">⚡ Bootstrap Azure Cosmos DB</div>
-              <p class="guide-description">Quick start guide for setting up and configuring Cosmos DB</p>
             </a>
             <a href="Azure Entra - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">🔐 Azure Entra (Identity)</div>
@@ -346,6 +367,18 @@
             <a href="Microsoft Power BI - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">📊 Microsoft Power BI</div>
               <p class="guide-description">Business analytics for data visualization and dashboards</p>
+            </a>
+            <a href="C Sharp - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">💠 C#</div>
+              <p class="guide-description">Modern, object-oriented programming language for .NET development</p>
+            </a>
+            <a href="OOP - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🎓 Object-Oriented Programming</div>
+              <p class="guide-description">Core principles of OOP: encapsulation, inheritance, and polymorphism</p>
+            </a>
+            <a href="Data Structures - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📚 Data Structures</div>
+              <p class="guide-description">Essential data structures: arrays, lists, stacks, queues, trees, and graphs</p>
             </a>
           </div>
         </div>
@@ -394,13 +427,13 @@
             <a href="Gang of Four Design Patterns - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">🔧 Gang of Four Design Patterns</div>
               <p class="guide-description">Classic software design patterns for object-oriented programming</p>
+            </a>
+            <a href="Cloud Design Patterns - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">☁️ Cloud Design Patterns</div>
+              <p class="guide-description">Architectural patterns for scalable cloud applications</p>
             </a>            
           </div>
         </div>
-      </div>
-      <!-- Footer -->
-      <div class="footer">
-        <p>Last Updated: January 2026 | Curated with ❤️ by Murthy Vepa</p>
       </div>
     </div>
   </div>

@@ -1,0 +1,1262 @@
+    <!DOCTYPE html>
+    <html lang="en" data-theme="light">
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <title>Microsoft Power BI - In a Nutshell</title>
+    <meta name="description" content="A comprehensive guide to Microsoft Power BI." />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root{
+        --bg: #ffffff;
+        --fg: #0f172a;
+        --muted: #64748b;
+        --accent: #3b82f6;
+        --accent-light: #dbeafe;
+        --border: #e2e8f0;
+        --sidebar-bg: #ffffff;
+        --sidebar-fg: #0f172a;
+        --code-bg: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
+        --focus: #10b981;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+        --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+        --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        
+        /* Apply theme colors to Bootstrap elements */
+        body { background-color: var(--bg); color: var(--fg); }
+        .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+        .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+        .navbar-toggler-icon { 
+        filter: invert(1);
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        .btn-outline-secondary { border-color: var(--border) !important; color: var(--fg) !important; }
+        .btn-outline-secondary:hover { background-color: var(--accent-light) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+        
+        /* Sidebar */
+        nav.sidebar { background: var(--sidebar-bg); border-right: 1px solid var(--border) !important; overflow-y: auto; box-shadow: 2px 0 8px rgba(0,0,0,0.04); }
+        
+        .menu-header {  
+        background: var(--sidebar-bg);
+        font-weight: bold; 
+        padding: 1.25rem 1.25rem; 
+        letter-spacing: 0px; 
+        font-size: 1rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        box-shadow: var(--accent) 0 0px 8px;
+        color: var(--focus);
+        }
+        .menu-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+        }
+        .menu-header:hover::before {
+        left: 100%;
+        }
+        .menu-header::after {
+        content: '📑';
+        position: absolute;
+        right: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        opacity: 0.7;
+        }
+        
+        .toc { list-style: none; padding: 0; margin: 0; }
+        .toc li { margin: 0; }
+        .list-group-item { background: transparent; border-color: transparent; padding: 0; margin: 0.35rem 0.5rem; border-radius: 0.5rem; }
+        .list-group-item a { color: var(--fg); text-decoration: none; display: flex; flex-direction: column; align-items: flex-start; gap: 0.35rem; border-left: 4px solid transparent; padding: 0.75rem 1rem; transition: all 0.2s ease; font-weight: 500; border-radius: 0; }
+        .list-group-item a:hover { background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%); border-left-color: var(--accent); color: var(--accent); }
+        .list-group-item a.active { background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%); color: var(--accent); font-weight: 600; border-left-color: var(--accent); box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2); }
+        .list-group-item a.active:hover { background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.16) 100%); box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3); }
+        
+        /* Badge styling */
+        .badge { font-size: 0.8rem; padding: 0.15rem 0.4rem; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; border-radius: 0.25rem; font-style: normal; line-height: 1.2; opacity: 0.9; }
+        .badge { background: var(--accent); color: white; border: none; font-size: 0.6rem; padding: 0.25rem 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 0.5rem; margin-right: 0.35rem; }
+        .list-group-item a:hover .badge { opacity: 1; background: var(--accent); color: white; }
+        .list-group-item a.active .badge { background: rgba(255, 255, 255, 0.3); color: white; border-color: rgba(255, 255, 255, 0.6); font-weight: 600; opacity: 1; }
+            
+        /* Content */
+        .content { width: 100%; max-width: 1000px; margin: 0 auto; }
+        section { display: none !important; margin-bottom: 2rem; }
+        section.active { display: block !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0 0.25rem 0; letter-spacing: -0.5px; color: var(--fg); display: block; border: none; }
+        h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: var(--fg); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 1rem 0 0.5rem 0; }
+        h4 { font-size: 0.8rem; color: var(--fg); font-weight: 600; margin: 0.75rem 0 0.4rem 0; }
+        p { margin: 1rem 0; line-height: 1.65; color: var(--fg); }
+        ul, ol { margin: 1rem 0; padding-left: 2rem; }
+        li { margin: 0.5rem 0; color: var(--fg); }
+        
+        code { background: var(--code-bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; font-size: 0.9em; color: var(--accent); border-radius: 0.5rem; }
+        pre { background: var(--code-bg); border: 0px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow: auto; box-shadow: var(--shadow-sm); margin: 1rem 0; }
+        pre code { padding: 0; background: transparent; border: none; color: var(--fg); }
+        
+        .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0.5rem; box-shadow: var(--shadow-sm); font-weight: 500; color: var(--fg); }
+        
+        /* Table styling */
+        .table { color: var(--fg); }
+        .table thead th { background: var(--accent-light); color: var(--accent); border-color: var(--border); font-weight: 600; }
+        .table tbody td { border-color: var(--border); }
+        .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.02); }
+        .table-striped tbody tr:hover { background-color: var(--accent-light); }
+        
+        /* Controls/Pagination */
+        .controls { opacity: 0.4; position: fixed; bottom: 5px; right: 30px; width: auto; z-index: 1000; background: transparent; display: flex; align-items: center; justify-content: center; gap: 0rem; padding: 0; min-height: 40px; }
+        @media (max-width: 991px) {
+        .controls { bottom: 5px; right: 30px; }
+        .menu-header { color: var(--focus); }
+        }
+        .controls:hover { opacity: 1; }
+        
+        .page-indicator { color: var(--accent); font-weight: 600; font-size: 0.875rem; }
+        .btn-group .btn { margin: 0px 2px; padding: 0.2rem 0.5rem; background: var(--accent); color: white; border-color: var(--accent); font-size: 1rem; font-weight: bold; }
+        .btn-group .btn:hover { background: var(--accent); }
+        .btn-group .btn + .btn { margin-left: -1px; }
+        
+        /* Mobile/Offcanvas */
+        .offcanvas { background: var(--bg) !important; }
+        .offcanvas-header { border-bottom: 1px solid var(--border); }
+        .offcanvas-title { color: var(--fg); font-weight: 600; }
+        .btn-close { color: var(--fg); }
+        
+        /* Scrollbar */
+        nav.sidebar::-webkit-scrollbar { width: 6px; }
+        nav.sidebar::-webkit-scrollbar-track { background: transparent; }
+        nav.sidebar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 3px; }
+        nav.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+        
+        /* Mermaid Diagrams */
+        .mermaid {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        margin: 1.5rem 0;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+        position: relative;
+        }
+        .mermaid.rendered {
+        min-height: auto;
+        }
+        .mermaid svg {
+        max-width: 100%;
+        height: auto;
+        min-height: 300px;
+        transition: transform 0.3s ease;
+        transform-origin: center center;
+        }
+        .mermaid.zoomed {
+        overflow: auto;
+        cursor: grab;
+        }
+        .mermaid.zoomed:active {
+        cursor: grabbing;
+        }
+        .mermaid svg text {
+        font-size: 14px !important;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+        }
+        
+        /* Mermaid title styling */
+        .mermaid svg text, .diagram-modal-content svg text {
+        font-size: 1rem !important;
+        font-weight: bold !important;
+        fill: var(--fg) !important;
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+        }
+
+        .mermaid svg *
+        {
+            color: #333;
+        }
+
+        .mermaid[data-processed="true"] {
+        min-height: auto;
+        }
+        
+        .mermaid svg {
+        max-width: 100%;
+        height: auto;
+        display: inline-block;
+        }
+        
+        /* Zoom controls */
+        .zoom-controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+        }
+        .mermaid:hover .zoom-controls {
+        opacity: 1;
+        }
+        .zoom-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.2s ease;
+        }
+        .zoom-btn:hover {
+        background: #2563eb;
+        transform: scale(1.1);
+        }
+
+        /* Modal for diagram zoom */
+        .diagram-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        }
+        .diagram-modal.active {
+        display: flex;
+        }
+        .diagram-modal-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 0;
+        padding: 3rem 3rem 3rem 3rem;
+        overflow: auto;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        }
+        .diagram-modal-content svg {
+        max-width: 100%;
+        height: auto;
+        }
+        .modal-close {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        transition: all 0.2s ease;
+        z-index: 10000;
+        }
+        .modal-close:hover {
+        background: #dc2626;
+        transform: scale(1.1);
+        }
+        .modal-zoom-controls {
+        position: fixed;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        display: flex;
+        gap: 0.5rem;
+        z-index: 10000;
+        padding: 0rem;
+        border-radius: 0.4rem;
+        }
+        .modal-zoom-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.2s ease;
+        }
+        .modal-zoom-btn:hover {
+        background: #2563eb;
+        transform: scale(1.1);
+        }
+        
+        /* Utilities */
+        .search { height: 0; overflow: hidden; padding: 0 !important; }
+        .search input { display: none; }
+        .min-vh-100 { min-height: 100vh; }
+        .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+        .skip-link:focus { position: static; width: auto; height: auto; padding: 0.4rem 0.6rem; background: var(--accent); color: white; border-radius: 0.4rem; }
+        
+        /* Override Bootstrap defaults for theme */
+        a { color: var(--accent); }
+        a:hover { color: var(--accent); text-decoration: underline; }
+        
+        /* Responsive - keep sidebar visible on desktop, offcanvas on mobile */
+        @media (max-width: 991px) {
+        nav.sidebar { display: none; }
+        #main { width: 100%; }
+        .row { --bs-gutter-x: 0; }
+        }
+        
+        /* Layout - prevent unnecessary scrolling */
+        html, body { height: 100%; margin: 0; }
+        #appContainer { display: flex; flex-direction: column; height: calc(100vh - 60px); }
+        #mainRow { flex: 1; overflow: hidden; display: flex; }
+        nav.sidebar { overflow-y: auto; max-height: 100%; position: relative; padding-bottom: 0px; }
+        #main { overflow: hidden; display: flex; flex-direction: column; height: 100%; -webkit-tap-highlight-color: transparent; outline: none; border: none; }
+        #main:focus { outline: none; }
+        .content { overflow-y: auto; flex: 1; width: 100%; min-height: 0; padding: 0rem 1rem 0rem 1.5rem; }
+        
+        /* Contact Info */
+        .contact-info {
+        font-weight: 400 !important;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+        color: var(--accent-light);
+        margin: 0;
+        opacity: 0.5;
+        white-space: nowrap;
+        cursor: pointer;
+        }
+        .contact-info:hover {
+        opacity: 0.9;
+        text-decoration: none;
+        }
+        @media (max-width: 991px) {
+        .navbar-brand {
+            font-size: 1rem !important;
+            flex: 1;
+        }
+        .contact-info {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+        }
+        }
+        @media (max-width: 576px) {
+        .navbar-brand {
+            font-size: 0.9rem !important;
+        }
+        .contact-info {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+        }
+        }
+
+        .list-style-none {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        }
+
+        /* JSON Syntax Highlighting */
+        pre code.language-json {
+        display: block;
+        white-space: pre;
+        font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        pre code.language-json .json-key {
+        color: #0451a5;
+        font-weight: 500;
+        }
+
+        pre code.language-json .json-string {
+        color: #a31515;
+        }
+
+        pre code.language-json .json-number {
+        color: #098658;
+        }
+
+        pre code.language-json .json-boolean {
+        color: #0000ff;
+        font-weight: 600;
+        }
+
+        pre code.language-json .json-null {
+        color: #0000ff;
+        font-weight: 600;
+        }
+
+        pre code.language-json .json-punctuation {
+        color: #333;
+        }
+
+        /* SQL Syntax Highlighting */
+        pre code.language-sql {
+        display: block;
+        white-space: pre;
+        font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        pre code.language-sql .sql-keyword {
+        color: #0000ff;
+        font-weight: 600;
+        text-transform: uppercase;
+        }
+
+        pre code.language-sql .sql-string {
+        color: #a31515;
+        }
+
+        pre code.language-sql .sql-number {
+        color: #098658;
+        }
+
+        pre code.language-sql .sql-comment {
+        color: #008000;
+        font-style: italic;
+        }
+
+        pre code.language-sql .sql-function {
+        color: #795e26;
+        font-weight: 500;
+        }
+
+        pre code.language-sql .sql-operator {
+        color: #666;
+        font-weight: 500;
+        }
+
+        /* Language Label for Code Blocks */
+        pre[data-language]::before {
+        content: attr(data-language);
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.75em;
+        color: #6a737d;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        background: var(--bg);
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+        border: 1px solid var(--border);
+        }
+
+        /* Enhanced pre/code styling for syntax highlighted blocks */
+        pre.syntax-highlighted {
+        position: relative;
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        padding: 1.5rem 1rem 1rem 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        box-shadow: var(--shadow-sm);
+        margin: 1rem 0;
+        }
+
+        pre.syntax-highlighted code {
+        background: transparent;
+        padding: 0;
+        border: none;
+        color: var(--fg);
+        font-size: 0.875rem;
+        line-height: 1.6;
+        }
+      /* Document Footer */
+    .document-footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .document-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    .document-footer strong {
+      color: #495057;
+    } 
+    </style>
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script>
+        // Initialize Mermaid with proper configuration
+        document.addEventListener('DOMContentLoaded', function() {
+
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'base',
+            securityLevel: 'loose',
+            logLevel: 'error',
+            flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis',
+            },
+            sequence: {
+            useMaxWidth: false,
+            htmlLabels: true,
+            diagramMarginX: 50,
+            diagramMarginY: 10
+            }
+        });
+        
+        // Render all diagrams
+        renderMermaidDiagrams();
+        });
+        
+        async function renderMermaidDiagrams() {
+        const diagrams = document.querySelectorAll('.mermaid');
+        
+        for (let i = 0; i < diagrams.length; i++) {
+            const diagram = diagrams[i];
+            const code = diagram.textContent.trim();
+            
+            // Store original code
+            if (!diagram.hasAttribute('data-original-code')) {
+            diagram.setAttribute('data-original-code', code);
+            }
+            
+            try {
+            const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+            diagram.innerHTML = svg;
+            diagram.setAttribute('data-processed', 'true');
+            
+            // Add zoom controls
+            addZoomControls(diagram);
+            } catch (error) {
+            console.error('Mermaid rendering error for diagram ' + i + ':', error);
+            diagram.innerHTML = '<div style="color: red; padding: 1rem; border: 2px solid red; border-radius: 0.5rem;">Error rendering diagram: ' + error.message + '</div>';
+            }
+        }
+        }
+        
+        // Add zoom controls to mermaid diagrams
+        function addZoomControls(diagram) {
+        const controls = document.createElement('div');
+        controls.className = 'zoom-controls';
+        controls.innerHTML = `
+            <button class="zoom-btn" data-action="expand" title="Expand View">⛶</button>
+        `;
+        
+        diagram.style.position = 'relative';
+        diagram.insertBefore(controls, diagram.firstChild);
+        
+        // Expand to modal
+        controls.addEventListener('click', (e) => {
+            const btn = e.target.closest('.zoom-btn');
+            if (!btn) return;
+            
+            openDiagramModal(diagram);
+        });
+        }
+
+        // Open diagram in modal
+        function openDiagramModal(diagram) {
+        // Create modal if it doesn't exist
+        let modal = document.getElementById('diagram-modal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'diagram-modal';
+            modal.className = 'diagram-modal';
+            modal.innerHTML = `
+            <button class="modal-close" id="modal-close">×</button>
+            <div class="diagram-modal-content" id="modal-diagram-content"></div>
+            <div class="modal-zoom-controls">
+                <button class="modal-zoom-btn" data-action="zoom-in" title="Zoom In">+</button>
+                <button class="modal-zoom-btn" data-action="zoom-out" title="Zoom Out">−</button>
+                <button class="modal-zoom-btn" data-action="reset" title="Reset Zoom">⟲</button>
+            </div>
+            `;
+            document.body.appendChild(modal);
+            
+            // Close modal handlers
+            modal.querySelector('#modal-close').addEventListener('click', closeDiagramModal);
+            modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeDiagramModal();
+            });
+            document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeDiagramModal();
+            }
+            });
+            
+            // Zoom controls in modal
+            let scale = 1;
+            let translateX = 0;
+            let translateY = 0;
+            
+            modal.querySelector('.modal-zoom-controls').addEventListener('click', (e) => {
+            const btn = e.target.closest('.modal-zoom-btn');
+            if (!btn) return;
+            
+            const action = btn.dataset.action;
+            const svg = modal.querySelector('svg');
+            if (!svg) return;
+            
+            if (action === 'zoom-in') {
+                scale = Math.min(scale + 0.1, 5);
+            } else if (action === 'zoom-out') {
+                scale = Math.max(scale - 0.1, 0.5);
+            } else if (action === 'reset') {
+                scale = 1;
+                translateX = 0;
+                translateY = 0;
+            }
+            
+            svg.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+            });
+        }
+        
+        // Clone diagram content
+        const svg = diagram.querySelector('svg');
+        if (svg) {
+            const content = modal.querySelector('#modal-diagram-content');
+            content.innerHTML = '';
+            const clonedSvg = svg.cloneNode(true);
+            clonedSvg.style.transform = 'scale(1)';
+            clonedSvg.style.maxWidth = '100%';
+            clonedSvg.style.height = 'auto';
+            content.appendChild(clonedSvg);
+        }
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        }
+
+        function closeDiagramModal() {
+        const modal = document.getElementById('diagram-modal');
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        }
+        
+        // Re-render on theme change
+        window.rerenderMermaid = async function() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: isDark ? 'base' : 'base',
+            securityLevel: 'loose',
+            flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis',
+            },
+            sequence: {
+            useMaxWidth: false,
+            htmlLabels: true,
+            diagramMarginX: 50,
+            diagramMarginY: 10
+            }
+        });
+        
+        const diagrams = document.querySelectorAll('.mermaid[data-processed="true"]');
+        for (let i = 0; i < diagrams.length; i++) {
+            const diagram = diagrams[i];
+            const code = diagram.getAttribute('data-original-code');
+            
+            if (code) {
+            try {
+                const { svg } = await mermaid.render('mermaid-diagram-rerender-' + i + '-' + Date.now(), code);
+                diagram.innerHTML = svg;
+            } catch (error) {
+                console.error('Mermaid re-rendering error:', error);
+            }
+            }
+        }
+        };
+    </script>
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg sticky-top" aria-label="Top bar">
+        <div class="container-fluid d-flex align-items-center">
+        <button class="navbar-toggler me-2" id="toggleSidebar" type="button" aria-label="Toggle sidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <span class="navbar-brand mb-0 h1 me-auto">📊Microsoft Power BI - In a Nutshell</span>
+        <span class="contact-info mb-0">🤝 Curated by Murthy Vepa</span>
+        </div>      
+    </nav>
+
+    <div id="appContainer">
+        <div class="row g-0" id="mainRow">
+        <nav class="col-lg-3 border-end sidebar" id="sidebar" aria-label="Table of contents">
+            <div class="menu-header py-3">Contents</div>
+            <ul class="list-group list-group-flush toc" id="toc"></ul>
+        </nav>
+
+        <main id="main" class="col-lg-9 d-flex flex-column" tabindex="-1">
+            <div class="content" id="content">
+            <section id="powerbi-overview" role="article">
+                <h1>Microsoft Power BI</h1>
+                <p>Power BI is Microsoft's business analytics platform that enables you to connect to data, transform and model it, build rich interactive reports and dashboards, and share insights across your organization securely. The core components are Power BI Desktop (authoring), Power BI Service (SaaS for sharing and governance), Power BI Mobile, and Power BI Gateway.</p>
+                <h2>Key Capabilities</h2>
+                <ul>
+                    <li><strong>Data Connectivity:</strong> Import, DirectQuery, Live Connect to Analysis Services, and Composite models.</li>
+                    <li><strong>Data Preparation:</strong> Power Query (M) for extract/transform/load with rich UI and scripting.</li>
+                    <li><strong>Modeling:</strong> Star schema, relationships, hierarchies, calculation groups (AS), and role-based security.</li>
+                    <li><strong>DAX:</strong> Declarative language for measures, calculated columns/tables, and time intelligence.</li>
+                    <li><strong>Visualizations:</strong> Built-in visuals, custom visuals, bookmarks, drillthrough, and paginated reports.</li>
+                    <li><strong>Governance:</strong> Workspaces, apps, sensitivity labels, endorsements, lineage, metrics, and deployment pipelines.</li>
+                </ul>
+                <div class="callout">Tip: Favor star schemas with fact tables and dimension tables; avoid snowflaking and excessive bi-directional relationships.</div>
+                <h2>Architecture</h2>
+                <ul>
+                    <li><strong>Desktop authoring:</strong> Build semantic models and reports; publish to Service.</li>
+                    <li><strong>Service:</strong> Workspaces/apps for distribution; dataset refresh; scheduled/incremental; governance.</li>
+                    <li><strong>Gateway:</strong> Secure outbound connectivity for on-prem sources; supports clustering and failover.</li>
+                    <li><strong>Embedded:</strong> Use Power BI Embedded (Azure) to integrate reports in apps with capacity SKUs.</li>
+                </ul>
+                <h3>Licensing & Capacity (summary)</h3>
+                <ul>
+                    <li><strong>Pro:</strong> Author + share within workspace/app; capacity shared tenant.</li>
+                    <li><strong>Premium per user (PPU):</strong> Pro features + advanced (paginated, AI, deployment pipelines).</li>
+                    <li><strong>Premium capacity:</strong> Dedicated capacity for org/embedded; larger models; advanced features.</li>
+                </ul>
+                <h3>Workspaces and Apps</h3>
+                <ul>
+                    <li>Use <strong>workspaces</strong> for dev/stage/prod separation; publish <strong>apps</strong> for broad distribution.</li>
+                    <li>Adopt <strong>deployment pipelines</strong> to promote content across lifecycle with rules and approvals.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-data-connections" role="article">
+                <h2>Data Connections</h2>
+                <p>Choose the right storage mode based on performance, freshness, and governance requirements.</p>
+                <h3>Storage Modes</h3>
+                <ul>
+                    <li><strong>Import:</strong> Data copied into the model; fastest query performance; scheduled refresh required.</li>
+                    <li><strong>DirectQuery:</strong> Queries sent to the source at runtime; near real-time; depends on source performance.</li>
+                    <li><strong>Composite:</strong> Mix Import and DirectQuery in the same model; enable <code>Dual</code> storage for dimensions.</li>
+                    <li><strong>Live Connect:</strong> Connect live to Azure Analysis Services or Power BI semantic models; centralized governance.</li>
+                </ul>
+                <h3>Gateways</h3>
+                <ul>
+                    <li><strong>Standard Gateway:</strong> For enterprise on-prem data; supports high-availability clusters.</li>
+                    <li><strong>Personal Gateway:</strong> For individual use cases; limited scalability.</li>
+                </ul>
+                <div class="callout">Best Practice: For DirectQuery, optimize the source (indexes, aggregations) and use query reduction (slicers) to limit result sets.</div>
+                <h3>Incremental Refresh</h3>
+                <p>Use incremental refresh to reduce refresh time and keep historical data static.</p>
+                <ul>
+                    <li>Define <strong>RangeStart</strong> and <strong>RangeEnd</strong> parameters in Power Query.</li>
+                    <li>Filter fact tables on a date/time column using these parameters.</li>
+                    <li>Configure partitions in the Service (policy: store partitions for X years; refresh last Y days).</li>
+                    <li>For DirectQuery over large facts, consider <strong>Hybrid tables</strong> (import + real-time DirectQuery partition).</li>
+                </ul>
+                <h3>DirectQuery Performance</h3>
+                <ul>
+                    <li>Push filters to source; avoid visuals that trigger many queries (high-cardinality slicers).</li>
+                    <li>Use <strong>Aggregations</strong> (import small summary tables) to speed up common queries.</li>
+                    <li>Limit relationships that require cross-source joins; prefer modeling that avoids many-to-many.</li>
+                    <li>Enable <strong>query reduction</strong> options (File → Options → Query reduction) to defer slicer/apply.</li>
+                </ul>
+                <h3>Gateway HA</h3>
+                <ul>
+                    <li>Deploy multiple gateway nodes in a cluster for resilience and throughput.</li>
+                    <li>Monitor with Gateway performance logs; scale nodes based on concurrent refresh/query load.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-data-modeling" role="article">
+                <h2>Data Modeling</h2>
+                <p>Design a star schema: central fact tables with numeric measures, surrounded by denormalized dimensions. Keep relationships single-direction from dimensions to facts.</p>
+                <h3>Relationships</h3>
+                <ul>
+                    <li>Use <strong>single-direction</strong> filters; avoid bi-directional except for role-playing dimensions when necessary.</li>
+                    <li>Prefer <strong>one-to-many</strong> relationships; avoid many-to-many unless using bridge tables.</li>
+                </ul>
+                <h3>Role-Playing Dimensions</h3>
+                <p>Duplicate a date dimension as <code>Order Date</code>, <code>Ship Date</code>, etc., and relate appropriately.</p>
+                <h3>Calculation Groups (AS)</h3>
+                <p>Use calculation groups to centralize common DAX patterns like time intelligence and currency conversion when using External Tools (Tabular Editor).</p>
+                <pre class="syntax-highlighted" data-language="dax"><code>
+// Example measure
+Total Sales = SUM('Sales'[Amount])
+
+// Time intelligence
+Sales LY = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
+                </code></pre>
+                <h3>Aggregations</h3>
+                <p>Create import-based aggregation tables over DirectQuery facts to accelerate queries while preserving detail drillthrough.</p>
+                <ul>
+                    <li>Define aggregation tables at coarser grain (e.g., daily product sales).</li>
+                    <li>Map aggregations to the DirectQuery table; Power BI automatically hits the import table when possible.</li>
+                </ul>
+                <h3>Field Parameters</h3>
+                <p>Enable users to switch measures/dimensions via field parameters instead of multiple report copies.</p>
+                <h3>Model Size Optimization</h3>
+                <ul>
+                    <li>Remove unused columns; prefer integers over strings for keys; encode categories efficiently.</li>
+                    <li>Avoid calculated columns with high cardinality; move logic to Power Query.</li>
+                    <li>Disable Auto Date/Time and use a dedicated Date table marked as date.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-dax" role="article">
+                <h2>DAX Essentials</h2>
+                <p>DAX powers measures, calculated columns, and tables. Measures are evaluated in filter context and should be preferred for analytics.</p>
+                <h3>Measures vs Columns</h3>
+                <ul>
+                    <li><strong>Measures:</strong> Calculated at query time; dynamic; best for aggregations.</li>
+                    <li><strong>Calculated Columns:</strong> Computed at refresh; increase model size; use for relationships/labels.</li>
+                </ul>
+                <h3>Common Patterns</h3>
+                <pre class="syntax-highlighted" data-language="dax"><code>
+% Growth = DIVIDE([Total Sales] - [Sales LY], [Sales LY])
+
+YTD Sales = CALCULATE([Total Sales], DATESYTD('Date'[Date]))
+
+Top N Customers = 
+VAR TopCustomers = TOPN(10, ALL('Customer'), [Total Sales], DESC)
+RETURN CALCULATE([Total Sales], KEEPFILTERS(TopCustomers))
+                </code></pre>
+                <div class="callout">Tip: Wrap divisions with <code>DIVIDE(numerator, denominator, 0)</code> to avoid divide-by-zero errors.</div>
+                <h3>Context & Transitions</h3>
+                <ul>
+                    <li><strong>Row context:</strong> Exists in iterators (e.g., <code>SUMX</code>); convert to filter context with <code>CALCULATE</code>.</li>
+                    <li><strong>Filter context:</strong> Visual/page filters; measures are evaluated under this context.</li>
+                    <li><strong>Context transition:</strong> <code>CALCULATE</code> turns row context into filter context for correct measure evaluation.</li>
+                </ul>
+                <h3>Iterators & Virtual Tables</h3>
+                <pre class="syntax-highlighted" data-language="dax"><code>
+Avg Order Value = DIVIDE([Total Sales], [Order Count])
+
+Top 5 Products by Margin = 
+VAR Ranked = TOPN(5, ALL('Product'), [Margin], DESC)
+RETURN SUMX(Ranked, [Margin])
+
+Customers With Repeat Purchases = 
+VAR Purchases = SUMMARIZE('Sales', 'Customer'[CustomerId], "OrderCount", [Order Count])
+RETURN COUNTROWS(FILTER(Purchases, [OrderCount] >= 2))
+                </code></pre>
+                <h3>Optimization Tips</h3>
+                <ul>
+                    <li>Prefer <code>SUM</code>/<code>COUNT</code> over iterators when possible; iterators increase compute.</li>
+                    <li>Avoid <code>CALCULATE</code> with volatile functions inside row context; pre-compute as measures.</li>
+                    <li>Use variables (<code>VAR</code>) to avoid repeated computation and improve readability.</li>
+                    <li>Replace <code>FILTER(ALL(...))</code> with <code>KEEPFILTERS</code> or <code>REMOVEFILTERS</code> as appropriate.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-visualizations" role="article">
+                <h2>Visualizations</h2>
+                <ul>
+                    <li>Use <strong>small multiples</strong> for consistent side-by-side comparisons.</li>
+                    <li>Leverage <strong>bookmarks</strong> and <strong>selection</strong> for storytelling and guided analysis.</li>
+                    <li>Use <strong>field parameters</strong> to let users switch metrics/dimensions dynamically.</li>
+                    <li>Apply <strong>conditional formatting</strong> and <strong>data bars</strong> to tables for readability.</li>
+                </ul>
+                <div class="callout">Design: Keep color palettes consistent; use highlight color for focus (max 1-2 accent colors).</div>
+                <h3>Layout & Accessibility</h3>
+                <ul>
+                    <li>Use a <strong>12-column grid</strong> to align visuals; maintain consistent spacing.</li>
+                    <li>Ensure <strong>contrast ratios</strong> and enable <strong>alt text</strong> for visuals.</li>
+                    <li>Prefer descriptive titles and tooltips; avoid clutter with too many slicers.</li>
+                </ul>
+                <h3>Drilldown & Drillthrough</h3>
+                <ul>
+                    <li>Enable <strong>drilldown</strong> on hierarchical axes (e.g., Year → Quarter → Month).</li>
+                    <li>Use <strong>drillthrough</strong> pages to provide detail views filtered by selected entity.</li>
+                    <li>Provide <strong>back buttons</strong> and breadcrumbs to guide users.</li>
+                </ul>
+                <h3>Performance Considerations</h3>
+                <ul>
+                    <li>Limit visuals per page; each visual generates queries.</li>
+                    <li>Prefer <strong>Import</strong> models for heavy pages; cache via aggregations where needed.</li>
+                    <li>Use <strong>Performance Analyzer</strong> (Desktop) to measure visual and DAX execution time.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-power-query" role="article">
+                <h2>Power Query (M)</h2>
+                <p>Use Power Query for data ingestion and transformation. Keep steps foldable to push work down to the source.</p>
+                <h3>Parameters & Functions</h3>
+                <pre class="syntax-highlighted" data-language="m"><code>
+let
+    Source = Sql.Database("server", "db"),
+    ParamYear = #"Year Parameter",
+    Filtered = Table.SelectRows(Source{[Name="Sales"]}[Data], each [Year] = ParamYear),
+    Clean = Table.TransformColumnTypes(Filtered, {{"Amount", type number}})
+in
+    Clean
+                </code></pre>
+                <div class="callout">Best Practice: Avoid invoking custom functions per row; use table operations to maintain query folding.</div>
+                <h3>Query Folding</h3>
+                <ul>
+                    <li>Prefer native connectors; avoid steps that break folding (e.g., <code>Table.Buffer</code> early, row-by-row operations).</li>
+                    <li>Reorder steps so filters and projections occur before complex transformations.</li>
+                    <li>Use <strong>View Native Query</strong> to confirm folding to the source.</li>
+                </ul>
+                <h3>Staging & Lakehouse Patterns</h3>
+                <ul>
+                    <li>Stage raw data, then transform into curated tables used by the semantic model.</li>
+                    <li>For Fabric/Lakehouse, land data in OneLake, use shortcuts/medallion (bronze/silver/gold) layers.</li>
+                </ul>
+                <h3>Parameterized Pipelines</h3>
+                <ul>
+                    <li>Define parameters for environment (server/db), date ranges, and entity lists.</li>
+                    <li>Drive <strong>incremental refresh</strong> using RangeStart/RangeEnd parameters.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-copilot" role="article">
+                <h2>Copilot in Power BI</h2>
+                <p>Copilot helps you <strong>create and edit report pages</strong> using natural language. It can suggest visuals, generate pages, add or change visuals, and create narrative summaries.</p>
+                <h3>Get Started</h3>
+                <ul>
+                    <li>Open a report and enter <strong>Edit</strong> view (Service or Desktop).</li>
+                    <li>Select the <strong>Copilot</strong> icon in the ribbon to open the Copilot pane.</li>
+                    <li>Choose <strong>Suggest content for this report</strong> or type a prompt describing the visuals you want.</li>
+                </ul>
+                <h3>Create & Edit with Prompts</h3>
+                <ul>
+                    <li>Create new pages based on your prompt.</li>
+                    <li><strong>Add</strong> visuals to existing pages, <strong>change</strong> visual types/fields, or <strong>delete</strong> visuals.</li>
+                    <li>Use <strong>undo/redo</strong> to reverse recent Copilot actions.</li>
+                </ul>
+                <h3>Narrative Summary</h3>
+                <p>Generate a narrative summary for the report, a page, or a specific visual to explain findings and context.</p>
+                <h3>Admin & Enablement</h3>
+                <ul>
+                    <li>Admins must enable Copilot in <strong>Microsoft Fabric</strong> for your tenant.</li>
+                    <li>Select a <strong>semantic model</strong> for the report; ensure the <strong>Q&A feature</strong> switch for the model is turned on.</li>
+                </ul>
+                <h3>Considerations & Limitations</h3>
+                <ul>
+                    <li>No support for <strong>real-time streaming</strong> semantic models.</li>
+                    <li><strong>Live connection</strong> to Analysis Services isn't supported for page creation.</li>
+                    <li>Semantic models with <strong>implicit measures disabled</strong> can't create pages.</li>
+                    <li><strong>Custom visuals</strong>, styling/formatting changes are not supported; complex visual edits may lose detail.</li>
+                </ul>
+                <h3>Helpful Links</h3>
+                <ul>
+                    <li><a href="https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-create-reports" target="_blank" rel="noopener">Create & edit reports with Copilot</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-prompts-report-pages" target="_blank" rel="noopener">Write effective Copilot prompts</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-create-narrative" target="_blank" rel="noopener">Create narrative summary</a></li>
+                    <li><a href="https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-evaluate-data" target="_blank" rel="noopener">Prepare your data model for Copilot</a></li>
+                </ul>
+            </section>
+
+            <section id="powerbi-best-practices" role="article">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li><strong>Model:</strong> Star schema, hide surrogate keys, mark date table, minimize calculated columns.</li>
+                    <li><strong>Performance:</strong> Use aggregations, optimize DAX, reduce high-cardinality columns, disable auto-date/time.</li>
+                    <li><strong>Security:</strong> Implement RLS; use sensitivity labels; manage workspace access via groups.</li>
+                    <li><strong>Governance:</strong> Use deployment pipelines; certify datasets; maintain lineage and documentation.</li>
+                </ul>
+                <h3>Incremental Refresh & Hybrid</h3>
+                <ul>
+                    <li>Partition large facts by date; store historical data, refresh only recent periods.</li>
+                    <li>Use <strong>Hybrid tables</strong> to blend import with a real-time DirectQuery partition.</li>
+                </ul>
+                <h3>RLS & OLS</h3>
+                <ul>
+                    <li>Define role filters on dimensions (e.g., by <code>TenantId</code>/<code>Region</code>).</li>
+                    <li>Use OLS (object-level security) to hide tables/columns from specific roles.</li>
+                </ul>
+                <h3>Governance & Pipelines</h3>
+                <ul>
+                    <li>Adopt <strong>Dev → Test → Prod</strong> pipelines; parameterize environment connections.</li>
+                    <li>Certify and endorse datasets; use lineage view to manage dependencies.</li>
+                </ul>
+            </section>
+
+            <section id="powerbi-resources" role="article">
+                <h2>Resources</h2>
+                <ul>
+                    <li><a href="https://learn.microsoft.com/power-bi/" target="_blank" rel="noopener">Microsoft Learn: Power BI</a></li>
+                    <li><a href="https://learn.microsoft.com/power-bi/guidance/" target="_blank" rel="noopener">Power BI Guidance</a></li>
+                    <li><a href="https://dax.guide/" target="_blank" rel="noopener">DAX Guide</a></li>
+                    <li><a href="https://sqlbi.com/" target="_blank" rel="noopener">SQLBI Articles</a></li>
+                    <li><a href="https://daxstudio.org/" target="_blank" rel="noopener">DAX Studio</a> and <a href="https://tabulareditor.com/" target="_blank" rel="noopener">Tabular Editor</a> (External Tools)</li>
+                    <li><a href="https://powerbi.tips/" target="_blank" rel="noopener">PowerBI.Tips</a> (themes, layout, tutorials)</li>
+                    <li><a href="https://learn.microsoft.com/power-bi/transform-model/desktop-performance-analyzer" target="_blank" rel="noopener">Performance Analyzer</a> (Desktop)</li>
+                </ul>
+
+                <hr />
+                <div class="document-footer">
+                    <p>
+                    <strong>Last Updated:</strong> January 2026 | 
+                    <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+                    </p>
+                </div>  
+            </section>
+            </div>
+        </main>
+        </div>
+        
+        <nav class="controls" role="navigation" aria-label="Pagination">
+        <div class="btn-group" role="group">
+            <button class="btn btn-outline-info btn-sm" id="prevBtn" title="Previous" aria-label="Previous concept">&nbsp;&lt;&nbsp;</button>
+            <button class="btn btn-outline-info btn-sm" id="nextBtn" title="Next" aria-label="Next concept">&nbsp;&gt;&nbsp;</button>
+        </div>
+        </nav>
+    </div>  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="sidebarLabel">Contents</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+        <ul class="list-group list-group-flush w-100" id="tocMobile"></ul>
+        </div>
+    </div>
+
+    <script>
+        // - Mermaid Initialization -
+        document.addEventListener('DOMContentLoaded', () => {
+        if (window.mermaid) {
+            window.mermaid.contentLoaded();
+        }
+        });
+
+        // - Configuration -
+        const sectionConfig = [
+        { id: "powerbi-overview", title: "Overview", tags: ["intro", "overview", "service", "desktop"] },
+        { id: "powerbi-data-connections", title: "Data Connections", tags: ["sources", "gateways", "directquery", "import"] },
+        { id: "powerbi-data-modeling", title: "Data Modeling", tags: ["model", "relationships", "star-schema", "composite"] },
+        { id: "powerbi-dax", title: "DAX Essentials", tags: ["dax", "measures", "columns", "time-intelligence"] },
+        { id: "powerbi-visualizations", title: "Visualizations", tags: ["charts", "custom-visuals", "design", "formatting"] },
+        { id: "powerbi-power-query", title: "Power Query (M)", tags: ["transform", "m", "data-prep", "parameters"] },
+        { id: "powerbi-copilot", title: "Copilot in Power BI", tags: ["copilot", "ai", "create", "edit", "narrative"] },
+        { id: "powerbi-best-practices", title: "Best Practices", tags: ["performance", "optimization", "security", "governance"] },
+        { id: "powerbi-resources", title: "Resources", tags: ["docs", "community", "links"] }
+        ];
+
+        // - State & rendering -
+        const state = {
+        index: 0,
+        filtered: sectionConfig.map((_, i) => i), // indices
+        };
+
+        const els = {
+        toc: document.getElementById('toc'),
+        tocMobile: document.getElementById('tocMobile'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn'),
+        toggleSidebar: document.getElementById('toggleSidebar'),
+        themeToggle: document.getElementById('themeToggle'),
+        main: document.getElementById('main'),
+        sidebar: document.querySelector('nav.sidebar'),
+        sidebarOffcanvas: document.getElementById('sidebarOffcanvas')
+        };
+
+        function buildTOC(){
+        // Clear both TOC lists
+        els.toc.innerHTML = '';
+        els.tocMobile.innerHTML = '';
+        
+        state.filtered.forEach((idx) => {
+            const s = sectionConfig[idx];
+            
+            // Desktop sidebar
+            const liDesktop = document.createElement('li');
+            liDesktop.className = 'list-group-item';
+            const aDesktop = document.createElement('a');
+            aDesktop.href = `#${s.id}`;
+            aDesktop.textContent = s.title;
+            aDesktop.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateToId(s.id);
+            closeSidebar();
+            });
+            liDesktop.appendChild(aDesktop);
+            els.toc.appendChild(liDesktop);
+            
+            // Mobile offcanvas
+            const liMobile = document.createElement('li');
+            liMobile.className = 'list-group-item';
+            const aMobile = document.createElement('a');
+            aMobile.href = `#${s.id}`;
+            aMobile.textContent = s.title;
+            aMobile.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateToId(s.id);
+            closeSidebar();
+            });
+            liMobile.appendChild(aMobile);
+            els.tocMobile.appendChild(liMobile);
+        });
+        highlightActiveTOC();
+        }
+
+        function setActiveByIndex(i){
+        const ids = state.filtered.map(idx => sectionConfig[idx].id);
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        const id = ids[i];
+        const active = document.getElementById(id);
+        if (active){
+            active.classList.add('active');
+            active.setAttribute('tabindex', '-1');
+            active.focus({preventScroll:true});
+        }
+        updateControls();
+        highlightActiveTOC();
+        updateURLHash(id);
+        }
+
+        function updateControls(){
+        const count = state.filtered.length;
+        els.prev.disabled = state.index <= 0;
+        els.next.disabled = state.index >= count - 1;
+        }
+
+        function filterTOC(query){
+        const q = query.trim().toLowerCase();
+        state.filtered = sectionConfig
+            .map((s, i) => ({s, i}))
+            .filter(({s}) => s.title.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q)))
+            .map(({i}) => i);
+
+        state.index = Math.min(state.index, Math.max(0, state.filtered.length - 1));
+        buildTOC();
+        setActiveByIndex(state.index);
+        }
+
+        function navigate(delta){
+        const count = state.filtered.length;
+        const nextIndex = Math.min(Math.max(state.index + delta, 0), count - 1);
+        if (nextIndex !== state.index){
+            state.index = nextIndex;
+            setActiveByIndex(state.index);
+            // Scroll content to top
+            const contentEl = document.querySelector('.content');
+            if (contentEl) contentEl.scrollTop = 0;
+        }
+        }
+
+        function navigateToId(id){
+        const idxInFiltered = state.filtered.findIndex(fi => sectionConfig[fi].id === id);
+        if (idxInFiltered !== -1){
+            state.index = idxInFiltered;
+            setActiveByIndex(state.index);
+            // Scroll content to top
+            const contentEl = document.querySelector('.content');
+            if (contentEl) contentEl.scrollTop = 0;
+        } else {
+            state.filtered = sectionConfig.map((_, i) => i);
+            buildTOC();
+            navigateToId(id);
+        }
+        }
+
+        function updateURLHash(id){
+        const url = new URL(window.location);
+        url.hash = id;
+        history.replaceState(null, '', url);
+        }
+
+        function highlightActiveTOC(){
+        const ids = state.filtered.map(idx => sectionConfig[idx].id);
+        const activeId = ids[state.index];
+        // Highlight desktop sidebar
+        els.toc.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+        // Highlight mobile offcanvas
+        els.tocMobile.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${activeId}`));
+        }
+
+        function openSidebar(){
+        const offcanvas = new bootstrap.Offcanvas(document.getElementById('sidebarOffcanvas'));
+        offcanvas.show();
+        }
+        function closeSidebar(){
+        const offcanvasElement = document.getElementById('sidebarOffcanvas');
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+        if(offcanvas) offcanvas.hide();
+        }
+
+        // - Events -
+        els.prev.addEventListener('click', () => navigate(-1));
+        els.next.addEventListener('click', () => navigate(1));
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') navigate(-1);
+        else if (e.key === 'ArrowRight') navigate(1);
+        else if (e.key === 'Escape') closeSidebar();
+        });
+
+        // Deep linking on load/hash change
+        window.addEventListener('hashchange', () => {
+        const id = location.hash.replace('#','');
+        if (id) navigateToId(id);
+        });
+
+        // Sidebar toggle (mobile)
+        els.toggleSidebar.addEventListener('click', () => {
+        openSidebar();
+        });
+
+        // Restore theme
+        (function(){
+        try {
+            const saved = localStorage.getItem('concepts-theme');
+            if (saved) { 
+            document.documentElement.setAttribute('data-theme', saved);
+            els.themeToggle.textContent = saved === 'light' ? '🌗' : '🌙';
+            }
+        } catch {}
+        })();
+
+        // Initial render
+        buildTOC();
+        
+        // Navigate to hash if present, otherwise show first section
+        const initialId = location.hash.replace('#','');
+        if (initialId){ 
+        navigateToId(initialId); 
+        } else {
+        setActiveByIndex(0);
+        // Scroll content to top on initial load
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+        }
+
+    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

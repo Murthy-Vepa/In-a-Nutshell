@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>⚡</text></svg>" />
+  <title>Engineering Excellence - In a Nutshell</title>
+  <meta name="description" content="A comprehensive guide to Engineering Excellence practices and principles." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Mermaid JS -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      securityLevel: 'loose',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis',
+      },
+      sequence: {
+        useMaxWidth: false,
+        htmlLabels: true,
+        diagramMarginX: 50,
+        diagramMarginY: 10
+      },
+      themeVariables: {
+        primaryColor: '#dbeafe',
+        primaryTextColor: '#1e40af',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#3b82f6',
+        secondaryColor: '#f0fdf4',
+        tertiaryColor: '#fef3c7',
+        background: '#ffffff',
+        mainBkg: '#dbeafe',
+        secondBkg: '#f0fdf4',
+        mainContrastColor: '#1e40af',
+        darkMode: false
+      }
+    });
+    
+    window.mermaid = mermaid;
+  </script>
+  
+  <script>
+    const menuItems = [
+      { id: 'overview', text: 'Overview', badges: ['intro', 'overview', 'essentials'] },
+      { id: 'code-quality', text: 'Code Quality', badges: ['clean-code', 'best-practices'] },
+      { id: 'testing', text: 'Testing Excellence', badges: ['testing', 'quality'] },
+      { id: 'ci-cd', text: 'CI/CD & DevOps', badges: ['automation', 'deployment'] },
+      { id: 'documentation', text: 'Documentation', badges: ['docs', 'knowledge'] },
+      { id: 'security', text: 'Security Practices', badges: ['security', 'compliance'] },
+      { id: 'performance', text: 'Performance', badges: ['optimization', 'scalability'] },
+      { id: 'collaboration', text: 'Team Collaboration', badges: ['teamwork', 'agile'] },
+      { id: 'resources', text: 'Resources', badges: ['references', 'tools'] }
+    ];
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const toc = document.getElementById('toc');
+      const tocMobile = document.getElementById('tocMobile');
+      
+      // Generate TOC for both desktop and mobile
+      function createMenuItem(item, container) {
+        const li = document.createElement('li');
+        li.className = 'list-group-item list-group-item-action';
+        
+        const a = document.createElement('a');
+        a.href = '#' + item.id;
+        a.className = 'text-decoration-none d-block text-dark';
+        a.innerHTML = `
+          <div class="fw-semibold">${item.text}</div>
+          <div class="mt-1">
+            ${item.badges ? item.badges.map(b => `<span class="badge bg-secondary me-1 small">${b}</span>`).join('') : ''}
+          </div>
+        `;
+        
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          showSection(item.id);
+          
+          // Update active state
+          document.querySelectorAll('#toc .list-group-item, #tocMobile .list-group-item').forEach(link => {
+            link.classList.remove('active');
+          });
+          li.classList.add('active');
+          
+          // Scroll to top
+          document.getElementById('main').scrollTo(0, 0);
+          
+          // Close mobile offcanvas
+          const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('sidebarOffcanvas'));
+          if (offcanvas) {
+            offcanvas.hide();
+          }
+        });
+        
+        li.appendChild(a);
+        container.appendChild(li);
+        return li;
+      }
+      
+      menuItems.forEach(item => {
+        createMenuItem(item, toc);
+        createMenuItem(item, tocMobile);
+      });
+      
+      // Show first section by default
+      showSection('overview');
+      document.querySelector('#toc .list-group-item').classList.add('active');
+      document.querySelector('#tocMobile .list-group-item').classList.add('active');
+      
+      // Render all diagrams
+      renderMermaidDiagrams();
+    });
+    
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(section => {
+        section.classList.add('d-none');
+        section.classList.remove('d-block');
+      });
+      const targetSection = document.getElementById(id);
+      if (targetSection) {
+        targetSection.classList.remove('d-none');
+        targetSection.classList.add('d-block');
+      }
+    }
+    
+    async function renderMermaidDiagrams() {
+      const diagrams = document.querySelectorAll('.mermaid');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.textContent.trim();
+        
+        // Store original code
+        if (!diagram.hasAttribute('data-original-code')) {
+          diagram.setAttribute('data-original-code', code);
+        }
+        
+        try {
+          const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+          diagram.innerHTML = svg;
+          diagram.setAttribute('data-processed', 'true');
+          
+          // Add zoom controls
+          addZoomControls(diagram);
+        } catch (error) {
+          console.error('Mermaid rendering error for diagram ' + i + ':', error);
+          diagram.innerHTML = '<div class="alert alert-danger">Error rendering diagram: ' + error.message + '</div>';
+        }
+      }
+    }
+    
+    // Add zoom controls to mermaid diagrams
+    function addZoomControls(diagram) {
+      const controls = document.createElement('div');
+      controls.className = 'position-absolute top-0 end-0 m-2';
+      controls.innerHTML = `
+        <button class="btn btn-primary btn-sm" data-action="expand" title="Expand View">⛶</button>
+      `;
+      
+      diagram.style.position = 'relative';
+      diagram.insertBefore(controls, diagram.firstChild);
+      
+      // Expand to modal
+      controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn');
+        if (!btn) return;
+        
+        openDiagramModal(diagram);
+      });
+    }
+
+    // Open diagram in modal using Bootstrap Modal
+    function openDiagramModal(diagram) {
+      let modal = document.getElementById('diagramModal');
+      if (!modal) {
+        const modalHTML = `
+          <div class="modal fade" id="diagramModal" tabindex="-1" aria-labelledby="diagramModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="diagramModalLabel">Diagram View</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="modalDiagramContent"></div>
+                <div class="modal-footer justify-content-center">
+                  <button type="button" class="btn btn-secondary" id="zoomOut">Zoom Out (−)</button>
+                  <button type="button" class="btn btn-secondary" id="zoomReset">Reset (⟲)</button>
+                  <button type="button" class="btn btn-secondary" id="zoomIn">Zoom In (+)</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+        modal = document.getElementById('diagramModal');
+        
+        // Zoom controls
+        let scale = 1;
+        document.getElementById('zoomIn').addEventListener('click', () => {
+          scale = Math.min(scale + 0.2, 5);
+          updateScale(scale);
+        });
+        document.getElementById('zoomOut').addEventListener('click', () => {
+          scale = Math.max(scale - 0.2, 0.5);
+          updateScale(scale);
+        });
+        document.getElementById('zoomReset').addEventListener('click', () => {
+          scale = 1;
+          updateScale(scale);
+        });
+        
+        function updateScale(s) {
+          const svg = document.querySelector('#modalDiagramContent svg');
+          if (svg) {
+            svg.style.transform = `scale(${s})`;
+          }
+        }
+        
+        modal.addEventListener('hidden.bs.modal', () => {
+          scale = 1;
+        });
+      }
+      
+      const svg = diagram.querySelector('svg');
+      if (svg) {
+        const content = document.getElementById('modalDiagramContent');
+        content.innerHTML = '';
+        const clonedSvg = svg.cloneNode(true);
+        clonedSvg.style.transform = 'scale(1)';
+        clonedSvg.style.transition = 'transform 0.3s ease';
+        clonedSvg.classList.add('img-fluid');
+        content.appendChild(clonedSvg);
+      }
+      
+      const bsModal = new bootstrap.Modal(modal);
+      bsModal.show();
+    }
+  </script>
+</head>
+<body class="d-flex flex-column vh-100 overflow-hidden">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow" aria-label="Top bar">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <span class="navbar-brand mb-0 h5 me-auto">⚡ Engineering Excellence - In a Nutshell</span>
+      <span class="text-white small d-none d-md-inline">🤝 Curated by Murthy Vepa</span>
+    </div>      
+  </nav>
+
+  <div class="container-fluid flex-grow-1 overflow-hidden">
+    <div class="row h-100 g-0">
+      <nav class="col-lg-3 bg-light border-end d-none d-lg-block h-100 overflow-auto" id="sidebar" aria-label="Table of contents">
+        <div class="bg-primary text-white fw-bold p-3 border-bottom">📋 Contents</div>
+        <ul class="list-group list-group-flush" id="toc"></ul>
+      </nav>
+
+      <!-- Mobile Offcanvas Sidebar -->
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">📋 Contents</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+          <ul class="list-group list-group-flush" id="tocMobile"></ul>
+        </div>
+      </div>
+
+      <main class="col-lg-9 h-100 overflow-auto p-4" id="main" tabindex="-1">
+        <div class="container-fluid" id="content">
+          <!-- Overview Section -->
+          <section id="overview" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">📖 Overview</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">intro</span>
+              <span class="badge bg-primary me-1">overview</span>
+              <span class="badge bg-primary me-1">essentials</span>
+            </div>
+            
+            <p>Engineering Excellence represents a holistic approach to software development that emphasizes quality, efficiency, and continuous improvement throughout the entire software development lifecycle. It's about building the right things, building things right, and continuously improving how we build.</p>
+            
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3">What is Engineering Excellence?</h2>
+            <p class="lead">Engineering Excellence encompasses a set of practices, principles, and cultural values that enable teams to consistently deliver high-quality software with speed and reliability. It's not just about writing good code—it's about creating sustainable engineering systems that scale with your organization.</p>
+            
+            <div class="alert alert-info border-start border-5 border-primary" role="alert">
+              <strong>Core Philosophy:</strong> Engineering Excellence is the intersection of technical mastery, operational efficiency, and continuous learning. It's about creating a culture where quality is everyone's responsibility and improvement is a daily habit.
+            </div>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Why Engineering Excellence Matters</h2>
+            <ul>
+              <li><strong>Quality Delivery:</strong> Consistent delivery of reliable, maintainable, and scalable software solutions</li>
+              <li><strong>Faster Time to Market:</strong> Streamlined processes and automation reduce lead times without sacrificing quality</li>
+              <li><strong>Reduced Technical Debt:</strong> Proactive practices prevent accumulation of technical debt and reduce long-term costs</li>
+              <li><strong>Team Productivity:</strong> Well-defined practices and tools empower teams to work more efficiently</li>
+              <li><strong>Risk Mitigation:</strong> Comprehensive testing, monitoring, and security practices minimize production issues</li>
+              <li><strong>Innovation Enablement:</strong> Solid engineering foundation provides stability needed for experimentation</li>
+              <li><strong>Customer Satisfaction:</strong> Higher quality products lead to better user experiences and business outcomes</li>
+            </ul>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Key Pillars of Engineering Excellence</h2>
+            
+            <div class="border rounded p-4 bg-white shadow-sm my-4 mermaid">
+mindmap
+  root((Engineering Excellence))
+    Code Quality
+      Clean Code
+      Design Patterns
+      Code Reviews
+      Refactoring
+    Testing
+      Unit Testing
+      Integration Testing
+      E2E Testing
+      Test Automation
+    CI/CD
+      Continuous Integration
+      Continuous Deployment
+      Pipeline Automation
+      Infrastructure as Code
+    Documentation
+      Code Documentation
+      API Documentation
+      Architecture Docs
+      Runbooks
+    Security
+      Secure Coding
+      Vulnerability Scanning
+      Access Control
+      Compliance
+    Performance
+      Optimization
+      Monitoring
+      Load Testing
+      Scalability
+    Collaboration
+      Code Reviews
+      Knowledge Sharing
+      Pair Programming
+      Agile Practices
+    Operations
+      Monitoring
+      Logging
+      Alerting
+      Incident Response
+            </div>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">The Engineering Excellence Framework</h2>
+            
+            <div class="border rounded p-4 bg-white shadow-sm my-4 mermaid">
+graph TB
+    A[Engineering Excellence] --> B[Build the Right Things]
+    A --> C[Build Things Right]
+    A --> D[Continuous Improvement]
+    
+    B --> B1[Requirements Analysis]
+    B --> B2[User Research]
+    B --> B3[Technical Discovery]
+    B --> B4[Architecture Design]
+    
+    C --> C1[Code Quality]
+    C --> C2[Testing Strategy]
+    C --> C3[Security Practices]
+    C --> C4[Performance]
+    
+    D --> D1[Metrics & Monitoring]
+    D --> D2[Feedback Loops]
+    D --> D3[Retrospectives]
+    D --> D4[Learning Culture]
+    
+    style A fill:#3b82f6,stroke:#2563eb,stroke-width:3px,color:#fff
+    style B fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style C fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style D fill:#8b5cf6,stroke:#7c3aed,stroke-width:2px,color:#fff
+            </div>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Core Principles</h2>
+            
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Principle</th>
+                  <th>Description</th>
+                  <th>Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Quality First</strong></td>
+                  <td>Quality is built in, not tested in. Prevention over detection.</td>
+                  <td>Reduced defects, lower costs, faster delivery</td>
+                </tr>
+                <tr>
+                  <td><strong>Automation</strong></td>
+                  <td>Automate repetitive tasks to reduce errors and increase efficiency.</td>
+                  <td>Faster releases, consistent processes, reduced toil</td>
+                </tr>
+                <tr>
+                  <td><strong>Shift Left</strong></td>
+                  <td>Move testing, security, and quality checks earlier in the development cycle.</td>
+                  <td>Early issue detection, reduced rework, lower costs</td>
+                </tr>
+                <tr>
+                  <td><strong>Continuous Learning</strong></td>
+                  <td>Foster a culture of experimentation, feedback, and continuous improvement.</td>
+                  <td>Innovation, adaptability, team growth</td>
+                </tr>
+                <tr>
+                  <td><strong>Collaboration</strong></td>
+                  <td>Break down silos and promote cross-functional teamwork.</td>
+                  <td>Better solutions, shared ownership, faster resolution</td>
+                </tr>
+                <tr>
+                  <td><strong>Measurable Progress</strong></td>
+                  <td>Use metrics and data to drive decisions and track improvements.</td>
+                  <td>Objective insights, data-driven decisions, accountability</td>
+                </tr>
+              </table>
+            </div>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Engineering Excellence Maturity Model</h2>
+            
+            <div class="border rounded p-4 bg-white shadow-sm my-4 mermaid">
+graph LR
+    A[Level 1: Ad Hoc] --> B[Level 2: Defined]
+    B --> C[Level 3: Managed]
+    C --> D[Level 4: Measured]
+    D --> E[Level 5: Optimizing]
+    
+    A1[Reactive<br/>Inconsistent<br/>Manual] -.-> A
+    B1[Documented<br/>Standardized<br/>Repeatable] -.-> B
+    C1[Automated<br/>Monitored<br/>Controlled] -.-> C
+    D1[Quantified<br/>Predictable<br/>Data-Driven] -.-> D
+    E1[Continuous<br/>Innovative<br/>Adaptive] -.-> E
+    
+    style A fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
+    style B fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style C fill:#eab308,stroke:#ca8a04,stroke-width:2px,color:#fff
+    style D fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style E fill:#3b82f6,stroke:#2563eb,stroke-width:2px,color:#fff
+            </div>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Key Success Factors</h2>
+            
+            <ul class="list-group list-group-flush mb-4">
+              <li class="list-group-item"><strong>Leadership Support:</strong> Executive sponsorship and investment in engineering excellence initiatives</li>
+              <li class="list-group-item"><strong>Cultural Alignment:</strong> Organization-wide commitment to quality and continuous improvement</li>
+              <li class="list-group-item"><strong>Clear Standards:</strong> Well-defined coding standards, architectural guidelines, and best practices</li>
+              <li class="list-group-item"><strong>Tooling Investment:</strong> Modern tools and platforms that enable developer productivity</li>
+              <li class="list-group-item"><strong>Training & Development:</strong> Ongoing learning opportunities and skill development programs</li>
+              <li class="list-group-item"><strong>Metrics & KPIs:</strong> Clear metrics to measure progress and identify areas for improvement</li>
+              <li class="list-group-item"><strong>Feedback Mechanisms:</strong> Regular retrospectives and feedback loops to drive continuous improvement</li>
+              <li class="list-group-item"><strong>Community Building:</strong> Internal communities of practice for knowledge sharing and collaboration</li>
+            </ul>
+
+            <div class="alert alert-success border-start border-5 border-success" role="alert">
+              <strong>Remember:</strong> Engineering Excellence is a journey, not a destination. Start small, measure progress, celebrate wins, and continuously iterate. The goal is progress, not perfection.
+            </div>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Getting Started</h2>
+            <p>To begin your Engineering Excellence journey:</p>
+            <ol>
+              <li><strong>Assess Current State:</strong> Evaluate your current practices and identify gaps</li>
+              <li><strong>Set Clear Goals:</strong> Define what engineering excellence means for your organization</li>
+              <li><strong>Prioritize Areas:</strong> Focus on high-impact areas first (e.g., testing, CI/CD, code quality)</li>
+              <li><strong>Create Roadmap:</strong> Develop a phased approach with clear milestones</li>
+              <li><strong>Build Buy-in:</strong> Engage stakeholders and secure support across teams</li>
+              <li><strong>Start Small:</strong> Pilot initiatives with one team or project before scaling</li>
+              <li><strong>Measure & Iterate:</strong> Track progress, learn from feedback, and adjust as needed</li>
+              <li><strong>Scale Successes:</strong> Expand successful practices across the organization</li>
+            </ol>
+
+            <h2 class="h4 fw-semibold border-bottom border-primary pb-2 mb-3 mt-4">Common Challenges</h2>
+            <ul class="list-group list-group-flush mb-4">
+            <ul>
+              <li class="list-group-item"><strong>Resistance to Change:</strong> Overcome by demonstrating value and involving teams early</li>
+              <li class="list-group-item"><strong>Lack of Time:</strong> Make quality practices part of "Definition of Done" rather than optional extras</li>
+              <li class="list-group-item"><strong>Tool Proliferation:</strong> Consolidate tooling and focus on integration over quantity</li>
+              <li class="list-group-item"><strong>Skill Gaps:</strong> Invest in training and create mentorship programs</li>
+              <li class="list-group-item"><strong>Legacy Systems:</strong> Apply practices incrementally, focusing on new development first</li>
+              <li class="list-group-item"><strong>Measuring Success:</strong> Define clear metrics and track them consistently</li>
+            </ul>
+          </section>
+
+          <!-- Code Quality Section -->
+          <section id="code-quality" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">💎 Code Quality</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">clean-code</span>
+              <span class="badge bg-primary me-1">best-practices</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- Testing Section -->
+          <section id="testing" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">🧪 Testing Excellence</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">testing</span>
+              <span class="badge bg-primary me-1">quality</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- CI/CD Section -->
+          <section id="ci-cd" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">🚀 CI/CD & DevOps</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">automation</span>
+              <span class="badge bg-primary me-1">deployment</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- Documentation Section -->
+          <section id="documentation" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">📚 Documentation</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">docs</span>
+              <span class="badge bg-primary me-1">knowledge</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- Security Section -->
+          <section id="security" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">🔒 Security Practices</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">security</span>
+              <span class="badge bg-primary me-1">compliance</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- Performance Section -->
+          <section id="performance" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">⚡ Performance</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">optimization</span>
+              <span class="badge bg-primary me-1">scalability</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- Collaboration Section -->
+          <section id="collaboration" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">🤝 Team Collaboration</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">teamwork</span>
+              <span class="badge bg-primary me-1">agile</span>
+            </div>
+            
+            <p>Content coming soon...</p>
+          </section>
+
+          <!-- Resources Section -->
+          <section id="resources" role="article" class="d-none">
+            <h1 class="display-4 fw-bold mb-3">📚 Resources</h1>
+            <div class="mb-3">
+              <span class="badge bg-primary me-1">references</span>
+              <span class="badge bg-primary me-1">tools</span>
+            </div
+            <span class="badge">references</span>
+            <span class="badge">tools</span>
+            
+            <hr />
+            <div class="document-footer">
+              <p>
+                <strong>Last Updated:</strong> January 2026 | 
+                <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+              </p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

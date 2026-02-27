@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Azure Databricks - In a Nutshell</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath fill='%23FF3621' d='M9 0L0 5.4v7.2L9 18l9-5.4V5.4L9 0zm6.43 11.2L9 15.3l-6.43-4.1V6.8L9 2.7l6.43 4.1v4.4z'/%3E%3Cpath fill='%23FF3621' d='M9 4.5L4.3 7.5v6l4.7 3 4.7-3v-6L9 4.5zm3.2 8.4L9 15.3l-3.2-2.4v-4.8L9 5.7l3.2 2.4v4.8z'/%3E%3C/svg%3E"/>
+  <meta name="description" content="A comprehensive guide to Azure Databricks - unified analytics platform for big data and AI." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #FF3621;
+      --accent-light: #ffe5e1;
+      --border: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-fg: #0f172a;
+      --code-bg: linear-gradient(90deg, rgba(255, 54, 33, 0.08) 0%, rgba(255, 54, 33, 0.12) 100%);
+      --focus: #10b981;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+      --gradient: linear-gradient(135deg, #FF3621 0%, #d42a18 100%);
+    }
+    
+    .bg-gradient-blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; }
+    .bg-gradient-green { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important; }
+    .bg-gradient-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; }
+    .bg-gradient-pink { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important; }
+    .bg-gradient-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%) !important; }
+    .bg-gradient-teal { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important; }
+    .bg-gradient-orange { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%) !important; }
+    .bg-gradient-red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; }
+    
+    body { background-color: var(--bg); color: var(--fg); overflow: hidden; }
+    .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+    .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+    .navbar-toggler-icon { 
+      filter: invert(1);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    nav.sidebar { 
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%); 
+      border-right: 1px solid rgba(0, 0, 0, 0.05) !important;  
+      overflow-y: auto; 
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      padding-top: 0;
+    }
+    
+    .menu-header {  
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1) 100%);
+      font-weight: bold; 
+      padding: 1.25rem 1.25rem; 
+      letter-spacing: 0px; 
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-bottom: 2px solid #a5aab3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: #0c346c;
+      text-shadow: none;
+      margin: 0;
+      text-transform: none;
+    }
+    
+    .sidebar .nav-link { 
+      color: #1f2937 !important; 
+      padding: 0.6rem 1.25rem; 
+      border-radius: 0;
+      font-size: 0.93rem;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .sidebar .nav-link:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.06) 100%) !important; 
+      border-left: 3px solid #3b82f6;
+      color: #1e40af !important;
+    }
+    .sidebar .nav-link.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.18) 0%, rgba(59, 130, 246, 0.08) 100%) !important; 
+      color: #1e40af !important;
+      border-left: 3px solid #2563eb;
+      font-weight: 600;
+    }
+    
+    .sidebar .nav-link.level-3 { padding-left: 2.5rem; font-size: 0.88rem; }
+    .sidebar .nav-link.level-4 { padding-left: 3.5rem; font-size: 0.85rem; font-weight: 400; }
+    
+    main { overflow-y: auto; padding-bottom: 6rem; }
+    
+    h1 { 
+      font-weight: 700; 
+      color: var(--fg); 
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+    }
+    .subtitle { 
+      font-size: 1.25rem; 
+      color: var(--muted); 
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+    h2 { 
+      color: var(--fg); 
+      font-weight: 600; 
+      margin-top: 3rem; 
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+      font-size: 1.8rem;
+    }
+    h3 { 
+      color: var(--fg); 
+      font-weight: 600; 
+      margin-top: 2rem; 
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+    h4 { 
+      color: var(--fg); 
+      font-weight: 600; 
+      margin-top: 1.5rem; 
+      margin-bottom: 0.75rem;
+      font-size: 1.15rem;
+    }
+    
+    .callout { 
+      padding: 1.25rem; 
+      border-radius: 0.5rem; 
+      margin: 1.5rem 0;
+      border-left: 4px solid;
+      box-shadow: var(--shadow-sm);
+    }
+    .callout-info { background-color: var(--accent-light); border-left-color: var(--accent); }
+    .callout-success { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: #10b981; }
+    .callout-warning { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left-color: #f59e0b; }
+    .callout-danger { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-left-color: #ef4444; }
+    
+    .badge { font-weight: 500; padding: 0.35rem 0.65rem; font-size: 0.85rem; }
+    
+    code { 
+      background: var(--code-bg); 
+      padding: 0.2rem 0.4rem; 
+      border-radius: 0.25rem; 
+      font-size: 0.9em;
+      color: #1e293b;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+    
+    pre { 
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+      padding: 1.5rem; 
+      border-radius: 0.5rem; 
+      overflow-x: auto;
+      box-shadow: var(--shadow-md);
+      border: 1px solid #334155;
+    }
+    pre code { 
+      background: none; 
+      color: #e2e8f0; 
+      padding: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    
+    .table { 
+      box-shadow: var(--shadow-sm); 
+      border-radius: 0.5rem; 
+      overflow: hidden;
+    }
+    .table thead { 
+      background: var(--gradient); 
+      color: white;
+      font-weight: 600;
+    }
+    .table tbody tr:hover { 
+      background-color: var(--accent-light); 
+      transition: background-color 0.2s ease;
+    }
+    
+    .nav-tabs .nav-link { 
+      border: none; 
+      color: var(--muted); 
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.2s ease;
+    }
+    .nav-tabs .nav-link:hover { 
+      color: var(--accent); 
+      background-color: var(--accent-light);
+    }
+    .nav-tabs .nav-link.active { 
+      color: var(--accent); 
+      background-color: var(--accent-light); 
+      border-bottom: 3px solid var(--accent);
+      font-weight: 600;
+    }
+    
+    .btn-primary { 
+      background: var(--gradient); 
+      border: none;
+      font-weight: 500;
+      padding: 0.5rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover { 
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .diagram-container { 
+      background: white; 
+      padding: 2rem; 
+      border-radius: 0.5rem; 
+      margin: 2rem 0;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+    
+    .diagram-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      justify-content: flex-end;
+    }
+    
+    .zoom-btn {
+      background: var(--accent-light);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    .zoom-btn:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .modal-dialog-scrollable .modal-body {
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
+      h3 { font-size: 1.25rem; }
+      .sidebar { position: fixed; z-index: 1000; width: 280px; height: 100%; transform: translateX(-100%); transition: transform 0.3s ease; }
+      .sidebar.show { transform: translateX(0); }
+    }
+
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <span style="margin-right: 0.5rem;">🧱</span> Azure Databricks - In a Nutshell
+      </span>
+      <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse" style="height: calc(100vh - 56px);">
+        <div class="position-sticky">
+          <div class="menu-header">📑 Contents</div>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link active" href="#overview">Overview</a></li>
+            <li class="nav-item"><a class="nav-link" href="#architecture">Architecture</a></li>
+            <li class="nav-item"><a class="nav-link" href="#key-concepts">Key Concepts</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#workspace">Workspace</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#clusters">Clusters</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#notebooks">Notebooks</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#delta-lake">Delta Lake</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#databricks-runtime">Databricks Runtime</a></li>
+            <li class="nav-item"><a class="nav-link" href="#core-features">Core Features</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#unity-catalog">Unity Catalog</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#mlflow">MLflow Integration</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#workflows">Workflows & Jobs</a></li>
+            <li class="nav-item"><a class="nav-link" href="#getting-started">Getting Started</a></li>
+            <li class="nav-item"><a class="nav-link" href="#code-examples">Code Examples</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#python-spark">Python/PySpark</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#scala-spark">Scala/Spark</a></li>
+            <li class="nav-item"><a class="nav-link level-3" href="#sql">SQL</a></li>
+            <li class="nav-item"><a class="nav-link" href="#best-practices">Best Practices</a></li>
+            <li class="nav-item"><a class="nav-link" href="#use-cases">Use Cases</a></li>
+            <li class="nav-item"><a class="nav-link" href="#data-engineering">Data Engineering Use Cases</a></li>
+            <li class="nav-item"><a class="nav-link" href="#ml-ai">ML & AI Use Cases</a></li>
+            <li class="nav-item"><a class="nav-link" href="#security">Security</a></li>
+            <li class="nav-item"><a class="nav-link" href="#performance">Performance Optimization</a></li>
+            <li class="nav-item"><a class="nav-link" href="#cost-optimization">Cost Optimization</a></li>
+            <li class="nav-item"><a class="nav-link" href="#pitfalls">Common Pitfalls</a></li>
+            <li class="nav-item"><a class="nav-link" href="#comparisons">Comparisons</a></li>
+            <li class="nav-item"><a class="nav-link" href="#resources">Resources</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="height: calc(100vh - 56px);">
+        <div class="pt-4 pb-5">
+          
+          <section id="overview">
+            <h1>Azure Databricks</h1>
+            <p class="subtitle">Unified analytics platform for big data and AI - Apache Spark-based collaborative workspace</p>
+            
+            <div class="callout callout-info">
+              <strong>🎯 What is Azure Databricks?</strong><br>
+              Azure Databricks is a unified, open analytics platform for building, deploying, sharing, and maintaining enterprise-grade data, analytics, and AI solutions at scale. It integrates seamlessly with Azure services and provides an optimized Apache Spark environment with collaborative notebooks, workflows automation, and enterprise-grade security.
+            </div>
+
+            <p>Azure Databricks combines the power of Apache Spark with the scale and security of Microsoft Azure, enabling data engineers, data scientists, and analysts to collaborate on data pipelines, machine learning models, and analytics workloads.</p>
+
+            <h3>Why Azure Databricks?</h3>
+            <ul>
+              <li><strong>Unified Platform</strong> - Single environment for data engineering, data science, and business analytics</li>
+              <li><strong>Performance</strong> - Optimized Apache Spark with Photon engine for faster query execution</li>
+              <li><strong>Collaboration</strong> - Shared workspace with notebooks supporting Python, Scala, SQL, and R</li>
+              <li><strong>Integration</strong> - Native integration with Azure services (Storage, Key Vault, Active Directory, Synapse)</li>
+              <li><strong>Governance</strong> - Unity Catalog provides centralized data governance and lineage tracking</li>
+              <li><strong>Scalability</strong> - Auto-scaling clusters adapt to workload demands</li>
+              <li><strong>MLOps</strong> - Built-in MLflow for end-to-end machine learning lifecycle management</li>
+            </ul>
+          </section>
+
+          <section id="architecture">
+            <h2>Architecture</h2>
+            
+            <div class="diagram-container">
+              <div class="diagram-controls">
+                <button class="zoom-btn" onclick="zoomDiagram('arch-diagram', 1.2)">🔍 Zoom In</button>
+                <button class="zoom-btn" onclick="zoomDiagram('arch-diagram', 0.8)">🔎 Zoom Out</button>
+                <button class="zoom-btn" onclick="resetDiagram('arch-diagram')">↺ Reset</button>
+                <button class="zoom-btn" onclick="openDiagramModal('arch-diagram')">⛶ Fullscreen</button>
+              </div>
+              <div id="arch-diagram" class="mermaid">
+graph TB
+    subgraph "Azure Databricks Control Plane"
+        UI[Web UI]
+        API[REST API]
+        Jobs[Job Scheduler]
+        Cluster[Cluster Manager]
+    end
+    
+    subgraph "Azure Databricks Data Plane"
+        subgraph "Workspace"
+            Notebooks[Notebooks]
+            Repos[Git Repos]
+            Catalog[Unity Catalog]
+        end
+        
+        subgraph "Compute"
+            Driver[Driver Node]
+            Worker1[Worker Node 1]
+            Worker2[Worker Node 2]
+            WorkerN[Worker Node N]
+        end
+        
+        subgraph "Storage Layer"
+            DeltaLake[Delta Lake]
+            ADLS[Azure Data Lake Storage]
+            Blob[Azure Blob Storage]
+        end
+    end
+    
+    subgraph "Azure Services"
+        AAD[Azure Active Directory]
+        KeyVault[Azure Key Vault]
+        Monitor[Azure Monitor]
+        Synapse[Azure Synapse]
+    end
+    
+    UI --> Notebooks
+    API --> Jobs
+    Jobs --> Cluster
+    Cluster --> Driver
+    Driver --> Worker1
+    Driver --> Worker2
+    Driver --> WorkerN
+    
+    Notebooks --> DeltaLake
+    DeltaLake --> ADLS
+    DeltaLake --> Blob
+    
+    Catalog -.-> DeltaLake
+    AAD -.-> UI
+    KeyVault -.-> Cluster
+    Monitor -.-> Cluster
+    
+    style UI fill:#dbeafe
+    style Notebooks fill:#dcfce7
+    style DeltaLake fill:#fef3c7
+    style Driver fill:#fce7f3
+    style Catalog fill:#e9d5ff
+              </div>
+            </div>
+
+            <h3>Architecture Components</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="callout callout-info">
+                  <strong>Control Plane</strong><br>
+                  Managed by Databricks in Azure, includes web UI, cluster management, job scheduling, and notebook management. Handles metadata and orchestration.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>Data Plane</strong><br>
+                  Runs in your Azure subscription. Contains compute clusters (VMs), storage integrations, and processes your data. You control security and networking.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="key-concepts">
+            <h2>Key Concepts</h2>
+
+            <h3 id="workspace">Workspace</h3>
+            <p>A Workspace is the collaborative environment where teams organize and access Databricks assets:</p>
+            <ul>
+              <li><strong>Notebooks</strong> - Interactive documents combining code, visualizations, and markdown</li>
+              <li><strong>Libraries</strong> - Custom or third-party packages installed on clusters</li>
+              <li><strong>Repos</strong> - Git integration for version control</li>
+              <li><strong>Experiments</strong> - Track ML model training runs</li>
+              <li><strong>Data</strong> - Access to tables, databases, and external data sources</li>
+            </ul>
+
+            <h3 id="clusters">Clusters</h3>
+            <p>Compute resources that run your Spark workloads:</p>
+            
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Cluster Type</th>
+                  <th>Use Case</th>
+                  <th>Characteristics</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge bg-primary">All-Purpose</span></td>
+                  <td>Interactive analysis, development</td>
+                  <td>Persistent, manually started/stopped, shareable across users</td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-success">Job</span></td>
+                  <td>Automated workflows, scheduled jobs</td>
+                  <td>Created for job, terminated after completion, cost-effective</td>
+                </tr>
+                <tr>
+                  <td><span class="badge bg-info">SQL Warehouse</span></td>
+                  <td>SQL queries, BI analytics</td>
+                  <td>Optimized for SQL workloads, auto-scaling, serverless option</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="callout callout-warning">
+              <strong>⚠️ Cluster Costs</strong><br>
+              All-Purpose clusters incur higher DBU (Databricks Unit) costs than Job clusters. Use Job clusters for production workloads and terminate All-Purpose clusters when not in use.
+            </div>
+
+            <h3 id="notebooks">Notebooks</h3>
+            <p>Interactive documents for code development and collaboration:</p>
+            <ul>
+              <li><strong>Multi-language</strong> - Support Python, Scala, SQL, and R in the same notebook</li>
+              <li><strong>Rich visualizations</strong> - Built-in plotting with display() function</li>
+              <li><strong>Magic commands</strong> - <code>%python</code>, <code>%sql</code>, <code>%sh</code>, <code>%md</code> for cell-level language switching</li>
+              <li><strong>Widgets</strong> - Interactive parameters for dynamic queries</li>
+              <li><strong>Collaboration</strong> - Real-time co-editing and commenting</li>
+            </ul>
+
+            <h3 id="delta-lake">Delta Lake</h3>
+            <p>Open-source storage layer that brings ACID transactions to data lakes:</p>
+            
+            <div class="row">
+              <div class="col-md-4">
+                <div class="callout callout-success">
+                  <strong>✅ ACID Transactions</strong><br>
+                  Ensures data consistency with serializable isolation levels
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="callout callout-success">
+                  <strong>✅ Time Travel</strong><br>
+                  Query and restore previous versions of data
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="callout callout-success">
+                  <strong>✅ Schema Evolution</strong><br>
+                  Automatically handle schema changes
+                </div>
+              </div>
+            </div>
+
+            <h3 id="databricks-runtime">Databricks Runtime</h3>
+            <p>Pre-configured Apache Spark environment optimized for Azure:</p>
+            <ul>
+              <li><strong>Standard Runtime</strong> - Optimized Spark with performance improvements</li>
+              <li><strong>ML Runtime</strong> - Includes popular ML libraries (TensorFlow, PyTorch, scikit-learn)</li>
+              <li><strong>Photon Runtime</strong> - Vectorized query engine for 2-10x faster SQL and DataFrame operations</li>
+              <li><strong>GPU Runtime</strong> - For deep learning and GPU-accelerated workloads</li>
+            </ul>
+          </section>
+
+          <section id="core-features">
+            <h2>Core Features</h2>
+
+            <h3 id="unity-catalog">Unity Catalog</h3>
+            <p>Unified governance solution for data and AI assets:</p>
+            
+            <div class="diagram-container">
+              <div class="diagram-controls">
+                <button class="zoom-btn" onclick="zoomDiagram('unity-diagram', 1.2)">🔍 Zoom In</button>
+                <button class="zoom-btn" onclick="zoomDiagram('unity-diagram', 0.8)">🔎 Zoom Out</button>
+                <button class="zoom-btn" onclick="resetDiagram('unity-diagram')">↺ Reset</button>
+                <button class="zoom-btn" onclick="openDiagramModal('unity-diagram')">⛶ Fullscreen</button>
+              </div>
+              <div id="unity-diagram" class="mermaid">
+graph LR
+    subgraph "Unity Catalog Hierarchy"
+        Meta[Metastore]
+        Meta --> Catalog1[Catalog: Production]
+        Meta --> Catalog2[Catalog: Development]
+        
+        Catalog1 --> Schema1[Schema: Sales]
+        Catalog1 --> Schema2[Schema: Marketing]
+        
+        Schema1 --> Table1[Table: customers]
+        Schema1 --> Table2[Table: orders]
+        Schema1 --> View1[View: sales_summary]
+        
+        Schema2 --> Table3[Table: campaigns]
+        Schema2 --> Function1[Function: calculate_roi]
+    end
+    
+    subgraph "Access Control"
+        Users[Users & Groups]
+        Permissions[Permissions & Grants]
+        
+        Users --> Permissions
+        Permissions -.-> Catalog1
+        Permissions -.-> Schema1
+        Permissions -.-> Table1
+    end
+    
+    style Meta fill:#fce7f3
+    style Catalog1 fill:#dbeafe
+    style Schema1 fill:#dcfce7
+    style Table1 fill:#fef3c7
+              </div>
+            </div>
+
+            <p><strong>Unity Catalog Features:</strong></p>
+            <ul>
+              <li><strong>Centralized Governance</strong> - Single place to manage all data assets across workspaces</li>
+              <li><strong>Fine-grained Access Control</strong> - Grant permissions at metastore, catalog, schema, or table level</li>
+              <li><strong>Data Lineage</strong> - Track data flow from source to dashboard</li>
+              <li><strong>Audit Logging</strong> - Monitor who accessed what data and when</li>
+              <li><strong>Data Discovery</strong> - Search and explore data assets across the organization</li>
+            </ul>
+
+            <h3 id="mlflow">MLflow Integration</h3>
+            <p>Built-in platform for managing the ML lifecycle:</p>
+            
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Component</th>
+                  <th>Purpose</th>
+                  <th>Key Features</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Tracking</strong></td>
+                  <td>Log experiments and metrics</td>
+                  <td>Parameters, metrics, artifacts, model versioning</td>
+                </tr>
+                <tr>
+                  <td><strong>Projects</strong></td>
+                  <td>Package ML code</td>
+                  <td>Reproducible runs, dependency management</td>
+                </tr>
+                <tr>
+                  <td><strong>Models</strong></td>
+                  <td>Deploy ML models</td>
+                  <td>Model registry, serving, A/B testing</td>
+                </tr>
+                <tr>
+                  <td><strong>Model Registry</strong></td>
+                  <td>Centralized model store</td>
+                  <td>Versioning, staging, production promotion</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3 id="workflows">Workflows & Jobs</h3>
+            <p>Orchestrate data pipelines and automate workloads:</p>
+            <ul>
+              <li><strong>Scheduling</strong> - Cron-based or manual triggers</li>
+              <li><strong>Dependencies</strong> - Define task dependencies and retry policies</li>
+              <li><strong>Multi-task Jobs</strong> - Chain notebooks, JARs, Python scripts</li>
+              <li><strong>Monitoring</strong> - Real-time job status and email alerts</li>
+              <li><strong>Parameters</strong> - Pass parameters between tasks</li>
+            </ul>
+          </section>
+
+          <section id="getting-started">
+            <h2>Getting Started</h2>
+            
+            <h3>1. Create Azure Databricks Workspace</h3>
+            <pre><code># Azure CLI
+az databricks workspace create \
+  --resource-group myResourceGroup \
+  --name myDatabricksWorkspace \
+  --location eastus \
+  --sku premium
+
+# Verify deployment
+az databricks workspace show \
+  --resource-group myResourceGroup \
+  --name myDatabricksWorkspace</code></pre>
+
+            <h3>2. Create a Cluster</h3>
+            <ol>
+              <li>Navigate to your Databricks workspace URL</li>
+              <li>Click <strong>Compute</strong> in the sidebar</li>
+              <li>Click <strong>Create Cluster</strong></li>
+              <li>Configure cluster settings:
+                <ul>
+                  <li>Cluster name</li>
+                  <li>Cluster mode (Standard or High Concurrency)</li>
+                  <li>Databricks Runtime version</li>
+                  <li>Node types and count</li>
+                  <li>Auto-termination (recommended: 30 minutes)</li>
+                </ul>
+              </li>
+            </ol>
+
+            <h3>3. Create Your First Notebook</h3>
+            <ol>
+              <li>Click <strong>Workspace</strong> in the sidebar</li>
+              <li>Right-click folder → <strong>Create</strong> → <strong>Notebook</strong></li>
+              <li>Name your notebook and select language</li>
+              <li>Attach to your cluster</li>
+              <li>Start coding!</li>
+            </ol>
+          </section>
+
+          <section id="code-examples">
+            <h2>Code Examples</h2>
+
+            <h3 id="python-spark">Python/PySpark Examples</h3>
+            
+            <h4>Reading and Writing Data with Delta Lake</h4>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="py-read-tab" data-bs-toggle="tab" data-bs-target="#py-read" type="button">Read Data</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="py-write-tab" data-bs-toggle="tab" data-bs-target="#py-write" type="button">Write Data</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="py-transform-tab" data-bs-toggle="tab" data-bs-target="#py-transform" type="button">Transform Data</button>
+              </li>
+            </ul>
+            <div class="tab-content mt-3">
+              <div class="tab-pane fade show active" id="py-read">
+                <pre><code># Read from Delta Lake table
+df = spark.read.format("delta").load("/mnt/delta/sales")
+
+# Or use table name (Unity Catalog)
+df = spark.table("production.sales.orders")
+
+# Read with time travel
+df_yesterday = spark.read.format("delta") \
+    .option("timestampAsOf", "2024-02-13") \
+    .load("/mnt/delta/sales")
+
+# Read specific version
+df_v5 = spark.read.format("delta") \
+    .option("versionAsOf", 5) \
+    .load("/mnt/delta/sales")
+
+# Display sample data
+display(df.limit(10))</code></pre>
+              </div>
+              <div class="tab-pane fade" id="py-write">
+                <pre><code># Write DataFrame to Delta Lake
+df.write.format("delta") \
+    .mode("overwrite") \
+    .save("/mnt/delta/sales")
+
+# Write to Unity Catalog table
+df.write.format("delta") \
+    .mode("append") \
+    .saveAsTable("production.sales.orders")
+
+# Partition data for performance
+df.write.format("delta") \
+    .mode("overwrite") \
+    .partitionBy("year", "month") \
+    .save("/mnt/delta/sales")
+
+# Write with optimization
+df.write.format("delta") \
+    .mode("overwrite") \
+    .option("optimizeWrite", "true") \
+    .option("mergeSchema", "true") \
+    .saveAsTable("production.sales.orders")</code></pre>
+              </div>
+              <div class="tab-pane fade" id="py-transform">
+                <pre><code># Common transformations
+from pyspark.sql import functions as F
+
+# Filter and aggregate
+result = df.filter(F.col("amount") > 1000) \
+    .groupBy("customer_id", "region") \
+    .agg(
+        F.sum("amount").alias("total_sales"),
+        F.count("*").alias("order_count"),
+        F.avg("amount").alias("avg_order_value")
+    )
+
+# Window functions
+from pyspark.sql.window import Window
+
+window_spec = Window.partitionBy("customer_id") \
+    .orderBy(F.desc("order_date"))
+
+df_ranked = df.withColumn(
+    "rank",
+    F.row_number().over(window_spec)
+)
+
+# Join datasets
+customers = spark.table("production.sales.customers")
+orders_with_customers = df.join(
+    customers,
+    on="customer_id",
+    how="left"
+)
+
+display(result)</code></pre>
+              </div>
+            </div>
+
+            <h4>UPSERT Operations (Merge)</h4>
+            <pre><code>from delta.tables import DeltaTable
+
+# Source data
+updates_df = spark.read.format("parquet").load("/mnt/incoming/updates")
+
+# Target Delta table
+target_table = DeltaTable.forPath(spark, "/mnt/delta/customers")
+
+# Perform UPSERT (merge)
+target_table.alias("target").merge(
+    updates_df.alias("updates"),
+    "target.customer_id = updates.customer_id"
+).whenMatchedUpdate(
+    set = {
+        "name": "updates.name",
+        "email": "updates.email",
+        "updated_at": "current_timestamp()"
+    }
+).whenNotMatchedInsert(
+    values = {
+        "customer_id": "updates.customer_id",
+        "name": "updates.name",
+        "email": "updates.email",
+        "created_at": "current_timestamp()",
+        "updated_at": "current_timestamp()"
+    }
+).execute()
+
+print("Merge completed successfully")</code></pre>
+
+            <h4>MLflow Model Training</h4>
+            <pre><code>import mlflow
+import mlflow.sklearn
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, f1_score
+
+# Load data
+df = spark.table("production.ml.training_data").toPandas()
+X = df.drop("target", axis=1)
+y = df["target"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Start MLflow run
+with mlflow.start_run(run_name="RandomForest_v1"):
+    # Log parameters
+    n_estimators = 100
+    max_depth = 10
+    mlflow.log_param("n_estimators", n_estimators)
+    mlflow.log_param("max_depth", max_depth)
+    
+    # Train model
+    model = RandomForestClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
+        random_state=42
+    )
+    model.fit(X_train, y_train)
+    
+    # Evaluate
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    
+    # Log metrics
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("f1_score", f1)
+    
+    # Log model
+    mlflow.sklearn.log_model(
+        model,
+        "random_forest_model",
+        registered_model_name="CustomerChurnPredictor"
+    )
+    
+    print(f"Model trained - Accuracy: {accuracy:.4f}, F1: {f1:.4f}")</code></pre>
+
+            <h3 id="scala-spark">Scala/Spark Examples</h3>
+            
+            <h4>Reading and Processing Data</h4>
+            <pre><code>// Read Delta table
+val df = spark.read.format("delta")
+  .load("/mnt/delta/sales")
+
+// Transformations
+import org.apache.spark.sql.functions._
+
+val aggregated = df
+  .filter(col("amount") > 1000)
+  .groupBy("customer_id", "region")
+  .agg(
+    sum("amount").as("total_sales"),
+    count("*").as("order_count"),
+    avg("amount").as("avg_order_value")
+  )
+
+// Write results
+aggregated.write
+  .format("delta")
+  .mode("overwrite")
+  .partitionBy("region")
+  .saveAsTable("production.sales.aggregated_orders")
+
+display(aggregated)</code></pre>
+
+            <h4>Structured Streaming</h4>
+            <pre><code>import org.apache.spark.sql.streaming.Trigger
+import org.apache.spark.sql.types._
+
+// Define schema
+val schema = new StructType()
+  .add("timestamp", TimestampType)
+  .add("customer_id", StringType)
+  .add("event_type", StringType)
+  .add("amount", DoubleType)
+
+// Read streaming data
+val streamDF = spark.readStream
+  .format("json")
+  .schema(schema)
+  .option("maxFilesPerTrigger", 10)
+  .load("/mnt/streaming/events")
+
+// Process stream
+val processedStream = streamDF
+  .withWatermark("timestamp", "10 minutes")
+  .groupBy(
+    window(col("timestamp"), "5 minutes"),
+    col("event_type")
+  )
+  .agg(
+    count("*").as("event_count"),
+    sum("amount").as("total_amount")
+  )
+
+// Write to Delta Lake
+val query = processedStream.writeStream
+  .format("delta")
+  .outputMode("append")
+  .option("checkpointLocation", "/mnt/checkpoints/events")
+  .trigger(Trigger.ProcessingTime("30 seconds"))
+  .table("production.streaming.event_aggregates")
+
+query.awaitTermination()</code></pre>
+
+            <h3 id="sql">SQL Examples</h3>
+            
+            <h4>Delta Lake Operations</h4>
+            <pre><code>-- Create Delta table
+CREATE TABLE production.sales.orders (
+  order_id STRING,
+  customer_id STRING,
+  order_date DATE,
+  amount DECIMAL(10, 2),
+  region STRING,
+  status STRING
+)
+USING DELTA
+PARTITIONED BY (region)
+LOCATION '/mnt/delta/orders';
+
+-- Insert data
+INSERT INTO production.sales.orders
+VALUES 
+  ('ORD001', 'CUST123', '2024-02-14', 1500.00, 'EAST', 'COMPLETED'),
+  ('ORD002', 'CUST456', '2024-02-14', 2300.50, 'WEST', 'PENDING');
+
+-- MERGE operation (UPSERT)
+MERGE INTO production.sales.orders AS target
+USING updates.orders AS source
+ON target.order_id = source.order_id
+WHEN MATCHED THEN
+  UPDATE SET
+    status = source.status,
+    amount = source.amount
+WHEN NOT MATCHED THEN
+  INSERT *;
+
+-- Time travel
+SELECT * FROM production.sales.orders VERSION AS OF 5;
+SELECT * FROM production.sales.orders TIMESTAMP AS OF '2024-02-13';
+
+-- Optimize table
+OPTIMIZE production.sales.orders
+ZORDER BY (customer_id, order_date);
+
+-- Vacuum old files (7 days retention)
+VACUUM production.sales.orders RETAIN 168 HOURS;</code></pre>
+
+            <h4>Advanced Analytics</h4>
+            <pre><code>-- Window functions for ranking
+SELECT 
+  customer_id,
+  order_date,
+  amount,
+  ROW_NUMBER() OVER (
+    PARTITION BY customer_id 
+    ORDER BY order_date DESC
+  ) as recent_order_rank,
+  SUM(amount) OVER (
+    PARTITION BY customer_id 
+    ORDER BY order_date
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) as running_total
+FROM production.sales.orders
+WHERE order_date >= '2024-01-01';
+
+-- Customer segmentation with CASE
+SELECT 
+  customer_id,
+  SUM(amount) as total_spent,
+  COUNT(*) as order_count,
+  CASE 
+    WHEN SUM(amount) > 10000 THEN 'Premium'
+    WHEN SUM(amount) > 5000 THEN 'Gold'
+    WHEN SUM(amount) > 1000 THEN 'Silver'
+    ELSE 'Bronze'
+  END as customer_tier
+FROM production.sales.orders
+WHERE status = 'COMPLETED'
+GROUP BY customer_id
+ORDER BY total_spent DESC;
+
+-- Join with external data source
+SELECT 
+  o.order_id,
+  o.amount,
+  c.name as customer_name,
+  c.email,
+  p.product_name
+FROM production.sales.orders o
+INNER JOIN production.sales.customers c 
+  ON o.customer_id = c.customer_id
+INNER JOIN production.catalog.products p 
+  ON o.product_id = p.product_id
+WHERE o.order_date >= CURRENT_DATE - INTERVAL 30 DAYS;</code></pre>
+          </section>
+
+          <section id="best-practices">
+            <h2>Best Practices</h2>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>✅ Cluster Configuration</strong>
+                  <ul>
+                    <li>Use Job clusters for production workloads</li>
+                    <li>Enable auto-termination on All-Purpose clusters</li>
+                    <li>Use cluster pools for faster startup</li>
+                    <li>Configure auto-scaling based on workload patterns</li>
+                    <li>Use Photon runtime for SQL-heavy workloads</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>✅ Data Organization</strong>
+                  <ul>
+                    <li>Use Unity Catalog for centralized governance</li>
+                    <li>Partition large tables by date or region</li>
+                    <li>Use Delta Lake for all production data</li>
+                    <li>Implement Bronze-Silver-Gold medallion architecture</li>
+                    <li>Define clear naming conventions</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>✅ Performance Optimization</strong>
+                  <ul>
+                    <li>Use <code>OPTIMIZE</code> and <code>Z-ORDER</code> regularly</li>
+                    <li>Enable adaptive query execution</li>
+                    <li>Cache frequently accessed data</li>
+                    <li>Use broadcast joins for small tables</li>
+                    <li>Minimize shuffles with proper partitioning</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>✅ Code Quality</strong>
+                  <ul>
+                    <li>Use Repos for version control</li>
+                    <li>Modularize code into functions</li>
+                    <li>Add comprehensive logging</li>
+                    <li>Implement error handling and retries</li>
+                    <li>Document complex transformations</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout callout-info mt-3">
+              <strong>🎯 Medallion Architecture</strong><br>
+              Implement a layered data architecture:
+              <ul>
+                <li><strong>Bronze</strong> - Raw data ingestion (append-only, minimal transformations)</li>
+                <li><strong>Silver</strong> - Cleaned and enriched data (validated, deduplicated)</li>
+                <li><strong>Gold</strong> - Business-level aggregates (optimized for analytics)</li>
+              </ul>
+              This pattern provides data quality, auditability, and performance at each layer.
+            </div>
+          </section>
+
+          <section id="use-cases">
+            <h2>Use Cases</h2>
+
+            <h3 id="data-engineering">Data Engineering Use Cases</h3>
+            
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Use Case</th>
+                  <th>Description</th>
+                  <th>Key Features Used</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>ETL/ELT Pipelines</strong></td>
+                  <td>Extract, transform, and load data from various sources</td>
+                  <td>Delta Lake, Workflows, Auto Loader</td>
+                </tr>
+                <tr>
+                  <td><strong>Real-time Streaming</strong></td>
+                  <td>Process event streams from IoT, logs, or transactions</td>
+                  <td>Structured Streaming, Delta Lake, Event Hubs</td>
+                </tr>
+                <tr>
+                  <td><strong>Data Lake Modernization</strong></td>
+                  <td>Convert data lakes to lakehouse architecture</td>
+                  <td>Delta Lake, Unity Catalog, ACID transactions</td>
+                </tr>
+                <tr>
+                  <td><strong>Data Quality & Validation</strong></td>
+                  <td>Ensure data quality with automated checks</td>
+                  <td>Delta Lake constraints, expectations, workflows</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3 id="ml-ai">ML & AI Use Cases</h3>
+            
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Use Case</th>
+                  <th>Description</th>
+                  <th>Key Features Used</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Model Training</strong></td>
+                  <td>Train ML models on large datasets</td>
+                  <td>ML Runtime, MLflow, distributed training</td>
+                </tr>
+                <tr>
+                  <td><strong>Feature Engineering</strong></td>
+                  <td>Create and manage ML features at scale</td>
+                  <td>Feature Store, Delta Lake, Spark</td>
+                </tr>
+                <tr>
+                  <td><strong>Model Deployment</strong></td>
+                  <td>Deploy models for batch or real-time inference</td>
+                  <td>MLflow Model Registry, Model Serving</td>
+                </tr>
+                <tr>
+                  <td><strong>AutoML</strong></td>
+                  <td>Automate model selection and hyperparameter tuning</td>
+                  <td>Databricks AutoML, MLflow</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Business Analytics Use Cases</h3>
+            <ul>
+              <li><strong>BI Dashboards</strong> - SQL Warehouses for fast interactive queries</li>
+              <li><strong>Customer Analytics</strong> - Segmentation, churn prediction, lifetime value</li>
+              <li><strong>Financial Reporting</strong> - Aggregations and regulatory compliance</li>
+              <li><strong>Operational Analytics</strong> - Real-time monitoring and alerting</li>
+            </ul>
+          </section>
+
+          <section id="security">
+            <h2>Security</h2>
+
+            <div class="diagram-container">
+              <div class="diagram-controls">
+                <button class="zoom-btn" onclick="zoomDiagram('security-diagram', 1.2)">🔍 Zoom In</button>
+                <button class="zoom-btn" onclick="zoomDiagram('security-diagram', 0.8)">🔎 Zoom Out</button>
+                <button class="zoom-btn" onclick="resetDiagram('security-diagram')">↺ Reset</button>
+                <button class="zoom-btn" onclick="openDiagramModal('security-diagram')">⛶ Fullscreen</button>
+              </div>
+              <div id="security-diagram" class="mermaid">
+graph TD
+    subgraph "Identity & Access"
+        AAD[Azure Active Directory]
+        SCIM[SCIM Provisioning]
+        SSO[Single Sign-On]
+    end
+    
+    subgraph "Data Protection"
+        Encryption[Encryption at Rest]
+        TLS[TLS in Transit]
+        KeyVault[Azure Key Vault]
+    end
+    
+    subgraph "Network Security"
+        VNet[VNet Injection]
+        PrivateLink[Private Link]
+        NSG[Network Security Groups]
+    end
+    
+    subgraph "Governance"
+        RBAC[Role-Based Access Control]
+        Unity[Unity Catalog]
+        Audit[Audit Logs]
+    end
+    
+    AAD --> RBAC
+    SCIM --> AAD
+    SSO --> AAD
+    
+    KeyVault --> Encryption
+    Encryption --> Data[(Data Lake)]
+    TLS --> Data
+    
+    VNet --> Cluster[Databricks Cluster]
+    PrivateLink --> Cluster
+    NSG --> VNet
+    
+    RBAC --> Unity
+    Unity --> Data
+    Audit --> Monitor[Azure Monitor]
+    
+    style AAD fill:#dbeafe
+    style Unity fill:#dcfce7
+    style Encryption fill:#fef3c7
+    style VNet fill:#fce7f3
+              </div>
+            </div>
+
+            <h3>Security Best Practices</h3>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Authentication & Authorization</h4>
+                <ul>
+                  <li><strong>Azure AD Integration</strong> - Use SSO and conditional access</li>
+                  <li><strong>SCIM Provisioning</strong> - Automate user and group management</li>
+                  <li><strong>Service Principals</strong> - Use for automated workflows</li>
+                  <li><strong>Personal Access Tokens</strong> - Rotate regularly, use expiration</li>
+                  <li><strong>Unity Catalog ACLs</strong> - Grant minimal necessary permissions</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h4>Network Security</h4>
+                <ul>
+                  <li><strong>VNet Injection</strong> - Deploy clusters in your VNet</li>
+                  <li><strong>Private Link</strong> - Private connectivity to control plane</li>
+                  <li><strong>Network Security Groups</strong> - Control inbound/outbound traffic</li>
+                  <li><strong>IP Access Lists</strong> - Whitelist trusted IPs</li>
+                  <li><strong>Secure Cluster Connectivity</strong> - No public IPs on workers</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="callout callout-warning mt-3">
+              <strong>⚠️ Secrets Management</strong><br>
+              Never hardcode credentials in notebooks. Use:
+              <ul>
+                <li><strong>Databricks Secrets</strong> - Store secrets in Databricks-managed scope</li>
+                <li><strong>Azure Key Vault</strong> - Integrate with Key Vault-backed scope</li>
+                <li><strong>Managed Identity</strong> - Use Azure managed identities for authentication</li>
+              </ul>
+              <code>dbutils.secrets.get(scope="my-scope", key="storage-key")</code>
+            </div>
+          </section>
+
+          <section id="performance">
+            <h2>Performance Optimization</h2>
+
+            <h3>Table Optimization</h3>
+            <pre><code>-- Compact small files
+OPTIMIZE production.sales.orders;
+
+-- Z-ORDER for better data skipping
+OPTIMIZE production.sales.orders
+ZORDER BY (customer_id, order_date);
+
+-- Check optimization impact
+DESCRIBE DETAIL production.sales.orders;
+
+-- Analyze table statistics
+ANALYZE TABLE production.sales.orders COMPUTE STATISTICS;</code></pre>
+
+            <h3>Cluster Configuration Tips</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Recommended Configuration</th>
+                  <th>Rationale</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>SQL Analytics</td>
+                  <td>Photon runtime, SQL Warehouse</td>
+                  <td>2-10x faster query performance</td>
+                </tr>
+                <tr>
+                  <td>ML Training</td>
+                  <td>ML Runtime, GPU instances</td>
+                  <td>Pre-installed libraries, hardware acceleration</td>
+                </tr>
+                <tr>
+                  <td>ETL Pipelines</td>
+                  <td>Standard runtime, auto-scaling</td>
+                  <td>Cost-effective, handles variable loads</td>
+                </tr>
+                <tr>
+                  <td>Interactive Analysis</td>
+                  <td>High concurrency, cluster pools</td>
+                  <td>Multi-user support, fast startup</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Code Optimization Techniques</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>✅ DO</strong>
+                  <ul>
+                    <li>Use filter pushdown (filter early)</li>
+                    <li>Cache intermediate results used multiple times</li>
+                    <li>Use broadcast joins for small tables (&lt;10MB)</li>
+                    <li>Leverage Adaptive Query Execution</li>
+                    <li>Use columnar formats (Parquet, Delta)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="callout callout-danger">
+                  <strong>❌ DON'T</strong>
+                  <ul>
+                    <li>Use <code>collect()</code> on large datasets</li>
+                    <li>Create too many small files (use optimize)</li>
+                    <li>Over-partition data</li>
+                    <li>Use UDFs when built-in functions work</li>
+                    <li>Read full tables when filtering is possible</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <h3>Caching Strategy</h3>
+            <pre><code># Cache DataFrame in memory
+df = spark.table("production.sales.large_table")
+df.cache()
+df.count()  # Materialize cache
+
+# Use later
+result1 = df.filter(col("region") == "EAST")
+result2 = df.groupBy("category").count()
+
+# Unpersist when done
+df.unpersist()</code></pre>
+          </section>
+
+          <section id="cost-optimization">
+            <h2>Cost Optimization</h2>
+
+            <div class="diagram-container">
+              <div class="mermaid">
+pie title "Typical Databricks Cost Breakdown"
+    "Compute (VMs)" : 60
+    "DBUs (Databricks Units)" : 30
+    "Storage" : 8
+    "Network" : 2
+              </div>
+            </div>
+
+            <h3>Cost Optimization Strategies</h3>
+            
+            <div class="row">
+              <div class="col-md-4">
+                <div class="callout callout-success">
+                  <strong>💰 Cluster Management</strong>
+                  <ul>
+                    <li>Use Job clusters for production</li>
+                    <li>Enable auto-termination</li>
+                    <li>Use cluster pools</li>
+                    <li>Right-size cluster nodes</li>
+                    <li>Use Spot instances for dev/test</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="callout callout-success">
+                  <strong>💰 Storage Optimization</strong>
+                  <ul>
+                    <li>Use Delta Lake VACUUM</li>
+                    <li>Implement data retention policies</li>
+                    <li>Use compression (Snappy, Zstd)</li>
+                    <li>Archive cold data to cheaper tiers</li>
+                    <li>Remove duplicate data</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="callout callout-success">
+                  <strong>💰 Workload Optimization</strong>
+                  <ul>
+                    <li>Optimize queries (reduce data scans)</li>
+                    <li>Schedule jobs during off-peak</li>
+                    <li>Use incremental processing</li>
+                    <li>Monitor and alert on costs</li>
+                    <li>Use SQL Warehouses serverless</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <h3>DBU Comparison</h3>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Workload Type</th>
+                  <th>DBUs per Hour</th>
+                  <th>Best For</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Jobs Compute (Job Cluster)</td>
+                  <td>0.07 - 0.30</td>
+                  <td>Production ETL, scheduled workloads</td>
+                </tr>
+                <tr>
+                  <td>All-Purpose Compute</td>
+                  <td>0.40 - 0.75</td>
+                  <td>Interactive development, ad-hoc queries</td>
+                </tr>
+                <tr>
+                  <td>SQL Compute (Serverless)</td>
+                  <td>0.22 - 0.88</td>
+                  <td>BI queries, dashboards</td>
+                </tr>
+                <tr>
+                  <td>Jobs Light Compute</td>
+                  <td>0.05</td>
+                  <td>Simple tasks, orchestration</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="callout callout-info">
+              <strong>💡 Cost Monitoring</strong><br>
+              Use Azure Cost Management and Databricks account console to:
+              <ul>
+                <li>Track DBU consumption by workspace/user/cluster</li>
+                <li>Set budget alerts and thresholds</li>
+                <li>Identify idle or underutilized clusters</li>
+                <li>Analyze cost trends over time</li>
+              </ul>
+            </div>
+          </section>
+
+          <section id="pitfalls">
+            <h2>Common Pitfalls</h2>
+
+            <div class="callout callout-danger">
+              <strong>❌ Forgetting to Terminate Clusters</strong><br>
+              All-Purpose clusters continue to incur costs even when idle. Always set auto-termination (recommended: 30 minutes) or manually terminate when not in use.
+            </div>
+
+            <div class="callout callout-danger">
+              <strong>❌ Not Using Delta Lake</strong><br>
+              Using Parquet or CSV without Delta Lake loses ACID transactions, time travel, and performance optimizations. Always use Delta Lake for production data.
+            </div>
+
+            <div class="callout callout-danger">
+              <strong>❌ Poor Partitioning Strategy</strong><br>
+              Over-partitioning creates too many small files (slow reads). Under-partitioning creates large files (slow writes). Aim for 128MB-1GB file sizes.
+            </div>
+
+            <div class="callout callout-danger">
+              <strong>❌ Ignoring OPTIMIZE and VACUUM</strong><br>
+              Delta tables accumulate small files over time. Run <code>OPTIMIZE</code> regularly (weekly) and <code>VACUUM</code> to clean up old files beyond retention period.
+            </div>
+
+            <div class="callout callout-danger">
+              <strong>❌ Hardcoding Credentials</strong><br>
+              Never store credentials in notebooks or code. Use Databricks Secrets or Azure Key Vault integration for secure credential management.
+            </div>
+
+            <div class="callout callout-danger">
+              <strong>❌ Not Using Unity Catalog</strong><br>
+              Without Unity Catalog, you lose centralized governance, fine-grained access control, and data lineage tracking—critical for enterprise deployments.
+            </div>
+
+            <div class="callout callout-danger">
+              <strong>❌ Using collect() on Large DataFrames</strong><br>
+              <code>collect()</code> brings all data to the driver, causing out-of-memory errors. Use <code>take()</code>, <code>limit()</code>, or process distributedly instead.
+            </div>
+          </section>
+
+          <section id="comparisons">
+            <h2>Comparisons</h2>
+
+            <h3>Azure Databricks vs. Azure Synapse Analytics</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Azure Databricks</th>
+                  <th>Azure Synapse Analytics</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Primary Use Case</strong></td>
+                  <td>Big data processing, ML, data engineering</td>
+                  <td>Data warehousing, BI analytics</td>
+                </tr>
+                <tr>
+                  <td><strong>Engine</strong></td>
+                  <td>Apache Spark, Photon</td>
+                  <td>SQL pools, Spark pools, serverless</td>
+                </tr>
+                <tr>
+                  <td><strong>Programming</strong></td>
+                  <td>Python, Scala, SQL, R</td>
+                  <td>Primarily SQL, some Spark</td>
+                </tr>
+                <tr>
+                  <td><strong>ML Capabilities</strong></td>
+                  <td>Extensive (MLflow, AutoML, distributed)</td>
+                  <td>Limited (Azure ML integration)</td>
+                </tr>
+                <tr>
+                  <td><strong>Collaboration</strong></td>
+                  <td>Notebooks, Git integration, co-editing</td>
+                  <td>SQL scripts, pipelines</td>
+                </tr>
+                <tr>
+                  <td><strong>Storage</strong></td>
+                  <td>Delta Lake, ADLS, external</td>
+                  <td>Dedicated SQL pools, Delta Lake</td>
+                </tr>
+                <tr>
+                  <td><strong>Best For</strong></td>
+                  <td>Data science teams, complex transformations</td>
+                  <td>SQL-first analytics, enterprise DW</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>When to Choose What?</h3>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="callout callout-info">
+                  <strong>Choose Azure Databricks When:</strong>
+                  <ul>
+                    <li>You need advanced ML and AI capabilities</li>
+                    <li>Your team works with Python, Scala, or Spark</li>
+                    <li>You have complex data transformations</li>
+                    <li>You need streaming data processing</li>
+                    <li>You want collaborative notebooks</li>
+                    <li>You require MLOps with MLflow</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="callout callout-success">
+                  <strong>Choose Azure Synapse When:</strong>
+                  <ul>
+                    <li>You primarily use SQL for analytics</li>
+                    <li>You need a traditional data warehouse</li>
+                    <li>Your team is SQL-focused</li>
+                    <li>You want tight Power BI integration</li>
+                    <li>You need serverless SQL queries</li>
+                    <li>You prefer an all-in-one analytics service</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout callout-warning">
+              <strong>💡 Hybrid Approach</strong><br>
+              Many organizations use both: Databricks for data engineering and ML, Synapse for data warehousing and BI. They can share data via Delta Lake and ADLS.
+            </div>
+          </section>
+
+          <section id="resources">
+            <h2>Resources</h2>
+
+            <h3>Official Documentation</h3>
+            <ul>
+              <li><a href="https://docs.microsoft.com/azure/databricks/" target="_blank">Azure Databricks Documentation</a> - Comprehensive guide from Microsoft</li>
+              <li><a href="https://docs.databricks.com/" target="_blank">Databricks Documentation</a> - Official Databricks docs</li>
+              <li><a href="https://docs.delta.io/" target="_blank">Delta Lake Documentation</a> - Delta Lake open-source project</li>
+              <li><a href="https://mlflow.org/docs/latest/index.html" target="_blank">MLflow Documentation</a> - MLflow platform guide</li>
+            </ul>
+
+            <h3>Learning Resources</h3>
+            <ul>
+              <li><a href="https://learn.microsoft.com/training/paths/data-engineer-azure-databricks/" target="_blank">Microsoft Learn: Data Engineering with Databricks</a></li>
+              <li><a href="https://academy.databricks.com/" target="_blank">Databricks Academy</a> - Free and paid training courses</li>
+              <li><a href="https://www.databricks.com/learn/training/lakehouse-fundamentals" target="_blank">Lakehouse Fundamentals</a> - Free certification course</li>
+            </ul>
+
+            <h3>Community & Support</h3>
+            <ul>
+              <li><a href="https://community.databricks.com/" target="_blank">Databricks Community Forum</a> - Ask questions, share knowledge</li>
+              <li><a href="https://github.com/databricks" target="_blank">Databricks GitHub</a> - Open-source projects and examples</li>
+              <li><a href="https://stackoverflow.com/questions/tagged/azure-databricks" target="_blank">Stack Overflow</a> - Q&A with azure-databricks tag</li>
+            </ul>
+
+            <h3>Best Practice Guides</h3>
+            <ul>
+              <li><a href="https://docs.microsoft.com/azure/databricks/scenarios/best-practices" target="_blank">Azure Databricks Best Practices</a></li>
+              <li><a href="https://www.databricks.com/blog/2019/08/21/diving-into-delta-lake-schema-enforcement-evolution.html" target="_blank">Delta Lake Best Practices</a></li>
+              <li><a href="https://docs.microsoft.com/azure/databricks/security/" target="_blank">Security Best Practices</a></li>
+            </ul>
+
+            <div class="callout callout-info mt-4">
+              <strong>📚 Recommended Reading Order</strong>
+              <ol>
+                <li>Azure Databricks fundamentals (concepts, architecture)</li>
+                <li>Delta Lake guide (understand storage layer)</li>
+                <li>Hands-on tutorials (notebooks, clusters)</li>
+                <li>Advanced topics (Unity Catalog, MLflow, optimization)</li>
+                <li>Best practices and production patterns</li>
+              </ol>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Diagram Modal -->
+  <div class="modal fade" id="diagramModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Diagram - Fullscreen View</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center" id="modalDiagramContainer">
+          <!-- Diagram will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Mermaid JS -->
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: { 
+        useMaxWidth: true, 
+        htmlLabels: true,
+        curve: 'basis'
+      }
+    });
+  </script>
+  <script>
+    // Sidebar active link handling
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.sidebar .nav-link');
+
+    function setActiveLink() {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    document.querySelector('main').addEventListener('scroll', setActiveLink);
+
+    // Smooth scrolling
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        // Close mobile menu
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        if (sidebarMenu.classList.contains('show')) {
+          const bsCollapse = new bootstrap.Collapse(sidebarMenu);
+          bsCollapse.hide();
+        }
+      });
+    });
+
+    // Diagram zoom functionality
+    let zoomLevels = {};
+
+    function zoomDiagram(diagramId, factor) {
+      if (!zoomLevels[diagramId]) {
+        zoomLevels[diagramId] = 1;
+      }
+      zoomLevels[diagramId] *= factor;
+      const diagram = document.getElementById(diagramId);
+      diagram.style.transform = `scale(${zoomLevels[diagramId]})`;
+      diagram.style.transformOrigin = 'top center';
+      diagram.style.transition = 'transform 0.3s ease';
+    }
+
+    function resetDiagram(diagramId) {
+      zoomLevels[diagramId] = 1;
+      const diagram = document.getElementById(diagramId);
+      diagram.style.transform = 'scale(1)';
+    }
+
+    function openDiagramModal(diagramId) {
+      const diagram = document.getElementById(diagramId);
+      const modal = new bootstrap.Modal(document.getElementById('diagramModal'));
+      const modalContainer = document.getElementById('modalDiagramContainer');
+      modalContainer.innerHTML = diagram.outerHTML;
+      modalContainer.querySelector('.mermaid').style.transform = 'scale(1)';
+      modal.show();
+    }
+
+    // Expose functions to global scope
+    window.zoomDiagram = zoomDiagram;
+    window.resetDiagram = resetDiagram;
+    window.openDiagramModal = openDiagramModal;
+  </script>
+</body>
+</html>

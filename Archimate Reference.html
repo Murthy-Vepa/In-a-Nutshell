@@ -1,0 +1,604 @@
+<html lang="en"><head>
+    <title>Archimate Cheat Sheet</title>
+    <link rel="icon" type="image/x-icon" href="./images/logoAM.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="lib/zoom-by-ironex.min.js"></script>
+
+</head>
+
+<body>
+    <!-- === Dialog Box for Relationships === -->
+
+    
+
+    <!-- === Main Layout === -->
+
+    <h1 class="mainTitle" data-t9n="maintitle">ArchiMate 3.2 Cheat Sheet</h1>
+    <div class="gbLang">
+        <label for="langSelector" data-t9n="sellang">Language</label>
+        <select id="langSelector"><option value="en">English</option><option value="es">Español</option><option value="fr">Français</option><option value="ru">Русский</option></select>
+    </div>
+    <div class="gbHelp">?</div>
+
+
+    <div id="layers" class="ui-tabs ui-corner-all ui-widget ui-widget-content ui-tabs-vertical">
+        <!-- Vertical Tabs titles-->
+        <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+            <li id="tIntro" role="tab" tabindex="0" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left ui-tabs-active ui-state-active" aria-controls="introContent" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#introContent" data-t9n="intro" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-1">Introduction</a></li>
+            <li id="tMeta" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="metaContent" aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#metaContent" data-t9n="meta" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-2">Metamodel</a></li>
+            <li id="tMotiv" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="motivationLayerContent" aria-labelledby="ui-id-3" aria-selected="false" aria-expanded="false"><a href="#motivationLayerContent" data-t9n="moti" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-3">Motivation</a></li>
+            <li id="tStrat" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="stratLayerContent" aria-labelledby="ui-id-4" aria-selected="false" aria-expanded="false"><a href="#stratLayerContent" data-t9n="stra" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-4">Strategy</a></li>
+            <li id="tBusi" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="bLayerContent" aria-labelledby="ui-id-5" aria-selected="false" aria-expanded="false"><a href="#bLayerContent" data-t9n="busi" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-5">Business Layer</a></li>
+            <li id="tApp" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="appLayerContent" aria-labelledby="ui-id-6" aria-selected="false" aria-expanded="false"><a href="#appLayerContent" data-t9n="app" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-6">Application Layer</a></li>
+            <li id="tTech" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="techLayerContent" aria-labelledby="ui-id-7" aria-selected="false" aria-expanded="false"><a href="#techLayerContent" data-t9n="tech" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-7">Technology Layer</a></li>
+            <li id="tPhy" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="phyLayerContent" aria-labelledby="ui-id-8" aria-selected="false" aria-expanded="false"><a href="#phyLayerContent" data-t9n="phy" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-8">Physical Elements</a></li>
+            <li id="tImp" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="impLayerContent" aria-labelledby="ui-id-9" aria-selected="false" aria-expanded="false"><a href="#impLayerContent" data-t9n="imp" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-9">Implementation</a></li>
+
+            <li id="tOther" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="otherContent" aria-labelledby="ui-id-10" aria-selected="false" aria-expanded="false"><a href="#otherContent" data-t9n="oth" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-10">Other</a></li>
+
+            <li id="tAbout" role="tab" tabindex="-1" class="ui-tabs-tab ui-state-default ui-tab ui-corner-left" aria-controls="aboutContent" aria-labelledby="ui-id-11" aria-selected="false" aria-expanded="false"><a href="#aboutContent" data-t9n="about" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-11">About A3CC</a></li>
+        </ul>
+
+        <!-- === INTRODUCTION -->
+
+        <div id="introContent" class="gbContent ui-tabs-panel ui-corner-bottom ui-widget-content" aria-labelledby="ui-id-1" role="tabpanel" aria-hidden="false" style="">
+            <span data-t9n="intros1">This cheat sheet is a brief overview of the Archimate Standard for Architecture</span><br><span data-t9n="intros2">Please refer to the</span><a href="https://pubs.opengroup.org/architecture/archimate32-doc/" target="openGroup" data-t9n="intros3">Official Archimate 3 Reference from the Open Group</a> <span data-t9n="intros4">for more information and detail.</span><br><span data-t9n="intros5">On all the examples, you can use the mouse wheel to zoom in/zoom out.</span><br><br> <span data-t9n="intros6">Enjoy.</span><br>
+            <br><a class="signatureGB" href="https://www.linkedin.com/in/guybruneau1964" target="linkedin">Guy
+                Bruneau</a><br>
+            <img data-t9n-img="allLayers" class="arcBigDiagram" style="display: none;" src="images/en/allLayers-en.png"><div class="container"><div class="zoom"><img src="images/en/allLayers-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1);"></div></div><br><span data-t9n="intros7">The ArchiMate Full Framewor</span>
+        </div>
+
+        <!-- === Metamodel ===-->
+
+        <div id="metaContent" class="gbContent ui-tabs-panel ui-corner-bottom ui-widget-content" aria-labelledby="ui-id-2" role="tabpanel" aria-hidden="true" style="display: none;">
+            <img class="arcBigDiagram" data-t9n-img="metamodel" style="display: none;" src="images/en/metamodel-en.png"><div class="container"><div class="zoom zoom-active"><img src="images/en/metamodel-en.png" data-scale="2" data-translate-x="0" data-translate-y="0" class=" zoom-visible" style="transform: translate3d(0px, 0px, 0px) scale3d(2, 2, 1);"></div></div><br><span data-t9n="metas1">Overview of the metamodel</span>
+        </div>
+
+        <!-- === MOTIVATION ===-->
+
+        <div id="motivationLayerContent" aria-labelledby="ui-id-3" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+            <table class="layerTable">
+                <thead>
+                    <tr>
+                        <th scope="col" data-t9n="motic1">Section</th>
+                        <th scope="col" data-t9n="motic2">Icon</th>
+                        <th scope="col" data-t9n="motic3">Motivation Aspect Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="motir1">Elements</td>
+                        <td>
+                            <img data-t9n-img="mStakeholder" class="arcElem" data-t9n-t="motie1" title="Stakeholder: Represents the role of an individual, team, or organization (or classes thereof) that represents their interests in the effects of the architecture." src="images/en/mStakeholder-en.png"><br>
+                            <img data-t9n-img="mDriver" class="arcElem" data-t9n-t="motie2" title="Driver: Represents an external or internal condition that motivates an organization to define its goals and implement the changes necessary to achieve them." src="images/en/mDriver-en.png"><br>
+                            <img data-t9n-img="mAssesment" class="arcElem" data-t9n-t="motie3" title="Assessment: Represents the result of an analysis of the state of affairs of the enterprise with respect to some driver" src="images/en/mAssesment-en.png"><br>
+                            <img data-t9n-img="mGoal" class="arcElem" data-t9n-t="motie4" title="Goal: Represents a high-level statement of intent, direction, or desired end state for an organization and its stakeholders." src="images/en/mGoal-en.png"><br>
+                            <img data-t9n-img="mOutcome" class="arcElem" data-t9n-t="motie5" title="Outcome: An outcome represents an end result, effect, or consequence of a certain state of affairs." src="images/en/mOutcome-en.png"><br>
+                            <img data-t9n-img="mPrinciple" class="arcElem" data-t9n-t="motie6" title="Principle: Represents a statement of intent defining a general property that applies to any system in a certain context in the architecture." src="images/en/mPrinciple-en.png"><br>
+                            <img data-t9n-img="mRequirement" class="arcElem" data-t9n-t="motie7" title="Requirement: Represents a statement of need defining a property that applies to a specific system as described by the architecture." src="images/en/mRequirement-en.png"><br>
+                            <img data-t9n-img="mConstraint" class="arcElem" data-t9n-t="motie8" title="Constraint: Represents a limitation on aspects of the architecture, its implementation process, or its realization." src="images/en/mConstraint-en.png"><br>
+                            <img data-t9n-img="mMeaning" class="arcElem" data-t9n-t="motie9" title="Meaning: Represents the knowledge or expertise present in, or the interpretation given to, a concept in a particular context." src="images/en/mMeaning-en.png"><br>
+                            <img data-t9n-img="mValue" class="arcElem" data-t9n-t="motie10" title="Value: Represents the relative worth, utility, or importance of a concept." src="images/en/mValue-en.png">
+                        </td>
+                        <td colspan="1" rowspan="0">
+                            <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                                <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="mExample1" aria-labelledby="ui-id-12" aria-selected="true" aria-expanded="true"><a href="#mExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-12">1</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="mExample2" aria-labelledby="ui-id-13" aria-selected="false" aria-expanded="false"><a href="#mExample2" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-13">2</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="mExample3" aria-labelledby="ui-id-14" aria-selected="false" aria-expanded="false"><a href="#mExample3" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-14">3</a></li>
+                                </ul>
+                                <div id="mExample1" aria-labelledby="ui-id-12" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                                    <h3 data-t9n="motiex1">Stakeholder, Driver, and Assessmen</h3>
+                                    <img data-t9n-img="mExample1" class="arcExample" style="display: none;" src="images/en/mExample1-en.png"><div class="container"><div class="zoom"><img src="images/en/mExample1-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="mExample2" aria-labelledby="ui-id-13" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="motiex2">Goal, Outcome, Principle, Requirement, and Constraint</h3>
+                                    <img data-t9n-img="mExample2" class="arcExample" style="display: none;" src="images/en/mExample2-en.png"><div class="container"><div class="zoom"><img src="images/en/mExample2-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="mExample3" aria-labelledby="ui-id-14" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="motiex3">Meaning and Value</h3>
+                                    <img data-t9n-img="mExample3" class="arcExample" style="display: none;" src="images/en/mExample3-en.png"><div class="container"><div class="zoom"><img src="images/en/mExample3-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- === STRATEGY  ===-->
+        <div id="stratLayerContent" aria-labelledby="ui-id-4" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+            <table class="layerTable">
+                <thead>
+                    <tr>
+                        <th scope="col" data-t9n="strac1">Section</th>
+                        <th scope="col" data-t9n="strac2">Icon</th>
+                        <th scope="col" data-t9n="strac3">Strategy Layer Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="strar1">Active<br>Structure</td>
+                        <td><img data-t9n-img="sResource" class="arcElem" data-t9n-t="strad1" title="Resource: Represents an asset owned or controlled by an individual or organization." src="images/en/sResource-en.png"></td>
+                        <td colspan="1" rowspan="0">
+                            <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                                <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="sExample1" aria-labelledby="ui-id-15" aria-selected="true" aria-expanded="true"><a href="#sExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-15">1</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="sExample2" aria-labelledby="ui-id-16" aria-selected="false" aria-expanded="false"><a href="#sExample2" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-16">2</a></li>
+                                </ul>
+                                <div id="sExample1" aria-labelledby="ui-id-15" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                                    <h3 data-t9n="strae1">Capability, Resource, and Course of Action</h3>
+                                    <img data-t9n-img="sExample1" class="arcExample" style="display: none;" src="images/en/sExample1-en.png"><div class="container"><div class="zoom"><img src="images/en/sExample1-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="sExample2" aria-labelledby="ui-id-16" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="strae2">Value Stream with Capability Cross-Mapping</h3>
+                                    <img data-t9n-img="sExample2" class="arcExample" style="display: none;" src="images/en/sExample2-en.png"><div class="container"><div class="zoom"><img src="images/en/sExample2-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="strar2">Behavior<br>Elemen</td>
+                        <td><img data-t9n-img="sCapability" class="arcElem" data-t9n-t="strad2" title="Capability:  Represents an ability that an active structure element, such as an organization, person, or system, possesses." src="images/en/sCapability-en.png">
+                            <br>
+                            <img data-t9n-img="sValueStream" class="arcElem" data-t9n-t="strad5" title="Value Stream: A value stream represents a sequence of activities that create an overall result for a customer, stakeholder, or end user." src="images/en/sValueStream-en.png">
+                            <br>
+                            <img data-t9n-img="sCourseOfAction" class="arcElem" data-t9n-t="strad3" title="Course of action: Represents an approach or plan for configuring some capabilities and resources of the enterprise, undertaken to achieve a goal." src="images/en/sCourseOfAction-en.png">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- === Busines === -->
+        <div id="bLayerContent" aria-labelledby="ui-id-5" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+
+            <table class="layerTable">
+                <thead>
+                    <tr>
+                        <th scope="col" data-t9n="busic1">Section</th>
+                        <th scope="col" data-t9n="busic2">Icon</th>
+                        <th scope="col" data-t9n="busic3">Business Layer Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="busir1">Active<br>Structure</td>
+                        <td>
+                            <img data-t9n-img="bActor" class="arcElem" data-t9n-t="busia1" title="Business Actor: Represents a business entity that is capable of performing behavior." src="images/en/bActor-en.png"><br>
+                            <img data-t9n-img="bRole" class="arcElem" data-t9n-t="busia2" title="Business Role: Represents the responsibility for performing specific behavior, to which an actor can be assigned, or the part an actor plays in a particular action or event." src="images/en/bRole-en.png"><br>
+                            <img data-t9n-img="bColl" class="arcElem" data-t9n-t="busia3" title="Business Collaboration: Represents an aggregate of two or more business internal active structure elements that work together to perform collective behavior." src="images/en/bColl-en.png"><br>
+                            <img data-t9n-img="bInterface" class="arcElem" data-t9n-t="busia4" title="Business interface: Represents a point of access where a business service is made available to the environment." src="images/en/bInterface-en.png">
+                        </td>
+                        <td colspan="1" rowspan="0">
+                            <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                                <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="bExample1" aria-labelledby="ui-id-17" aria-selected="false" aria-expanded="false"><a href="#bExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-17">1</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="bExample2" aria-labelledby="ui-id-18" aria-selected="false" aria-expanded="false"><a href="#bExample2" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-18">2</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="bExample3" aria-labelledby="ui-id-19" aria-selected="false" aria-expanded="false"><a href="#bExample3" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-19">3</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="bExample4" aria-labelledby="ui-id-20" aria-selected="true" aria-expanded="true"><a href="#bExample4" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-20">4</a></li>
+                                </ul>
+                                <div id="bExample1" aria-labelledby="ui-id-17" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="busie1">Business Active Structure Elements</h3>
+                                    <img data-t9n-img="bExample1" class="arcExample" style="display: none;" src="images/en/bExample1-en.png"><div class="container"><div class="zoom zoom-active"><img src="images/en/bExample1-en.png" data-scale="2" data-translate-x="0" data-translate-y="0" class=" zoom-visible" style="transform: translate3d(0px, 0px, 0px) scale3d(2, 2, 1);"></div></div>
+                                </div>
+                                <div id="bExample2" aria-labelledby="ui-id-18" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="busie2">Business Behavior Elements</h3>
+                                    <img data-t9n-img="bExample2" class="arcExample" style="display: none;" src="images/en/bExample2-en.png"><div class="container"><div class="zoom"><img src="images/en/bExample2-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="bExample3" aria-labelledby="ui-id-19" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="busie3">Business Passive Structure Elements</h3>
+                                    <img data-t9n-img="bExample3" class="arcExample" style="display: none;" src="images/en/bExample3-en.png"><div class="container"><div class="zoom"><img src="images/en/bExample3-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="bExample4" aria-labelledby="ui-id-20" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false" style="">
+                                    <h3 data-t9n="busie4">Business Composite Element: Product</h3>
+                                    <img data-t9n-img="bExample4" class="arcExample" style="display: none;" src="images/en/bExample4-en.png"><div class="container"><div class="zoom"><img src="images/en/bExample4-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="busir2">Behavior<br>Elemen</td>
+                        <td>
+                            <img data-t9n-img="bProcess" class="arcElem" data-t9n-t="busid1" title="Business Process: Represents a sequence of business behaviors that achieves a specific result such as a defined set of products or business services." src="images/en/bProcess-en.png"><br>
+                            <img data-t9n-img="bFunction" class="arcElem" data-t9n-t="busid2" title="Business Function: Represents a collection of business behavior based on a chosen set of criteria such as required business resources and/or competencies, and is managed or performed as a whole." src="images/en/bFunction-en.png"><br>
+                            <img data-t9n-img="bInterraction" class="arcElem" data-t9n-t="busid3" title="Business Interaction: Represents a unit of collective business behavior performed by (a collaboration of) two or more business actors, business roles, or business collaborations." src="images/en/bInterraction-en.png"><br>
+                            <img data-t9n-img="bEvent" class="arcElem" data-t9n-t="busid4" title="Business Event: Represents an organizational state change." src="images/en/bEvent-en.png"><br>
+                            <img data-t9n-img="bService" class="arcElem" data-t9n-t="busid5" title="Business Service: Represents explicitly defined behavior that a business role, business actor, or business collaboration exposes to its environment." src="images/en/bService-en.png">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n-t="busir3" title="Passive&lt;br&gt;Structure&lt;br&gt;Element">Passive<br>Structure<br>Element</td>
+                        <td>
+                            <img data-t9n-img="bObject" class="arcElem" data-t9n-t="busid6" title="Business Object: Represents a concept used within a particular business domain." src="images/en/bObject-en.png"><br>
+                            <img data-t9n-img="bContract" class="arcElem" data-t9n-t="busid7" title="Contract: Represents a formal or informal specification of an agreement between a provider and a consumer that specifies the rights and obligations associated with a product and establishes functional and non-functional parameters for interaction." src="images/en/bContract-en.png"><br>
+                            <img data-t9n-img="bRepresentation" class="arcElem" data-t9n-t="busid8" title="Representation: Represents a perceptible form of the information carried by a business object." src="images/en/bRepresentation-en.png">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="busir4">Composite<br>Element</td>
+                        <td>
+                            <img data-t9n-img="bProduct" class="arcElem" data-t9n-t="busid9" title="Product: A product represents a coherent collection of services and/or passive structure elements, accompanied by a contract, which is offered as a whole to (internal or external) customers." src="images/en/bProduct-en.png">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <!-- === APPLICATION ===-->
+        <div id="appLayerContent" aria-labelledby="ui-id-6" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+            <table class="layerTable">
+                <thead>
+                    <tr>
+                        <th scope="col" data-t9n="appc1">Section</th>
+                        <th scope="col" data-t9n="appc2">Icon</th>
+                        <th scope="col" data-t9n="appc3">Application Layer Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="appr1">Active<br>Structure</td>
+                        <td>
+                            <img data-t9n-img="appComponent" class="arcElem" data-t9n-t="appd1" title="Component: Represents an encapsulation of application functionality aligned to implementation structure, which is modular and replaceable." src="images/en/appComponent-en.png">
+                            <br>
+                            <img data-t9n-img="appCollaboration" class="arcElem" data-t9n-t="appd2" title="Collaboration: Represents an aggregate of two or more application internal active structure elements that work together to perform collective application behavior." src="images/en/appCollaboration-en.png">
+                            <br>
+                            <img data-t9n-img="appInterface" class="arcElem" data-t9n-t="appd3" title="Represents a point of access where application services are made available to a user, another application component, or a node." src="images/en/appInterface-en.png">
+                        </td>
+                        <td colspan="1" rowspan="0">
+                            <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                                <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="appExample1" aria-labelledby="ui-id-21" aria-selected="false" aria-expanded="false"><a href="#appExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-21">1</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="appExample2" aria-labelledby="ui-id-22" aria-selected="false" aria-expanded="false"><a href="#appExample2" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-22">2</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="appExample3" aria-labelledby="ui-id-23" aria-selected="true" aria-expanded="true"><a href="#appExample3" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-23">3</a></li>
+                                </ul>
+                                <div id="appExample1" aria-labelledby="ui-id-21" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="appe1">Application Active Structure Elements</h3>
+                                    <img data-t9n-img="appExample1" class="arcExample" style="display: none;" src="images/en/appExample1-en.png"><div class="container"><div class="zoom"><img src="images/en/appExample1-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="appExample2" aria-labelledby="ui-id-22" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3 data-t9n="appe2">Application Behavior Elements</h3>
+                                    <img data-t9n-img="appExample2" class="arcExample" style="display: none;" src="images/en/appExample2-en.png"><div class="container"><div class="zoom"><img src="images/en/appExample2-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="appExample3" aria-labelledby="ui-id-23" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false" style="">
+                                    <h3 data-t9n="appe3">Application Passive Structure Elements</h3>
+                                    <img data-t9n-img="appExample3" class="arcExample" style="display: none;" src="images/en/appExample3-en.png"><div class="container"><div class="zoom zoom-active"><img src="images/en/appExample3-en.png" data-scale="2" data-translate-x="0" data-translate-y="0" class=" zoom-visible" style="transform: translate3d(0px, 0px, 0px) scale3d(2, 2, 1);"></div></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="appr2">Behavior<br>Elemen</td>
+                        <td>
+                            <img data-t9n-img="appFunction" class="arcElem" data-t9n-t="appd4" title="Function: Represents automated behavior that can be performed by an application component." src="images/en/appFunction-en.png">
+                            <br>
+                            <img data-t9n-img="appInteraction" class="arcElem" data-t9n-t="appd5" title="Interraction:  Represents a unit of collective application behavior performed by (a collaboration of) two or more application components." src="images/en/appInteraction-en.png">
+                            <br>
+                            <img data-t9n-img="appProcess" class="arcElem" data-t9n-t="appd6" title="Process: Represents a sequence of application behaviors that achieves a specific result." src="images/en/appProcess-en.png">
+                            <br>
+                            <img data-t9n-img="appEvent" class="arcElem" data-t9n-t="appd7" title="Event: Represents an application state change." src="images/en/appEvent-en.png">
+                            <br>
+                            <img data-t9n-img="appService" class="arcElem" data-t9n-t="appd8" title="Service: Represents an explicitly defined exposed application behavior." src="images/en/appService-en.png">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="appr3">Passive<br>Structure<br>Element</td>
+                        <td>
+                            <img data-t9n-img="appDataObj" class="arcElem" data-t9n-t="appd9" title="Data Object: Represents data structured for automated processing." src="images/en/appDataObj-en.png">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- === TECHNOLOGY === -->
+        <div id="techLayerContent" aria-labelledby="ui-id-7" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+            <table class="layerTable">
+                <thead>
+                    <tr>
+                        <th scope="col" data-t9n="techc1">Section</th>
+                        <th scope="col" data-t9n="techc2">Icon</th>
+                        <th scope="col" data-t9n="techc3">Technology Layer Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="techr1">Active<br>Structure</td>
+                        <td>
+                            <img data-t9n-img="tNode" class="arcElem" data-t9n-t="techd1" title="Node:Represents a computational or physical resource that hosts, manipulates, or interacts with other computational or physical resources." src="images/en/tNode-en.png">
+                            <br>
+                            <img data-t9n-img="tDevice" class="arcElem" data-t9n-t="techd2" title="Device: Represents a physical IT resource upon which system software and artifacts may be stored or deployed for execution." src="images/en/tDevice-en.png">
+                            <br>
+                            <img data-t9n-img="tSoftware" class="arcElem" data-t9n-t="techd3" title="System Software: Represents software that provides or contributes to an environment for storing, executing, and using software or data deployed within it." src="images/en/tSoftware-en.png">
+                            <br>
+                            <img data-t9n-img="tColllaboration" class="arcElem" data-t9n-t="techd4" title="Technology Collaboration: Represents an aggregate of two or more technology internal active structure elements that work together to perform collective technology behavior" src="images/en/tColllaboration-en.png">
+                            <br>
+                            <img data-t9n-img="tInterface" class="arcElem" data-t9n-t="techd5" title="Technology Interface: Represents a point of access where technology services offered by a node can be accessed." src="images/en/tInterface-en.png">
+                            <br>
+                            <img data-t9n-img="tPath" class="arcElem" data-t9n-t="techd6" title="Path: Represents a link between two or more nodes, through which these nodes can exchange data, energy, or material." src="images/en/tPath-en.png">
+                            <br>
+                            <img data-t9n-img="tNetwork" class="arcElem" data-t9n-t="techd7" title="Communication Network: Represents a set of structures that connects nodes for transmission, routing, and reception of data." src="images/en/tNetwork-en.png">
+
+                        </td>
+                        <td colspan="1" rowspan="0">
+                            <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                                <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tExample1" aria-labelledby="ui-id-24" aria-selected="true" aria-expanded="true"><a href="#tExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-24">1</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="tExample2" aria-labelledby="ui-id-25" aria-selected="false" aria-expanded="false"><a href="#tExample2" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-25">2</a></li>
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab" role="tab" tabindex="-1" aria-controls="tExample3" aria-labelledby="ui-id-26" aria-selected="false" aria-expanded="false"><a href="#tExample3" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-26">3</a></li>
+                                </ul>
+                                <div id="tExample1" aria-labelledby="ui-id-24" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                                    <h3>Technology Active Structure Elements</h3>
+                                    <img data-t9n-img="tExample1" class="arcExample" style="display: none;" src="images/en/tExample1-en.png"><div class="container"><div class="zoom"><img src="images/en/tExample1-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="tExample2" aria-labelledby="ui-id-25" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3>Technology Behavior Elements</h3>
+                                    <img data-t9n-img="tExample2" class="arcExample" style="display: none;" src="images/en/tExample2-en.png"><div class="container"><div class="zoom"><img src="images/en/tExample2-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                                <div id="tExample3" aria-labelledby="ui-id-26" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+                                    <h3>Technology Passive Structure Element: Artifact</h3>
+                                    <img data-t9n-img="tExample3" class="arcExample" style="display: none;" src="images/en/tExample3-en.png"><div class="container"><div class="zoom"><img src="images/en/tExample3-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="techr2">Behavior<br>Elemen</td>
+                        <td>
+                            <img data-t9n-img="tFunction" class="arcElem" data-t9n-t="techd8" title="Technology function: Represents a collection of technology behavior that can be performed by a node." src="images/en/tFunction-en.png">
+                            <br>
+                            <img data-t9n-img="tProcess" class="arcElem" data-t9n-t="techd9" title="Technology process: Represents a sequence of technology behaviors that achieves a specific result." src="images/en/tProcess-en.png">
+                            <br>
+                            <img data-t9n-img="tInterraction" class="arcElem" data-t9n-t="techd10" title="Technology interaction: Represents a unit of collective technology behavior performed by (a collaboration of) two or more nodes." src="images/en/tInterraction-en.png">
+                            <br>
+                            <img data-t9n-img="tEvent" class="arcElem" data-t9n-t="techd11" title="Technology even: Represents a technology state change." src="images/en/tEvent-en.png">
+                            <br>
+                            <img data-t9n-img="tService" class="arcElem" data-t9n-t="techd12" title="Technology service: Represents an explicitly defined exposed technology behavior. " src="images/en/tService-en.png">
+                            <br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="techr3">Passive<br>Structure<br>Element</td>
+                        <td>
+                            <img data-t9n-img="tArtifact" class="arcElem" data-t9n-t="techd13" title="Represents a piece of data that is used or produced in a software development process, or by deployment and operation of an IT system." src="images/en/tArtifact-en.png">
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- PHYSICAL LAYER-->
+
+        <div id="phyLayerContent" aria-labelledby="ui-id-8" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+            <table class="layerTable">
+                <thead>
+                    <tr>
+                        <th scope="col" data-t9n="phyc1">Section</th>
+                        <th scope="col" data-t9n="phyc2">Icon</th>
+                        <th scope="col" data-t9n="phyc3">Physical Elements Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="1" rowspan="1" data-t9n="phyr1">Active<br>Structure</td>
+                        <td>
+                            <img data-t9n-img="tEquipment" class="arcElem" data-t9n-t="phyd1" title="Equipment: Represents one or more physical machines, tools, or instruments that can create, use, store, move, or transform materials." src="images/en/tEquipment-en.png">
+                            <br>
+                            <img data-t9n-img="tFacility" class="arcElem" data-t9n-t="phyd2" title="Facility: Represents a physical structure or environment." src="images/en/tFacility-en.png">
+                            <br>
+                            <img data-t9n-img="tDistNetwork" class="arcElem" data-t9n-t="phyd3" title="Distribution network: Represents a physical network used to transport materials or energy." src="images/en/tDistNetwork-en.png">
+                            <br>
+                        </td>
+                        <td colspan="1" rowspan="0">
+                            <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                                <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                    <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tExample4" aria-labelledby="ui-id-27" aria-selected="true" aria-expanded="true"><a href="#tExample4" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-27">1</a></li>
+                                </ul>
+                                <div id="tExample4" aria-labelledby="ui-id-27" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                                    <h3 data-t9n="phye1">Physical Elements</h3>
+                                    <img data-t9n-img="tExample4" class="arcExample" style="display: none;" src="images/en/tExample4-en.png"><div class="container"><div class="zoom"><img src="images/en/tExample4-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible" style="transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1);"></div></div>
+                                </div>
+                            </div>
+        
+        </td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="1" data-t9n="phyr3">Passive<br>Structure<br>Element</td>
+            <td>
+                <img data-t9n-img="tMaterial" class="arcElem" data-t9n-t="phyd4" title="Material: Represents tangible physical matter or energy." src="images/en/tMaterial-en.png">
+            </td>
+        </tr>
+        </tbody>
+        </table>
+    </div>
+
+    <!--  IMPLEMENTATION LAYER-->
+
+    <div id="impLayerContent" aria-labelledby="ui-id-9" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+        <table class="layerTable">
+            <thead>
+                <tr>
+                    <th scope="col" data-t9n="impc1">Section</th>
+                    <th scope="col" data-t9n="impc2">Icon</th>
+                    <th scope="col" data-t9n="impc3">Implementation and Migration Layer Examples</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="1" rowspan="1" data-t9n="impr1">Active<br>Structure</td>
+                    <td>
+                        <img data-t9n-img="impWorkPak" class="arcElem" data-t9n-t="impd1" title="Work package: Represents a series of actions identified and designed to achieve specific results within specified time and resource constraints." src="images/en/impWorkPak-en.png">
+                        <img data-t9n-img="impDeliverable" class="arcElem" data-t9n-t="impd2" title="Deliverable: Represents a precisely-defined result of a work package." src="images/en/impDeliverable-en.png">
+                        <img data-t9n-img="impEvent" class="arcElem" data-t9n-t="impd3" title="Implementation event: Represents a state change related to implementation or migration." src="images/en/impEvent-en.png">
+                        <img data-t9n-img="impPlateau" class="arcElem" data-t9n-t="impd4" title="Plateau: Represents a relatively stable state of the architecture that exists during a limited period of time." src="images/en/impPlateau-en.png">
+                        <img data-t9n-img="impGap" class="arcElem" data-t9n-t="impd5" title="Gap: Represents a statement of difference between two plateaus." src="images/en/impGap-en.png">
+                    </td>
+                    <td colspan="1" rowspan="0">
+                        <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                            <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="impExample1" aria-labelledby="ui-id-28" aria-selected="true" aria-expanded="true"><a href="#impExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-28">1</a></li>
+                            </ul>
+                            <div id="impExample1" aria-labelledby="ui-id-28" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                                <h3>Implementation and Migration Elements</h3>
+                                <img data-t9n-img="impExample1" class="arcExample" style="display: none;" src="images/en/impExample1-en.png"><div class="container"><div class="zoom"><img src="images/en/impExample1-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="otherContent" class="gbContent ui-tabs-panel ui-corner-bottom ui-widget-content" aria-labelledby="ui-id-10" role="tabpanel" aria-hidden="true" style="display: none;">
+        <table class="layerTable">
+            <thead>
+                <tr>
+                    <th scope="col" data-t9n="othc1">Section</th>
+                    <th scope="col" data-t9n="othc2">Icon</th>
+                    <th scope="col" data-t9n="othc3">Composite elements example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="1" rowspan="1" data-t9n="othr1">Composite elements</td>
+                    <td>
+                        <img data-t9n-img="oLocation" class="arcElem" data-t9n-t="othd1" title="Location: Represents a conceptual or physical place or position where concepts are located (e.g., structure elements) or performed (e.g., behavior elements)." src="images/en/oLocation-en.png">
+                        <img data-t9n-img="oGrouping" class="arcElem" data-t9n-t="othd2" title="Grouping: The grouping element aggregates or composes concepts that belong together based on some common characteristic." src="images/en/oGrouping-en.png">
+                    </td>
+                    <td colspan="1" rowspan="0">
+                        <div class="gbTabs ui-tabs ui-corner-all ui-widget ui-widget-content">
+                            <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+                                <li class="ui-corner-left ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="othExample1" aria-labelledby="ui-id-29" aria-selected="true" aria-expanded="true"><a href="#othExample1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-29">1</a></li>
+                            </ul>
+                            <div id="othExample1" aria-labelledby="ui-id-29" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+                                <h3 data-t9n="othe1">Location and grouping</h3>
+                                <img data-t9n-img="oExample1" class="arcExample" style="display: none;" src="images/en/oExample1-en.png"><div class="container"><div class="zoom"><img src="images/en/oExample1-en.png" data-scale="1" data-translate-x="0" data-translate-y="0" class=" zoom-visible"></div></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="aboutContent" aria-labelledby="ui-id-11" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="true" style="display: none;">
+        <div class="gbContent">
+            <h3>Archimate Cheat Sheet V1.3</h3>
+            <br>What's new
+            <br>• Russian support, Thanks to <a href="https://www.linkedin.com/in/DenisZagitov/" target="_blank">Denis Zagitov</a>
+            <br>
+            <br>TODO
+            <br>• Common Viewpoints
+            <br><br>
+            <hr>
+            <h3>Guy Bruneau</h3>
+            Solution Architect<br>
+            <a href="https://www.linkedin.com/in/guybruneau1964" target="linkedin">Linkedin</a>&nbsp;•&nbsp;
+            <a href="https://gbruneau.github.io/" target="github">GitHub</a><br>
+            <br>
+            <hr>
+            <h3>Translations</h3>
+            <table class="contrib">
+                <thead>
+                    <tr>
+                        <th data-t9n="sellang">Language</th>
+                        <th data-t9n="contrib">Contributors</th>
+                    </tr>
+                </thead>
+                <tbody id="tContrib">
+                <tr><td>English</td><td><a target="_blank" href="https://www.linkedin.com/in/guybruneau1964/">Guy Bruneau</a>&nbsp;</td></tr><tr><td>Español</td><td><a target="_blank" href="https://www.linkedin.com/in/guybruneau1964/">Guy Bruneau</a>&nbsp;</td></tr><tr><td>Français</td><td><a target="_blank" href="https://www.linkedin.com/in/guybruneau1964/">Guy Bruneau</a>&nbsp;</td></tr><tr><td>Русский</td><td><a target="_blank" href="https://www.linkedin.com/in/DenisZagitov/">Denis Zagitov</a>&nbsp;</td></tr></tbody>
+            </table>
+            <hr>
+            <h3>References</h3>
+            <a href="https://pubs.opengroup.org/architecture/archimate32-doc/" target="_blank">Official Archimate 3.2
+                Reference from the Open Group. </a><br>
+            <a href="https://www.hosiaisluoma.fi/blog/archimate/" target="_blank">Archimate Cookbook</a> <br>
+            <a href="https://www.archimatetool.com/" target="_blank">Archi - The Open Source Archimate Modeling Tool</a>  
+
+        </div>
+    </div>
+
+
+    </div>
+
+<script src="app.js">
+</script>
+
+<div role="log" aria-live="assertive" aria-relevant="additions" class="ui-helper-hidden-accessible"><div style="display: none;">Distribution network: Represents a physical network used to transport materials or energy.</div><div style="display: none;">Facility: Represents a physical structure or environment.</div><div style="display: none;">Equipment: Represents one or more physical machines, tools, or instruments that can create, use, store, move, or transform materials.</div><div style="display: none;">Driver: Represents an external or internal condition that motivates an organization to define its goals and implement the changes necessary to achieve them.</div><div style="display: none;">Assessment: Represents the result of an analysis of the state of affairs of the enterprise with respect to some driver</div><div style="display: none;">Driver: Represents an external or internal condition that motivates an organization to define its goals and implement the changes necessary to achieve them.</div><div style="display: none;">Stakeholder: Represents the role of an individual, team, or organization (or classes thereof) that represents their interests in the effects of the architecture.</div><div style="display: none;">Stakeholder: Represents the role of an individual, team, or organization (or classes thereof) that represents their interests in the effects of the architecture.</div><div style="display: none;">Driver: Represents an external or internal condition that motivates an organization to define its goals and implement the changes necessary to achieve them.</div><div style="display: none;">Assessment: Represents the result of an analysis of the state of affairs of the enterprise with respect to some driver</div><div style="display: none;">Goal: Represents a high-level statement of intent, direction, or desired end state for an organization and its stakeholders.</div><div style="display: none;">Outcome: An outcome represents an end result, effect, or consequence of a certain state of affairs.</div><div style="display: none;">Principle: Represents a statement of intent defining a general property that applies to any system in a certain context in the architecture.</div><div style="display: none;">Requirement: Represents a statement of need defining a property that applies to a specific system as described by the architecture.</div><div style="display: none;">Requirement: Represents a statement of need defining a property that applies to a specific system as described by the architecture.</div><div style="display: none;">Outcome: An outcome represents an end result, effect, or consequence of a certain state of affairs.</div><div style="display: none;">Goal: Represents a high-level statement of intent, direction, or desired end state for an organization and its stakeholders.</div><div style="display: none;">Assessment: Represents the result of an analysis of the state of affairs of the enterprise with respect to some driver</div><div style="display: none;">Business Role: Represents the responsibility for performing specific behavior, to which an actor can be assigned, or the part an actor plays in a particular action or event.</div><div style="display: none;">Business Actor: Represents a business entity that is capable of performing behavior.</div><div style="display: none;">Business Role: Represents the responsibility for performing specific behavior, to which an actor can be assigned, or the part an actor plays in a particular action or event.</div><div style="display: none;">Business Collaboration: Represents an aggregate of two or more business internal active structure elements that work together to perform collective behavior.</div><div style="display: none;">Passive&lt;br&gt;Structure&lt;br&gt;Element</div><div style="display: none;">Business Object: Represents a concept used within a particular business domain.</div><div style="display: none;">Business Object: Represents a concept used within a particular business domain.</div><div style="display: none;">Business interface: Represents a point of access where a business service is made available to the environment.</div><div style="display: none;">Business Collaboration: Represents an aggregate of two or more business internal active structure elements that work together to perform collective behavior.</div><div style="display: none;">Implementation event: Represents a state change related to implementation or migration.</div><div style="display: none;">Deliverable: Represents a precisely-defined result of a work package.</div><div style="display: none;">Work package: Represents a series of actions identified and designed to achieve specific results within specified time and resource constraints.</div><div style="display: none;">Grouping: The grouping element aggregates or composes concepts that belong together based on some common characteristic.</div><div style="display: none;">Grouping: The grouping element aggregates or composes concepts that belong together based on some common characteristic.</div><div style="display: none;">Grouping: The grouping element aggregates or composes concepts that belong together based on some common characteristic.</div><div style="display: none;">Location: Represents a conceptual or physical place or position where concepts are located (e.g., structure elements) or performed (e.g., behavior elements).</div><div style="display: none;">Resource: Represents an asset owned or controlled by an individual or organization.</div><div style="display: none;">Value Stream: A value stream represents a sequence of activities that create an overall result for a customer, stakeholder, or end user.</div><div style="display: none;">Course of action: Represents an approach or plan for configuring some capabilities and resources of the enterprise, undertaken to achieve a goal.</div><div style="display: none;">Value Stream: A value stream represents a sequence of activities that create an overall result for a customer, stakeholder, or end user.</div><div style="display: none;">Capability:  Represents an ability that an active structure element, such as an organization, person, or system, possesses.</div><div style="display: none;">Value Stream: A value stream represents a sequence of activities that create an overall result for a customer, stakeholder, or end user.</div><div style="display: none;">Course of action: Represents an approach or plan for configuring some capabilities and resources of the enterprise, undertaken to achieve a goal.</div><div style="display: none;">Value Stream: A value stream represents a sequence of activities that create an overall result for a customer, stakeholder, or end user.</div><div style="display: none;">Business Role: Represents the responsibility for performing specific behavior, to which an actor can be assigned, or the part an actor plays in a particular action or event.</div><div style="display: none;">Business Role: Represents the responsibility for performing specific behavior, to which an actor can be assigned, or the part an actor plays in a particular action or event.</div><div style="display: none;">Passive&lt;br&gt;Structure&lt;br&gt;Element</div><div style="display: none;">Contract: Represents a formal or informal specification of an agreement between a provider and a consumer that specifies the rights and obligations associated with a product and establishes functional and non-functional parameters for interaction.</div><div style="display: none;">Representation: Represents a perceptible form of the information carried by a business object.</div><div style="display: none;">Passive&lt;br&gt;Structure&lt;br&gt;Element</div><div style="display: none;">Passive&lt;br&gt;Structure&lt;br&gt;Element</div><div style="display: none;">Process: Represents a sequence of application behaviors that achieves a specific result.</div><div style="display: none;">Event: Represents an application state change.</div><div style="display: none;">Function: Represents automated behavior that can be performed by an application component.</div><div style="display: none;">Collaboration: Represents an aggregate of two or more application internal active structure elements that work together to perform collective application behavior.</div><div>Component: Represents an encapsulation of application functionality aligned to implementation structure, which is modular and replaceable.</div></div><div tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-draggable ui-resizable" aria-describedby="diagRef" aria-labelledby="ui-id-30" style="display: none; position: absolute;"><div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle"><span id="ui-id-30" class="ui-dialog-title">Relationships Reference</span><button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" title="Close"><span class="ui-button-icon ui-icon ui-icon-closethick"></span><span class="ui-button-icon-space"> </span>Close</button></div><div id="diagRef" data-t9n-t="relt" class="gbDialog ui-dialog-content ui-widget-content" title="Relationships Reference">
+        <table class="" autofocus="">
+            <thead>
+                <tr>
+                    <th colspan="2" rowspan="1" scope="col" data-t9n="relc1">Structural</th>
+                    <th colspan="2" rowspan="1" scope="col" data-t9n="relc2">Dependency</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/relCompose.png" data-t9n-t="relt1" title="Composed of: Represents that an element consists of one or more other concepts.The interpretation of a composition relationship is that the whole or part of the source element is composed of the whole of the target element."><br>
+                        <span data-t9n="relt1n">Composition</span>
+                    </td>
+                    <td> <img src="images/relAgregate.png" data-t9n-t="relt2" title="Aggregates: Represents that an element combines one or more other concepts. The interpretation of an aggregation relationship is that the whole or part of the source element aggregates the whole of the target concept. "><br>
+                        <span data-t9n="relt2n">Aggregation</span>
+                        <br>
+                    </td>
+                    <td> <img src="images/relServe.png" data-t9n-t="relt3" title="Serves: Represents that an element provides its functionality to another element. The serving relationship describes how the services or interfaces offered by a behavior or active structure element serve entities in their environment. This relationship is applied for both the behavior aspect and the active structure aspect.">
+                        <br><span data-t9n="relt3n">Serving</span>
+                    </td>
+                    <td><img src="images/relAccess.png" data-t9n-t="relt4" title="Accesses: Represents the ability of behavior and active structure elements to observe or act upon passive structure elements. The access relationship indicates that a process, function, interaction, service, or event 'does something' with a passive structure element; e.g., create a new object, read data from the object, write or modify the object data, or delete the object.">
+                        <br><span data-t9n="relt4n">Access</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><img src="images/relAssigne.png" data-t9n-t="relt5" title="Assigned to: Represents the allocation of responsibility, performance of behavior, storage, or execution. The interpretation of an assignment relationship is that the whole or part of the source element is assigned the whole of the target element. This means that if, for example, two active structure elements are assigned to the same behavior element, either of them can perform the complete behavior. ">
+                        <br><span data-t9n="relt5n">Assigment</span>
+                    </td>
+                    <td><img src="images/relRealise.png" data-t9n-t="relt6" title="Realize: Represents that an entity plays a critical role in the creation, achievement, sustenance, or operation of a more abstract entity. The interpretation of a realization relationship is that the whole or part of the source element realizes the whole of the target element . This means that if, for example, two internal behavior elements have a realization relationship to the same service, either of them can realize the complete service. If both internal behavior elements are needed to realize, the grouping element or an and junction can be used. For weaker types of effects on the realization of a motivation element, the influence relationship should be used.">
+                        <br><span data-t9n="relt6n">Realization</span>
+                    </td>
+                    <td><img src="images/relInfluence.png" data-t9n-t="relt7" title="Influences: Represents that an element affects the implementation or achievement of some motivation element. The influence relationship is used to describe some architectural elements that influence the achievement or implementation of a motivation element, such as a goal or a principle. In general, a motivation element is realized to a certain degree.">
+                        <br><span data-t9n="relt7n">Influence</span>
+                    </td>
+                    <td><img src="images/relAssoc.png" data-t9n-t="relt8" title="Associated with: Represents an unspecified relationship, or one that is not represented by another ArchiMate relationship. The association relationship can be used when drawing a first high-level model where relationships are initially denoted in a generic way, and later refined to show more specific relationship types. ">
+                        <br><span data-t9n="relt8n">Association</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th colspan="2" rowspan="1" scope="col" data-t9n="relc3">Dynamic</th>
+                    <th colspan="1" rowspan="1" scope="col" data-t9n="relc4">Other</th>
+                    <th colspan="1" rowspan="1" scope="col" data-t9n="relc5">Connectors</th>
+                </tr>
+                <tr>
+                    <td><img src="images/relSpecialize.jpg" data-t9n-t="relt9" title="Triggers: Represents a temporal or causal relationship between elements. The triggering relationship is used to model the temporal or causal precedence of behavior elements in a process. The interpretation of a triggering relationship is that some part of the source element should be completed before the target element can start.">
+                        <br><span data-t9n="relt9n">Trigger</span>
+                    </td>
+                    <td><img src="images/relFlow.png" data-t9n-t="relt10" title="Flow to: Represents transfer from one element to another. The flow relationship is used to model the flow of, for example, information, goods, or money between behavior elements. A flow relationship does not imply a causal relationship.">
+                        <br><span data-t9n="relt10n">Flow</span>
+                    </td>
+                    <td><img src="images/relSpecialize.jpg" data-t9n-t="relt11" title="Specializes: Represents that an element is a particular kind of another element.  The semantics of the specialization relationship are that the whole of the generic element is specialized by the specialized element.">
+                        <br><span data-t9n="relt11n">Specialization</span>
+                    </td>
+                    <td><img src="images/relJunction.png" data-t9n-t="relt12" title="Used to connect relationships of the same type.">
+                        <br><span data-t9n="relt12n">Junction</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div></body></html>

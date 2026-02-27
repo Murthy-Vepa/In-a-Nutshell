@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🏗️</text></svg>" />
+  <title>Twelve Factor App - In a Nutshell</title>
+  <meta name="description" content="A comprehensive guide to the 12 Factor App methodology." />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #ffffff;
+      --fg: #0f172a;
+      --muted: #64748b;
+      --accent: #3b82f6;
+      --accent-light: #dbeafe;
+      --border: #e2e8f0;
+      --sidebar-bg: #ffffff;
+      --sidebar-fg: #0f172a;
+      --code-bg: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.12) 100%);
+      --focus: #10b981;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 20px rgba(0,0,0,0.12), 0 6px 6px rgba(0,0,0,0.08);
+      --gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    
+    /* Bootstrap Gradient Utility Classes */
+    .bg-gradient-blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; }
+    .bg-gradient-green { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%) !important; }
+    .bg-gradient-yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; }
+    .bg-gradient-pink { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%) !important; }
+    .bg-gradient-purple { background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%) !important; }
+    .bg-gradient-teal { background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%) !important; }
+    .bg-gradient-blue-dark { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important; }
+    .bg-gradient-gray { background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important; }
+    .bg-gradient-purple-dark { background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important; }
+    .bg-gradient-teal-dark { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important; }
+    .bg-gradient-green-dark { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; }
+    .bg-gradient-green-light { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; }
+    .bg-gradient-blue-sky { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; }
+    .bg-gradient-red-dark { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important; }
+    .bg-gradient-indigo { background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important; }
+    .bg-gradient-green-medium { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; }
+    .bg-gradient-orange { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important; }
+    .bg-gradient-violet { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important; }
+    .bg-gradient-lime { background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%) !important; }
+    .bg-gradient-sky { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important; }
+    
+    /* Apply theme colors to Bootstrap elements */
+    body { background-color: var(--bg); color: var(--fg); overflow: hidden; }
+    .navbar { background-color: var(--fg) !important; border-bottom: none !important; box-shadow: var(--shadow-md) !important; }
+    .navbar-brand { cursor: pointer; color: var(--bg) !important; font-weight: 600; letter-spacing: 0px; }
+    .navbar-toggler-icon { 
+      filter: invert(1);
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2896, 165, 250, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .btn-outline-secondary { border-color: var(--border) !important; color: var(--fg) !important; }
+    .btn-outline-secondary:hover { background-color: var(--accent-light) !important; border-color: var(--accent) !important; color: var(--accent) !important; }
+    
+    /* Sidebar - Modern Design */
+    nav.sidebar { 
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%); 
+      border-right: 1px solid rgba(0, 0, 0, 0.05) !important;  
+      overflow-y: auto; 
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      padding-top: 0;
+    }
+    
+    .menu-header {  
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1) 100%);
+      font-weight: bold; 
+      padding: 1.25rem 1.25rem; 
+      letter-spacing: 0px; 
+      font-size: 1.1rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+      border-bottom: 2px solid #a5aab3;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: #0c346c;
+      text-shadow: none;
+      margin: 0;
+      text-transform: none;
+    }
+    .menu-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.6s ease;
+    }
+    .menu-header:hover::before {
+      left: 100%;
+    }
+    .menu-header::after {
+      content: '🏗️';
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.3rem;
+      opacity: 0.9;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    }
+    
+    .toc { 
+      list-style: none; 
+      padding: 0rem 0; 
+      margin: 0; 
+      background: transparent;
+    }
+    .toc li { 
+      margin: 0; 
+    }
+    
+    /* Section grouping */
+    .toc li[data-group="overview"] { margin-bottom: 0.75rem; }
+    .toc li[data-group="solid"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(59, 130, 246, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="other-principles"]:first-of-type { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(16, 185, 129, 0.15);
+      padding-top: 1rem;
+    }
+    .toc li[data-group="resources"] { 
+      margin-top: 1rem; 
+      border-top: 2px solid rgba(100, 116, 139, 0.15);
+      padding-top: 1rem;
+    }
+    
+    .list-group-item { 
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0; 
+      margin: 0.25rem 0.75rem; 
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+    }
+    .list-group-item a { 
+      color: #1f2937; 
+      text-decoration: none; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 0.4rem; 
+      border-left: 3px solid transparent; 
+      padding: 0.85rem 1.25rem; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .list-group-item a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+    }
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::before {
+      transform: scaleY(1);
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Sub-items tree connectors */
+    .list-group-sub-item a::before { 
+      content: '├─';
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      color: #6b7280;
+      z-index: 1;
+      position: relative;
+    }
+    
+    /* Sub-items styling - similar to main items but smaller and indented */
+    .list-group-sub-item {
+      background: transparent; 
+      border-color: transparent; 
+      padding: 0px; 
+      margin: 0.2rem 0.75rem 0.2rem 1.5rem;
+      border-radius: 0rem;
+      transition: all 0.2s ease;
+      position: relative;
+      list-style-type: none;
+    }
+    .list-group-sub-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0 0px 0px 0;
+      z-index: 1;
+    }
+    .list-group-sub-item a {
+      color: #1f2937; 
+      text-decoration: none; 
+      display: block;
+      border-left: 3px solid transparent; 
+      padding: 0.65rem 1rem 0.65rem 2.00rem;
+      transition: all 0.2s ease; 
+      font-weight: 500; 
+      border-radius: 0rem;
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Sub-items hover and active states - same as main items */
+    .list-group-sub-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-sub-item:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-sub-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-sub-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    
+    .list-group-sub-item.active::before {
+      transform: scaleY(1);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+    .list-group-sub-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-sub-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-sub-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    .list-group-item a::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .list-group-item a:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%); 
+      border-left-color: transparent;
+      color: #1e40af;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+      text-decoration: none;
+    }
+    .list-group-item a:hover::before {
+      transform: scaleY(1);
+    }
+    .list-group-item a:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
+    }
+    .list-group-item a.active { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%); 
+      color: #1e40af; 
+      font-weight: 600; 
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    .list-group-item a.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+    .list-group-item a.active:hover { 
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.28) 0%, rgba(59, 130, 246, 0.16) 100%); 
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    /* Badge styling */
+    .badge { font-size: 0.8rem; padding: 0.15rem 0.4rem; background: var(--accent-light); color: var(--accent); border: 1px solid var(--accent); font-weight: 600; border-radius: 0.25rem; font-style: normal; line-height: 1.2; opacity: 0.9; }
+    .badge { background: var(--accent); color: white; border: none; font-size: 0.6rem; padding: 0.25rem 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-top: 0.5rem; margin-right: 0.35rem; }
+    .list-group-item a:hover .badge { opacity: 1; background: var(--accent); color: white; }
+    .list-group-item a.active .badge { background: rgba(255, 255, 255, 0.3); color: white; border-color: rgba(255, 255, 255, 0.6); font-weight: 600; opacity: 1; }
+        
+    /* Content */
+    .content { width: 100%; max-width: 100%; margin: 0 auto; background: #ffffff; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); }
+    section { display: none !important; margin-bottom: 2rem; }
+    section.active { display: block !important; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0 0.25rem 0; letter-spacing: -0.5px; color: var(--fg); display: block; border: none; }
+    h2 { font-size: 1.5rem; font-weight: 600; margin: 1.5rem 0 0.75rem 0; color: var(--fg); border-bottom: 2px solid var(--accent-light); padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; color: var(--accent); font-weight: 600; margin: 1rem 0 0.5rem 0; }
+    h4 { font-size: 0.8rem; color: var(--fg); font-weight: 600; margin: 0.75rem 0 0.4rem 0; }
+    p { margin: 1rem 0; line-height: 1.65; color: var(--fg); }
+    ul, ol { margin: 1rem 0; padding-left: 2rem; }
+    li { margin: 0.5rem 0; color: var(--fg); }
+    
+    code { background: var(--code-bg); border: 1px solid var(--border); padding: 0.2rem 0.5rem; font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace; font-size: 0.9em; color: var(--accent); border-radius: 0.5rem; }
+    pre { background: var(--code-bg); border: 0px solid var(--border); padding: 1rem; border-radius: 0.5rem; overflow: auto; box-shadow: var(--shadow-sm); margin: 1rem 0; }
+    pre code { padding: 0; background: transparent; border: none; color: var(--fg); }
+    
+    .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0.5rem; box-shadow: var(--shadow-sm); font-weight: 500; color: var(--fg); }
+    
+    /* Table styling */
+    .table { color: var(--fg); }
+    .table thead th { background: var(--accent-light); color: var(--accent); border-color: var(--border); font-weight: 600; }
+    .table tbody td { border-color: var(--border); }
+    .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0,0,0,0.02); }
+    .table-striped tbody tr:hover { background-color: var(--accent-light); }
+    
+    /* Controls/Pagination */
+    .controls { opacity: 0.5; position: fixed; bottom: 0.25rem; right: 1rem; width: auto; z-index: 1000; background: transparent; display: flex; align-items: center; justify-content: center; gap: 0rem; padding: 0; min-height: 40px; }
+    @media (max-width: 991px) {
+      .controls { bottom: 0.25rem; right: 1rem; }
+      .menu-header { color: var(--focus); }
+    }
+    .controls:hover { opacity: 1; }
+    
+    .page-indicator { color: var(--accent); font-weight: 600; font-size: 0.875rem; }
+    .btn-group .btn { margin: 0px 2px; padding: 0.2rem 0.5rem; background: var(--accent); color: white; border-color: var(--accent); font-size: 1rem; font-weight: bold; }
+    .btn-group .btn:hover { background: var(--accent); }
+    .btn-group .btn + .btn { margin-left: -1px; }
+    
+    /* Mobile/Offcanvas */
+    .offcanvas { background: var(--bg) !important; }
+    .offcanvas-header { border-bottom: 1px solid var(--border); }
+    .offcanvas-title { color: var(--fg); font-weight: 600; }
+    .btn-close { color: var(--fg); }
+    
+    /* Scrollbar */
+    nav.sidebar::-webkit-scrollbar { width: 6px; }
+    nav.sidebar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+    nav.sidebar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 0px; }
+    nav.sidebar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
+    
+    /* Mermaid Diagrams */
+    .mermaid {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      position: relative;
+    }
+    .mermaid.rendered {
+      min-height: 0;
+    }
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      min-height: 300px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+    .mermaid.zoomed {
+      overflow: auto;
+      cursor: grab;
+    }
+    .mermaid.zoomed:active {
+      cursor: grabbing;
+    }
+    .mermaid svg text {
+      font-size: 14px !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+    
+    /* Mermaid title styling */
+    .mermaid svg text, .diagram-modal-content svg text {
+      font-size: 1rem !important;
+      font-weight: bold !important;
+      fill: var(--fg) !important;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+    }
+
+    .mermaid svg *
+    {
+        color: #333;
+    }
+
+    .mermaid[data-processed="true"] {
+      min-height: 0;
+    }
+    
+    .mermaid svg {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+    
+    /* Zoom controls */
+    .zoom-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 10;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+    .mermaid:hover .zoom-controls {
+      opacity: 1;
+    }
+    .zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+
+    /* Modal for diagram zoom */
+    .diagram-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .diagram-modal.active {
+      display: flex;
+    }
+    .diagram-modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: white;
+      border-radius: 0;
+      padding: 3rem 3rem 3rem 3rem;
+      overflow: auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .diagram-modal-content svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .modal-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+      z-index: 10000;
+    }
+    .modal-close:hover {
+      background: #dc2626;
+      transform: scale(1.1);
+    }
+    .modal-zoom-controls {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10000;
+      padding: 0rem;
+      border-radius: 0.4rem;
+    }
+    .modal-zoom-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: all 0.2s ease;
+    }
+    .modal-zoom-btn:hover {
+      background: #2563eb;
+      transform: scale(1.1);
+    }
+    
+    /* Utilities */
+    .search { height: 0; overflow: hidden; padding: 0 !important; }
+    .search input { display: none; }
+    .min-vh-100 { min-height: 100vh; }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: static; width: auto; height: auto; padding: 0.4rem 0.6rem; background: var(--accent); color: white; border-radius: 0.4rem; }
+    
+    /* Override Bootstrap defaults for theme */
+    a { color: var(--accent); }
+    a:hover { color: var(--accent); text-decoration: underline; }
+    
+    /* Responsive - keep sidebar visible on desktop, offcanvas on mobile */
+    @media (max-width: 991px) {
+      nav.sidebar { display: none; }
+      #main { width: 100%; }
+      .row { --bs-gutter-x: 0; }
+    }
+    
+    /* Layout - prevent unnecessary scrolling */
+    html, body { height: 100%; margin: 0; }
+    #appContainer { display: flex; flex-direction: column; height: calc(100vh - 50px); }
+    #mainRow { flex: 1; overflow: hidden; display: flex; }
+    nav.sidebar { overflow-y: auto; max-height: 100%; position: relative; padding-bottom: 0px; }
+    #main { overflow: hidden; display: flex; flex-direction: column; height: 100%; -webkit-tap-highlight-color: transparent; outline: none; border: none; }
+    #main:focus { outline: none; }
+    .content { overflow-y: auto; flex: 1; width: 100%; min-height: 0; padding: 0rem 1.5rem 0rem 1.5rem; }
+    
+    /* Contact Info */
+    .contact-info {
+      font-weight: 400 !important;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--accent-light);
+      margin: 0;
+      opacity: 0.5;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .contact-info:hover {
+      opacity: 0.9;
+      text-decoration: none;
+    }
+    @media (max-width: 991px) {
+      .navbar-brand {
+        font-size: 1rem !important;
+        flex: 1;
+      }
+      .contact-info {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 0.9rem !important;
+      }
+      .contact-info {
+        font-size: 0.65rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+
+    .list-style-none {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* JSON Syntax Highlighting */
+    pre code.language-json {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-json .json-key {
+      color: #0451a5;
+      font-weight: 500;
+    }
+
+    pre code.language-json .json-string {
+      color: #a31515;
+    }
+
+    pre code.language-json .json-number {
+      color: #098658;
+    }
+
+    pre code.language-json .json-boolean {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-null {
+      color: #0000ff;
+      font-weight: 600;
+    }
+
+    pre code.language-json .json-punctuation {
+      color: #333;
+    }
+
+    /* SQL Syntax Highlighting */
+    pre code.language-sql {
+      display: block;
+      white-space: pre;
+      font-family: 'Cascadia Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    pre code.language-sql .sql-keyword {
+      color: #0000ff;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    pre code.language-sql .sql-string {
+      color: #a31515;
+    }
+
+    pre code.language-sql .sql-number {
+      color: #098658;
+    }
+
+    pre code.language-sql .sql-comment {
+      color: #008000;
+      font-style: italic;
+    }
+
+    pre code.language-sql .sql-function {
+      color: #795e26;
+      font-weight: 500;
+    }
+
+    pre code.language-sql .sql-operator {
+      color: #666;
+      font-weight: 500;
+    }
+
+    /* Language Label for Code Blocks */
+    pre[data-language]::before {
+      content: attr(data-language);
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 0.75em;
+      color: #6a737d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      background: var(--bg);
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Enhanced pre/code styling for syntax highlighted blocks */
+    pre.syntax-highlighted {
+      position: relative;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem 1rem 1rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+      margin: 1rem 0;
+    }
+
+    pre.syntax-highlighted code {
+      background: transparent;
+      padding: 0;
+      border: none;
+      color: var(--fg);
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    ul
+    {
+        list-style-type: none;
+    }
+  /* Document Footer */
+    .document-footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .document-footer p {
+      margin: 0;
+      font-size: 14px;
+      color: #6c757d;
+      line-height: 1.6;
+    }
+    .document-footer strong {
+      color: #495057;
+    }  
+  </style>
+  <!-- Mermaid.js for diagrams -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    // Initialize Mermaid with proper configuration
+    document.addEventListener('DOMContentLoaded', function() {
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'base',
+        securityLevel: 'loose',
+        logLevel: 'error',
+        fontFamily: 'Segoe UI Semibold',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      // Render all diagrams
+      renderMermaidDiagrams();
+    });
+    
+    async function renderMermaidDiagrams() {
+      const diagrams = document.querySelectorAll('.mermaid');
+      
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.textContent.trim();
+        
+        // Store original code
+        if (!diagram.hasAttribute('data-original-code')) {
+          diagram.setAttribute('data-original-code', code);
+        }
+        
+        try {
+          const { svg } = await mermaid.render('mermaid-diagram-' + i, code);
+          diagram.innerHTML = svg;
+          diagram.setAttribute('data-processed', 'true');
+          
+          // Add zoom controls
+          addZoomControls(diagram);
+        } catch (error) {
+          console.error('Mermaid rendering error for diagram ' + i + ':', error);
+          diagram.innerHTML = '<div class="alert alert-danger border border-danger rounded p-3">Error rendering diagram: ' + error.message + '</div>';
+        }
+      }
+    }
+    
+    // Add zoom controls to mermaid diagrams
+    function addZoomControls(diagram) {
+      const controls = document.createElement('div');
+      controls.className = 'zoom-controls';
+      controls.innerHTML = `
+        <button class="zoom-btn" data-action="expand" title="Expand View">⛶</button>
+      `;
+      
+      diagram.style.position = 'relative';
+      diagram.insertBefore(controls, diagram.firstChild);
+      
+      // Expand to modal
+      controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.zoom-btn');
+        if (!btn) return;
+        
+        openDiagramModal(diagram);
+      });
+    }
+
+    // Open diagram in modal
+    function openDiagramModal(diagram) {
+      // Create modal if it doesn't exist
+      let modal = document.getElementById('diagram-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'diagram-modal';
+        modal.className = 'diagram-modal';
+        modal.innerHTML = `
+          <button class="modal-close" id="modal-close">×</button>
+          <div class="diagram-modal-content" id="modal-diagram-content"></div>
+          <div class="modal-zoom-controls">
+            <button class="modal-zoom-btn" data-action="zoom-in" title="Zoom In">+</button>
+            <button class="modal-zoom-btn" data-action="zoom-out" title="Zoom Out">−</button>
+            <button class="modal-zoom-btn" data-action="reset" title="Reset Zoom">⟲</button>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // Close modal handlers
+        modal.querySelector('#modal-close').addEventListener('click', closeDiagramModal);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeDiagramModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeDiagramModal();
+          }
+        });
+        
+        // Zoom controls in modal
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        
+        modal.querySelector('.modal-zoom-controls').addEventListener('click', (e) => {
+          const btn = e.target.closest('.modal-zoom-btn');
+          if (!btn) return;
+          
+          const action = btn.dataset.action;
+          const svg = modal.querySelector('svg');
+          if (!svg) return;
+          
+          if (action === 'zoom-in') {
+            scale = Math.min(scale + 0.1, 5);
+          } else if (action === 'zoom-out') {
+            scale = Math.max(scale - 0.1, 0.5);
+          } else if (action === 'reset') {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+          }
+          
+          svg.style.transform = `scale(${scale}) translate(${translateX / scale}px, ${translateY / scale}px)`;
+        });
+      }
+      
+      // Clone diagram content
+      const svg = diagram.querySelector('svg');
+      if (svg) {
+        const content = modal.querySelector('#modal-diagram-content');
+        content.innerHTML = '';
+        const clonedSvg = svg.cloneNode(true);
+        clonedSvg.style.transform = 'scale(1)';
+        clonedSvg.style.maxWidth = '100%';
+        clonedSvg.style.height = 'auto';
+        content.appendChild(clonedSvg);
+      }
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDiagramModal() {
+      const modal = document.getElementById('diagram-modal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Re-render on theme change
+    window.rerenderMermaid = async function() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? 'base' : 'base',
+        securityLevel: 'loose',
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          curve: 'basis',
+        },
+        sequence: {
+          useMaxWidth: false,
+          htmlLabels: true,
+          diagramMarginX: 50,
+          diagramMarginY: 10
+        }
+      });
+      
+      const diagrams = document.querySelectorAll('.mermaid[data-processed="true"]');
+      for (let i = 0; i < diagrams.length; i++) {
+        const diagram = diagrams[i];
+        const code = diagram.getAttribute('data-original-code');
+        
+        if (code) {
+          try {
+            const { svg } = await mermaid.render('mermaid-diagram-rerender-' + i + '-' + Date.now(), code);
+            diagram.innerHTML = svg;
+          } catch (error) {
+            console.error('Mermaid re-rendering error:', error);
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top" aria-label="Top bar">
+    <div class="container-fluid d-flex align-items-center">
+      <button class="navbar-toggler me-2" id="toggleSidebar" type="button" aria-label="Toggle sidebar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+<span class="navbar-brand mb-0 h1 me-auto">🏗️ Twelve Factor App - In a Nutshell</span>
+<span class="contact-info mb-0">🤝 Curated by Murthy Vepa</span>
+    </div>      
+  </nav>
+
+  <div id="appContainer">
+    <div class="row g-0" id="mainRow">
+      <nav class="col-lg-3 border-end sidebar" id="sidebar" aria-label="Table of contents">
+        <div class="menu-header py-2">Contents</div>
+        <ul class="list-group list-group-flush toc" id="toc"></ul>
+      </nav>
+
+      <main id="main" class="col-lg-9 d-flex flex-column" tabindex="-1">
+        <div class="content" id="content">
+
+        <!-- Overview Section -->
+        <section id="overview" role="article">
+          <h1>📖 Overview</h1>
+          <span class="badge">intro</span>
+          <span class="badge">overview</span>
+          <span class="badge">methodology</span>
+
+          <p>In the modern era, software is commonly delivered as a service: called <em>web apps</em>, or <em>software-as-a-service</em>. The <strong>Twelve-Factor App</strong> is a methodology for building software-as-a-service apps. Written by <strong>Adam Wiggins</strong>, it synthesises experience and observations on a wide variety of SaaS apps at <a href="https://www.heroku.com" target="_blank">Heroku</a>, paying particular attention to the dynamics of organic growth of an app over time, the dynamics of collaboration between developers working on the codebase, and <strong>avoiding the cost of software erosion</strong>.</p>
+
+          <h2>Goals of the Methodology</h2>
+          <p>A twelve-factor app is designed to:</p>
+          <ul>
+            <li>Use <strong>declarative formats</strong> for setup automation, to minimize time and cost for new developers joining the project</li>
+            <li>Have a <strong>clean contract</strong> with the underlying operating system, offering maximum portability between execution environments</li>
+            <li>Be suitable for <strong>deployment on modern cloud platforms</strong>, obviating the need for servers and systems administration</li>
+            <li><strong>Minimize divergence</strong> between development and production, enabling continuous deployment for maximum agility</li>
+            <li><strong>Scale up</strong> without significant changes to tooling, architecture, or development practices</li>
+          </ul>
+
+          <h2>Who Should Read This?</h2>
+          <div class="callout">
+            Any developer building applications which run as a service. Ops engineers who deploy or manage such applications. The methodology applies to apps written in <strong>any programming language</strong> and using <strong>any combination of backing services</strong> (database, queue, memory cache, etc.).
+          </div>
+
+          <h2>The 12 Factors at a Glance</h2>
+          <table class="table table-striped">
+            <thead><tr><th>#</th><th>Factor</th><th>Core Idea</th></tr></thead>
+            <tbody>
+              <tr><td><strong>I</strong></td><td>Codebase</td><td>One codebase tracked in revision control, many deploys</td></tr>
+              <tr><td><strong>II</strong></td><td>Dependencies</td><td>Explicitly declare and isolate dependencies</td></tr>
+              <tr><td><strong>III</strong></td><td>Config</td><td>Store config in the environment</td></tr>
+              <tr><td><strong>IV</strong></td><td>Backing Services</td><td>Treat backing services as attached resources</td></tr>
+              <tr><td><strong>V</strong></td><td>Build, Release, Run</td><td>Strictly separate build and run stages</td></tr>
+              <tr><td><strong>VI</strong></td><td>Processes</td><td>Execute the app as one or more stateless processes</td></tr>
+              <tr><td><strong>VII</strong></td><td>Port Binding</td><td>Export services via port binding</td></tr>
+              <tr><td><strong>VIII</strong></td><td>Concurrency</td><td>Scale out via the process model</td></tr>
+              <tr><td><strong>IX</strong></td><td>Disposability</td><td>Maximize robustness with fast startup and graceful shutdown</td></tr>
+              <tr><td><strong>X</strong></td><td>Dev/Prod Parity</td><td>Keep development, staging, and production as similar as possible</td></tr>
+              <tr><td><strong>XI</strong></td><td>Logs</td><td>Treat logs as event streams</td></tr>
+              <tr><td><strong>XII</strong></td><td>Admin Processes</td><td>Run admin/management tasks as one-off processes</td></tr>
+            </tbody>
+          </table>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+mindmap
+  root((12 Factor App))
+    Codebase
+      One repo many deploys
+    Dependencies
+      Explicit &amp; isolated
+    Config
+      Stored in environment
+    Backing Services
+      Attached resources
+    Build Release Run
+      Strict separation
+    Processes
+      Stateless execution
+    Port Binding
+      Self-contained service
+    Concurrency
+      Scale via processes
+    Disposability
+      Fast start graceful stop
+    Dev Prod Parity
+      Minimize gaps
+    Logs
+      Event streams
+    Admin Processes
+      One-off tasks
+          </div>
+
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> The 12 factors work together synergistically. Applying them collectively creates software that is cloud-native by design and resilient by default.
+          </div>
+        </section>
+
+        <!-- All 12 Factors Overview Section -->
+        <section id="twelve-factors" role="article">
+          <h1>🔢 The 12 Factors</h1>
+          <span class="badge">all factors</span>
+          <span class="badge">methodology</span>
+          <span class="badge">saas</span>
+
+          <p>The Twelve-Factor methodology applies to apps written in any programming language and using any combination of backing services (database, queue, memory cache, etc.).</p>
+
+          <h2>Factors Grouped by Theme</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph TD
+    subgraph CODE["📦 Code &amp; Dependencies"]
+        I["I. Codebase"]
+        II["II. Dependencies"]
+    end
+    subgraph CONFIG["⚙️ Configuration"]
+        III["III. Config"]
+        IV["IV. Backing Services"]
+    end
+    subgraph DEPLOY["🚀 Deployment"]
+        V["V. Build, Release, Run"]
+        VII["VII. Port Binding"]
+    end
+    subgraph SCALE["📊 Scalability"]
+        VI["VI. Processes"]
+        VIII["VIII. Concurrency"]
+        IX["IX. Disposability"]
+    end
+    subgraph OPS["🔧 Operations"]
+        X["X. Dev/Prod Parity"]
+        XI["XI. Logs"]
+        XII["XII. Admin Processes"]
+    end
+    style CODE fill:#dbeafe,stroke:#3b82f6
+    style CONFIG fill:#dcfce7,stroke:#10b981
+    style DEPLOY fill:#fef3c7,stroke:#f59e0b
+    style SCALE fill:#e9d5ff,stroke:#9333ea
+    style OPS fill:#fce7f3,stroke:#ec4899
+          </div>
+
+          <h2>Relationship to Modern Cloud Practices</h2>
+          <ul>
+            <li><strong>Containers (Docker):</strong> Factors I, II, VI, IX map directly to container best practices</li>
+            <li><strong>Kubernetes:</strong> Factors VI, VIII, IX, X are foundational for k8s workloads</li>
+            <li><strong>CI/CD Pipelines:</strong> Factor V (Build/Release/Run) is the blueprint for pipelines</li>
+            <li><strong>Microservices:</strong> Factors I, III, IV, VII enable loosely coupled services</li>
+            <li><strong>Observability:</strong> Factor XI (Logs) feeds into modern observability stacks</li>
+          </ul>
+        </section>
+
+        <!-- Factor I: Codebase -->
+        <section id="codebase" role="article">
+          <h1>I. Codebase 🏗️</h1>
+          <span class="badge">factor 1</span>
+          <span class="badge">git</span>
+          <span class="badge">vcs</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"One codebase tracked in revision control, many deploys."</strong></p>
+          <p>A twelve-factor app is always tracked in a version control system, such as <strong>Git</strong>, Mercurial, or Subversion. A copy of the revision tracking database is known as a <em>code repository</em>, often shortened to <em>repo</em>.</p>
+          <p>A <strong>codebase</strong> is any single repo (in a centralised revision control system like Subversion), or any set of repos who share a root commit (in a decentralised revision control system like Git).</p>
+
+          <h2>One-to-One Correlation: Codebase ↔ App</h2>
+          <ul>
+            <li>If there are <strong>multiple codebases</strong>, it's not an app — it's a <em>distributed system</em>. Each component in a distributed system is an app, and each can individually comply with twelve-factor.</li>
+            <li><strong>Multiple apps sharing the same code</strong> is a violation of twelve-factor. The solution is to factor shared code into <em>libraries</em> which can be included through the dependency manager.</li>
+          </ul>
+
+          <h2>One Codebase, Many Deploys</h2>
+          <p>There is only one codebase per app, but there will be many <strong>deploys</strong>. A deploy is a running instance of the app — typically a production site, one or more staging sites, and every developer's local environment (each of which also qualifies as a deploy).</p>
+          <p>The codebase is the same across all deploys, although different versions may be active in each deploy. For example, a developer has some commits not yet deployed to staging; staging has some commits not yet deployed to production — but they all share the same codebase.</p>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph LR
+    REPO["📂 Git Repository
+    (Single Codebase)"]
+    DEV["🖥️ Developer Local
+    (Deploy 1)"]
+    STAGING["🔬 Staging
+    (Deploy 2)"]
+    PROD["🚀 Production
+    (Deploy 3)"]
+    REPO --> DEV
+    REPO --> STAGING
+    REPO --> PROD
+    DEV -. "some commits
+    not in staging" .-> STAGING
+    STAGING -. "some commits
+    not in prod" .-> PROD
+    style REPO fill:#3b82f6,color:#fff,stroke:#2563eb
+    style DEV fill:#dcfce7,stroke:#10b981
+    style STAGING fill:#fef3c7,stroke:#f59e0b
+    style PROD fill:#fce7f3,stroke:#ec4899
+          </div>
+
+          <h2>✅ Do</h2>
+          <ul>
+            <li>One repository per app / microservice</li>
+            <li>Use tags or commit hashes to identify specific releases</li>
+            <li>Factor shared code into versioned libraries via a dependency manager</li>
+            <li>Every developer's local environment counts as a deploy — treat it that way</li>
+          </ul>
+
+          <h2>❌ Don't</h2>
+          <ul>
+            <li>Maintain multiple repos for what is logically a single app</li>
+            <li>Copy-paste code between apps — use shared libraries instead</li>
+            <li>Let multiple apps share a codebase — split them properly</li>
+          </ul>
+        </section>
+
+        <!-- Factor II: Dependencies -->
+        <section id="dependencies" role="article">
+          <h1>II. Dependencies 📦</h1>
+          <span class="badge">factor 2</span>
+          <span class="badge">packages</span>
+          <span class="badge">isolation</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Explicitly declare and isolate dependencies."</strong></p>
+          <p>Most programming languages offer a packaging system for distributing support libraries. Libraries can be installed <em>system-wide</em> ("site packages") or scoped into the directory containing the app ("vendoring" or "bundling").</p>
+          <p>A twelve-factor app <strong>never relies on the implicit existence of system-wide packages</strong>. It declares all dependencies, completely and exactly, via a <em>dependency declaration manifest</em>. Furthermore, it uses a <em>dependency isolation tool</em> during execution to ensure that no implicit dependencies "leak in" from the surrounding system. The full and explicit dependency specification is applied uniformly to both production and development.</p>
+
+          <h2>Declaration + Isolation Must Always Be Used Together</h2>
+          <p>Only one or the other is not sufficient to satisfy twelve-factor:</p>
+          <table class="table table-striped">
+            <thead><tr><th>Language</th><th>Declaration (Manifest)</th><th>Isolation Tool</th><th>Build Command</th></tr></thead>
+            <tbody>
+              <tr><td>Ruby</td><td><code>Gemfile</code> (Bundler)</td><td><code>bundle exec</code></td><td><code>bundle install</code></td></tr>
+              <tr><td>Python</td><td><code>requirements.txt</code> / <code>Pipfile</code> (Pip)</td><td><code>virtualenv</code></td><td><code>pip install -r requirements.txt</code></td></tr>
+              <tr><td>Node.js</td><td><code>package.json</code> / <code>package-lock.json</code></td><td><code>node_modules</code></td><td><code>npm install</code></td></tr>
+              <tr><td>.NET</td><td><code>.csproj</code> / <code>nuget.config</code></td><td>NuGet restore</td><td><code>dotnet restore</code></td></tr>
+              <tr><td>Java</td><td><code>pom.xml</code> / <code>build.gradle</code></td><td>Maven/Gradle local repo</td><td><code>mvn dependency:resolve</code></td></tr>
+              <tr><td>Go</td><td><code>go.mod</code> / <code>go.sum</code></td><td>Go modules</td><td><code>go mod download</code></td></tr>
+              <tr><td>C</td><td>Autoconf</td><td>Static linking</td><td><code>./configure &amp;&amp; make</code></td></tr>
+            </tbody>
+          </table>
+
+          <h2>Benefits of Explicit Dependencies</h2>
+          <ul>
+            <li><strong>Onboarding simplicity:</strong> A new developer can check out the app onto their machine with only the language runtime and dependency manager as prerequisites — then run a deterministic build command to set everything up</li>
+            <li><strong>No environment assumptions:</strong> No reliance on the specific environment of the production server</li>
+            <li><strong>Reproducible builds:</strong> Same manifest always produces the same dependency tree</li>
+          </ul>
+
+          <h2>System Tools Must Also Be Vendored</h2>
+          <p>Twelve-factor apps do not rely on the implicit existence of any system tools. Examples include shelling out to <code>ImageMagick</code> or <code>curl</code>. While these tools may exist on many systems, there is <strong>no guarantee</strong> they will exist on all systems where the app may run in the future, or whether the version found will be compatible. If the app needs to shell out to a system tool, that tool should be <strong>vendored into the app</strong>.</p>
+
+          <div class="callout">
+            <strong>💡 Pro Tip:</strong> Commit lock files (<code>package-lock.json</code>, <code>Pipfile.lock</code>, <code>Gemfile.lock</code>) to VCS to ensure reproducible builds across all environments and CI pipelines.
+          </div>
+        </section>
+
+        <!-- Factor III: Config -->
+        <section id="config" role="article">
+          <h1>III. Config ⚙️</h1>
+          <span class="badge">factor 3</span>
+          <span class="badge">environment</span>
+          <span class="badge">configuration</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Store config in the environment."</strong></p>
+          <p>An app's <strong>config</strong> is everything that is likely to vary between deploys (staging, production, developer environments, etc). This includes:</p>
+          <ul>
+            <li>Resource handles to the database, Memcached, and other backing services</li>
+            <li>Credentials to external services such as Amazon S3 or Twitter</li>
+            <li>Per-deploy values such as the canonical hostname for the deploy</li>
+          </ul>
+
+          <h2>The Litmus Test</h2>
+          <div class="callout">
+            <strong>🔍 Litmus Test:</strong> Whether an app has all config correctly factored out of the code is whether the codebase could be made <strong>open source at any moment</strong>, without compromising any credentials.
+          </div>
+
+          <h2>What Config Is <em>Not</em></h2>
+          <p>This definition of "config" does <strong>not</strong> include internal application config, such as <code>config/routes.rb</code> in Rails, or how code modules are connected in Spring. This type of config does <em>not</em> vary between deploys, and so is best done in the code.</p>
+
+          <h2>Why Not Config Files?</h2>
+          <p>Using config files not checked into revision control (e.g., <code>config/database.yml</code> in Rails) is an improvement over constants in code, but still has weaknesses:</p>
+          <ul>
+            <li>Easy to mistakenly check in a config file to the repo</li>
+            <li>Config files tend to be scattered in different places and different formats, making it hard to see and manage all config in one place</li>
+            <li>These formats tend to be language- or framework-specific</li>
+          </ul>
+
+          <h2>Environment Variables: The 12-Factor Way</h2>
+          <p>The twelve-factor app stores config in <strong>environment variables</strong> (env vars). Env vars are:</p>
+          <ul>
+            <li>Easy to change between deploys without changing any code</li>
+            <li>Little chance of being checked into the code repo accidentally</li>
+            <li>A language- and OS-agnostic standard</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph TD
+    ENV["🌐 Environment Variables
+    (12-Factor Way)"]
+    VAULT["🔐 Secret Store
+    (Azure Key Vault, HashiCorp Vault)"]
+    CONFIGMAP["📋 ConfigMaps / App Config
+    (Kubernetes, Azure App Config)"]
+    APP["📱 Application Code
+    reads from env at runtime"]
+    ENV --> APP
+    VAULT --> APP
+    CONFIGMAP --> APP
+    style ENV fill:#dcfce7,stroke:#10b981
+    style VAULT fill:#fce7f3,stroke:#ec4899
+    style CONFIGMAP fill:#dbeafe,stroke:#3b82f6
+    style APP fill:#fef3c7,stroke:#f59e0b
+          </div>
+
+          <h2>⚠️ The "Environments" Anti-Pattern</h2>
+          <p>Some apps batch config into named groups called <em>environments</em> (e.g., <code>development</code>, <code>test</code>, <code>production</code> in Rails). This method <strong>does not scale cleanly</strong>: as more deploys are created, new environment names are necessary (<code>staging</code>, <code>qa</code>, <code>joes-staging</code>), resulting in a <strong>combinatorial explosion</strong> of config which makes managing deploys very brittle.</p>
+          <p>In a twelve-factor app, env vars are <strong>granular controls, each fully orthogonal to other env vars</strong>. They are never grouped together as "environments", but instead are independently managed for each deploy. This model scales up smoothly as the app expands into more deploys over its lifetime.</p>
+
+          <h2>✅ Do</h2>
+          <ul>
+            <li>Use environment variables for all config that varies by deploy</li>
+            <li>Use a secret manager (e.g., Azure Key Vault) for sensitive values</li>
+            <li>Test that your code would be safe to open-source — no embedded credentials</li>
+          </ul>
+
+          <h2>❌ Don't</h2>
+          <ul>
+            <li>Commit secrets or connection strings to source control</li>
+            <li>Group config as named "environments" (dev/staging/prod) inside the codebase</li>
+            <li>Use language- or framework-specific config file formats to store per-deploy config</li>
+          </ul>
+
+          <pre class="syntax-highlighted" data-language="bash"><code># .env.example (safe to commit — no real secrets)
+# Each deploy sets its own values for these env vars
+DATABASE_URL=postgres://user:pass@localhost/mydb
+AMAZON_S3_KEY=your-s3-key-here
+SMTP_URL=smtp://postfix.internal:25
+CANONICAL_HOST=www.example.com</code></pre>
+        </section>
+
+        <!-- Factor IV: Backing Services -->
+        <section id="backing-services" role="article">
+          <h1>IV. Backing Services 🔌</h1>
+          <span class="badge">factor 4</span>
+          <span class="badge">services</span>
+          <span class="badge">resources</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Treat backing services as attached resources."</strong></p>
+          <p>A <strong>backing service</strong> is any service the app consumes over the network as part of its normal operation. Examples include datastores (such as MySQL or CouchDB), messaging/queueing systems (such as RabbitMQ or Beanstalkd), SMTP services for outbound email (such as Postfix), and caching systems (such as Memcached).</p>
+
+          <h2>Local vs. Third-Party: No Distinction</h2>
+          <p>Backing services like the database are traditionally managed by the same systems administrators who deploy the app's runtime. In addition to these <em>locally-managed services</em>, the app may also have services provided and managed by <em>third parties</em>. Examples include SMTP services (such as Postmark), metrics-gathering services (such as New Relic or Loggly), binary asset services (such as Amazon S3), and even API-accessible consumer services (such as Twitter, Google Maps, or Last.fm).</p>
+          <p>The code for a twelve-factor app <strong>makes no distinction between local and third-party services</strong>. To the app, both are attached resources, accessed via a URL or other locator/credentials stored in the config.</p>
+
+          <h2>Types of Backing Services</h2>
+          <table class="table table-striped">
+            <thead><tr><th>Category</th><th>Local / Self-Managed</th><th>Third-Party / Managed</th></tr></thead>
+            <tbody>
+              <tr><td>Datastores</td><td>MySQL, PostgreSQL, CouchDB, MongoDB</td><td>Amazon RDS, Azure Cosmos DB, Azure SQL</td></tr>
+              <tr><td>Messaging / Queues</td><td>RabbitMQ, Beanstalkd</td><td>Azure Service Bus, Amazon SQS, Kafka</td></tr>
+              <tr><td>Caches</td><td>Memcached, Redis (local)</td><td>Azure Cache for Redis, ElastiCache</td></tr>
+              <tr><td>SMTP / Email</td><td>Postfix (local)</td><td>Postmark, SendGrid</td></tr>
+              <tr><td>Metrics / Monitoring</td><td>Self-hosted Prometheus</td><td>New Relic, Loggly, Datadog</td></tr>
+              <tr><td>Binary Assets</td><td>Local filesystem (dev only)</td><td>Amazon S3, Azure Blob Storage</td></tr>
+              <tr><td>External APIs</td><td>—</td><td>Twitter, Google Maps, Last.fm</td></tr>
+            </tbody>
+          </table>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph LR
+    APP["📱 App Code"]
+    subgraph LOCAL["Local Resources"]
+        DB["🗄️ MySQL
+        (local)"]
+        CACHE["⚡ Memcached
+        (local)"]
+    end
+    subgraph THIRD["Third-Party Resources"]
+        RDS["☁️ Amazon RDS
+        (managed)"]
+        SMTP["📧 Postmark
+        (SMTP SaaS)"]
+        S3["🪣 Amazon S3
+        (asset storage)"]
+    end
+    APP -- "DATABASE_URL" --> DB
+    APP -- "CACHE_URL" --> CACHE
+    APP -- "DATABASE_URL" --> RDS
+    APP -- "SMTP_URL" --> SMTP
+    APP -- "S3_URL" --> S3
+    style APP fill:#3b82f6,color:#fff
+    style LOCAL fill:#dcfce7,stroke:#10b981
+    style THIRD fill:#dbeafe,stroke:#3b82f6
+          </div>
+
+          <h2>Resources Can Be Attached and Detached</h2>
+          <p>Each distinct backing service is a <strong>resource</strong>. The twelve-factor app treats these databases as <em>attached resources</em>, which indicates their loose coupling to the deploy they are attached to.</p>
+          <p>Resources can be attached to and detached from deploys <strong>at will</strong>. For example, if the app's database is misbehaving due to a hardware issue, the administrator might spin up a new database server restored from a recent backup. The current production database could be detached, and the new database attached — <strong>all without any code changes</strong>. Only the resource handle in the config needs to change.</p>
+
+          <div class="callout">
+            <strong>💡 Key Insight:</strong> A local MySQL database and one managed by Amazon RDS are both just backing services to the app. Swapping one for the other requires only a config change — zero code changes.
+          </div>
+        </section>
+
+        <!-- Factor V: Build, Release, Run -->
+        <section id="build-release-run" role="article">
+          <h1>V. Build, Release, Run 🚀</h1>
+          <span class="badge">factor 5</span>
+          <span class="badge">ci/cd</span>
+          <span class="badge">deployment</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Strictly separate build and run stages."</strong></p>
+          <p>A codebase is transformed into a (non-development) deploy through three stages:</p>
+
+          <h2>The Three Stages Defined</h2>
+          <ul>
+            <li>The <strong>build stage</strong> is a transform which converts a code repo into an executable bundle known as a <em>build</em>. Using a version of the code at a commit specified by the deployment process, the build stage fetches vendor dependencies and compiles binaries and assets.</li>
+            <li>The <strong>release stage</strong> takes the build produced by the build stage and combines it with the deploy's current config. The resulting <em>release</em> contains both the build and the config and is ready for immediate execution in the execution environment.</li>
+            <li>The <strong>run stage</strong> (also known as "runtime") runs the app in the execution environment, by launching some set of the app's processes against a selected release.</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%% 
+graph LR
+    CODE["📂 Codebase
+    (commits + deps)"]
+    BUILD["🔨 Build Stage
+    Fetch deps, compile
+    binaries &amp; assets"]
+    RELEASE["📋 Release Stage
+    Build artifact +
+    Deploy config"]
+    RUN["▶️ Run Stage
+    Launch processes
+    against release"]
+    CODE --> BUILD --> RELEASE --> RUN
+    style BUILD fill:#dbeafe,stroke:#3b82f6
+    style RELEASE fill:#dcfce7,stroke:#10b981
+    style RUN fill:#fef3c7,stroke:#f59e0b
+          </div>
+
+          <h2>Stage Responsibilities</h2>
+          <table class="table table-striped">
+            <thead><tr><th>Stage</th><th>Input</th><th>Output</th><th>Who Initiates</th><th>Immutable?</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Build</strong></td><td>Source code + deps at a specific commit</td><td>Build artifact (Docker image, JAR, binary)</td><td>Developer (on deploy)</td><td>✅ Yes</td></tr>
+              <tr><td><strong>Release</strong></td><td>Build artifact + deploy config</td><td>Versioned, timestamped release</td><td>Deployment tooling</td><td>✅ Yes — append-only ledger</td></tr>
+              <tr><td><strong>Run</strong></td><td>A specific release</td><td>Running processes</td><td>Automatic (process manager, reboot)</td><td>❌ Changes over time</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Release Management &amp; Immutability</h2>
+          <p>The twelve-factor app uses strict separation between the build, release, and run stages. It is <strong>impossible to make changes to the code at runtime</strong>, since there is no way to propagate those changes back to the build stage.</p>
+          <p>Every release should always have a <strong>unique release ID</strong>, such as a timestamp of the release (e.g., <code>2011-04-06-20:32:17</code>) or an incrementing number (e.g., <code>v100</code>). Releases are an <strong>append-only ledger</strong> — a release cannot be mutated once it is created. Any change must create a new release.</p>
+          <p>Deployment tools typically offer <strong>release management</strong> tools, notably the ability to roll back to a previous release. For example, Capistrano stores releases in a subdirectory named <code>releases</code>, where the current release is a symlink to the current release directory — making rollback straightforward.</p>
+
+          <h2>Why the Run Stage Must Be Simple</h2>
+          <p>Builds are initiated by the app's developers whenever new code is deployed. <strong>Runtime execution, by contrast, can happen automatically</strong> — such as a server reboot, or a crashed process being restarted by the process manager. Therefore, the run stage should be kept to <strong>as few moving parts as possible</strong>, since problems that prevent an app from running can cause it to break in the middle of the night when no developers are on hand. The build stage can be more complex, since errors are always in the foreground for a developer who is driving the deploy.</p>
+
+          <h2>CI/CD Pipeline Mapping</h2>
+          <ul>
+            <li><strong>Build:</strong> <code>docker build</code>, <code>dotnet publish</code>, <code>npm run build</code>, <code>mvn package</code></li>
+            <li><strong>Release:</strong> Tag Docker image with release ID, inject deploy-specific env config, Helm chart release</li>
+            <li><strong>Run:</strong> <code>kubectl apply</code>, <code>docker run</code>, Azure Container Apps deploy, platform restart</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🔑 Rule:</strong> A release is an immutable, append-only artefact. Any desired change must create a new release. This makes <strong>rollbacks trivially easy</strong> — just reactivate a previous release.
+          </div>
+        </section>
+
+        <!-- Factor VI: Processes -->
+        <section id="processes" role="article">
+          <h1>VI. Processes ⚡</h1>
+          <span class="badge">factor 6</span>
+          <span class="badge">stateless</span>
+          <span class="badge">processes</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Execute the app as one or more stateless processes."</strong></p>
+          <p>Twelve-factor processes are stateless and share nothing. Any data that needs to persist must be stored in a stateful backing service (e.g., a database or cache). The process handles requests and discards all in-memory state between requests.</p>
+
+          <h2>Stateless vs. Stateful Processes</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph TD
+    subgraph BAD["❌ Stateful Process (Anti-Pattern)"]
+        P1["Process A
+        (stores user session
+        in memory)"]
+        P2["Process B
+        (different session state)"]
+        U["User Request
+        must hit same process"]
+        U --> P1
+        U -. sticky session .-> P1
+    end
+    subgraph GOOD["✅ Stateless Process (12-Factor)"]
+        PA["Process A"]
+        PB["Process B"]
+        PC["Process C"]
+        LB["Load Balancer"]
+        REDIS["Redis / DB
+        (session storage)"]
+        LB --> PA & PB & PC
+        PA & PB & PC --> REDIS
+    end
+    style BAD fill:#fee2e2,stroke:#ef4444
+    style GOOD fill:#dcfce7,stroke:#10b981
+          </div>
+
+          <h2>What Must NOT be in Process Memory</h2>
+          <ul>
+            <li>User sessions — store in Redis, database, or a distributed cache</li>
+            <li>Uploaded files — store in object storage (Azure Blob, S3)</li>
+            <li>Cached computation results needed across requests — use a cache service</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Benefit:</strong> Stateless processes can be started, stopped, or duplicated at any time with no side effects — enabling seamless horizontal scaling and fault tolerance.
+          </div>
+        </section>
+
+        <!-- Factor VII: Port Binding -->
+        <section id="port-binding" role="article">
+          <h1>VII. Port Binding 🌐</h1>
+          <span class="badge">factor 7</span>
+          <span class="badge">http</span>
+          <span class="badge">self-contained</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Export services via port binding."</strong></p>
+          <p>The twelve-factor app is <strong>completely self-contained</strong> and does not rely on runtime injection of a webserver into the execution environment to create a web-facing service. The web app exports HTTP as a service by binding to a port, and listening to requests coming in on that port.</p>
+
+          <div class="callout">
+            <strong>🔍 Key Contrast:</strong> Web apps are sometimes executed inside a webserver container — PHP apps might run inside Apache HTTPD, or Java apps inside Tomcat. The twelve-factor app breaks this dependency entirely by embedding the server as a library via <strong>dependency declaration</strong>.
+          </div>
+
+          <h2>Self-Contained vs. Container-Dependent</h2>
+          <table class="table table-striped">
+            <thead><tr><th></th><th>Traditional (Non-12-Factor)</th><th>12-Factor</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Deployment</strong></td><td>Deploy WAR into Tomcat / PHP into Apache HTTPD</td><td>App bundles its own HTTP server as a dependency</td></tr>
+              <tr><td><strong>Port</strong></td><td>Defined by the container (e.g., :80)</td><td>App binds to <code>PORT</code> env variable</td></tr>
+              <tr><td><strong>Dependency</strong></td><td>Requires external app server installed in environment</td><td>Webserver library declared in dependency manifest</td></tr>
+              <tr><td><strong>Dev access</strong></td><td>Requires app server running locally</td><td>Visit <code>http://localhost:5000/</code> directly</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Embedded Server Libraries</h2>
+          <table class="table table-striped">
+            <thead><tr><th>Language</th><th>Embedded Server Library</th></tr></thead>
+            <tbody>
+              <tr><td>Python</td><td>Tornado, Gunicorn</td></tr>
+              <tr><td>Ruby</td><td>Thin, Puma</td></tr>
+              <tr><td>Java / JVM</td><td>Jetty, Undertow</td></tr>
+              <tr><td>Node.js</td><td>Express, Fastify</td></tr>
+              <tr><td>.NET</td><td>ASP.NET Kestrel (built-in)</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Example: Port Binding in Node.js</h2>
+          <pre class="syntax-highlighted" data-language="javascript"><code>const express = require('express');
+const app = express();
+
+// Read port from environment variable (12-Factor compliant)
+const PORT = process.env.PORT || 3000;
+
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+
+app.listen(PORT, () => {
+  console.log(`Service listening on port ${PORT}`);
+});</code></pre>
+
+          <h2>Beyond HTTP</h2>
+          <p>HTTP is not the only service that can be exported by port binding. Nearly any kind of server software can be run via a process binding to a port and awaiting incoming requests:</p>
+          <ul>
+            <li><strong>ejabberd</strong> — speaks XMPP protocol</li>
+            <li><strong>Redis</strong> — speaks the Redis protocol</li>
+            <li>Any TCP/UDP-based protocol server</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 App-to-App Backing Service:</strong> The port-binding approach means that one app can become the <a href="https://12factor.net/backing-services" target="_blank">backing service</a> for another app — by providing the URL to the backing app as a resource handle in the <a href="https://12factor.net/config" target="_blank">config</a> for the consuming app.
+          </div>
+        </section>
+
+        <!-- Factor VIII: Concurrency -->
+        <section id="concurrency" role="article">
+          <h1>VIII. Concurrency 🔄</h1>
+          <span class="badge">factor 8</span>
+          <span class="badge">scaling</span>
+          <span class="badge">process model</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Scale out via the process model."</strong></p>
+          <p>In the twelve-factor app, <strong>processes are a first class citizen.</strong> Processes take strong cues from <a href="https://adam.herokuapp.com/past/2011/5/9/applying_the_unix_process_model_to_web_apps/" target="_blank">the Unix process model for running service daemons</a>. Using this model, the developer can architect their app to handle diverse workloads by assigning each type of work to a <strong>process type</strong>. For example, HTTP requests may be handled by a web process, and long-running background tasks handled by a worker process.</p>
+
+          <h2>Process Formation</h2>
+          <p>The array of process types and number of processes of each type is known as the <strong>process formation</strong>.</p>
+          <table class="table table-striped">
+            <thead><tr><th>Process Type</th><th>Description</th><th>Example</th></tr></thead>
+            <tbody>
+              <tr><td><strong>web</strong></td><td>Handles HTTP requests</td><td><code>gunicorn app:app</code></td></tr>
+              <tr><td><strong>worker</strong></td><td>Background processing</td><td>Queue consumers, ETL jobs</td></tr>
+              <tr><td><strong>clock</strong></td><td>Scheduled tasks</td><td>Cron-like periodic jobs</td></tr>
+              <tr><td><strong>scheduler</strong></td><td>Task dispatching</td><td>Celery beat, Azure Functions timer</td></tr>
+            </tbody>
+          </table>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph TD
+    LB["⚖️ Load Balancer"]
+    W1["web:1"]
+    W2["web:2"]
+    W3["web:3"]
+    WK1["worker:1"]
+    WK2["worker:2"]
+    QUEUE["📨 Queue"]
+    LB --> W1 & W2 & W3
+    QUEUE --> WK1 & WK2
+    style LB fill:#3b82f6,color:#fff
+          </div>
+
+          <h2>Horizontal vs. Vertical Scaling</h2>
+          <p>Individual processes can still handle their own internal multiplexing via threads inside the runtime VM, or the async/evented model found in tools such as EventMachine, Twisted, or Node.js. But an individual VM can only grow so large (vertical scale), so the application must also be able to <strong>span multiple processes running on multiple physical machines</strong>.</p>
+          <p>The process model truly shines when it comes time to scale out. The <strong>share-nothing, horizontally partitionable</strong> nature of twelve-factor app processes means that adding more concurrency is a simple and reliable operation.</p>
+
+          <h2>Process Manager</h2>
+          <p>Twelve-factor app processes <strong>should never daemonize</strong> or write PID files. Instead, rely on the operating system's process manager to manage output streams, respond to crashed processes, and handle user-initiated restarts and shutdowns:</p>
+          <ul>
+            <li><strong>Production:</strong> systemd, or a distributed process manager on a cloud platform</li>
+            <li><strong>Development:</strong> Foreman, Docker Compose</li>
+            <li><strong>Kubernetes:</strong> Pod lifecycle management, Horizontal Pod Autoscaler (HPA / KEDA)</li>
+          </ul>
+
+          <div class="callout">
+            <strong>💡 Design for Horizontal Scale:</strong> Never assume a request will be handled by the same process or machine as the previous request. Process state must never be held in memory — use backing services (cache, database) for shared state.
+          </div>
+        </section>
+
+        <!-- Factor IX: Disposability -->
+        <section id="disposability" role="article">
+          <h1>IX. Disposability 💪</h1>
+          <span class="badge">factor 9</span>
+          <span class="badge">startup</span>
+          <span class="badge">shutdown</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Maximize robustness with fast startup and graceful shutdown."</strong></p>
+          <p>The twelve-factor app's processes are <em>disposable</em>, meaning they can be <strong>started or stopped at a moment's notice</strong>. This facilitates fast elastic scaling, rapid deployment of code or config changes, and robustness of production deploys.</p>
+
+          <h2>Fast Startup</h2>
+          <p>Processes should strive to <strong>minimize startup time</strong>. Ideally, a process takes a few seconds from the time the launch command is executed until the process is up and ready to receive requests or jobs. Short startup time provides more agility for the release process and scaling up; and it aids robustness, because the process manager can more easily move processes to new physical machines when warranted.</p>
+
+          <h2>Graceful Shutdown</h2>
+          <p>Processes shut down gracefully when they receive a <strong>SIGTERM</strong> signal from the process manager.</p>
+
+          <table class="table table-striped">
+            <thead><tr><th>Process Type</th><th>Graceful Shutdown Behaviour</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Web process</strong></td>
+                <td>Cease listening on the service port (refuse new requests) → allow current requests to finish → exit. HTTP requests should be short (a few seconds); long-polling clients should seamlessly reconnect when the connection is lost.</td>
+              </tr>
+              <tr>
+                <td><strong>Worker process</strong></td>
+                <td>Return the current job to the work queue. On RabbitMQ: send a <code>NACK</code>. On Beanstalkd: job is returned to the queue automatically when worker disconnects.</td>
+              </tr>
+              <tr>
+                <td><strong>Lock-based jobs</strong></td>
+                <td>Release the lock on the job record. All jobs must be <strong>reentrant</strong> — wrap results in a transaction, or make the operation <strong>idempotent</strong>.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph LR
+    subgraph STARTUP["🚀 Fast Startup"]
+        S1["Minimal initialization"]
+        S2["Health check ready quickly"]
+        S3["Few seconds to ready state"]
+    end
+    subgraph SHUTDOWN["🛑 Graceful Shutdown"]
+        D1["Receive SIGTERM"]
+        D2["Stop accepting new requests"]
+        D3["Finish in-flight requests"]
+        D4["Return queued work to queue"]
+    end
+    style STARTUP fill:#dcfce7,stroke:#10b981
+    style SHUTDOWN fill:#fee2e2,stroke:#ef4444
+          </div>
+
+          <h2>Robustness Against Sudden Death</h2>
+          <p>Processes should also be robust against sudden death in the case of a failure in the underlying hardware. A recommended approach is use of a <strong>robust queueing backend</strong>, such as Beanstalkd, that returns jobs to the queue when clients disconnect or time out.</p>
+
+          <div class="callout">
+            <strong>💡 Crash-Only Design:</strong> A twelve-factor app is architected to handle unexpected, non-graceful terminations. <em>Crash-only design</em> takes this concept to its logical conclusion — if your app handles a crash correctly, graceful shutdown becomes a bonus, not a requirement.
+          </div>
+
+          <h2>Graceful Shutdown in .NET</h2>
+          <pre class="syntax-highlighted" data-language="csharp"><code>var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+// Register cancellation token on SIGTERM
+var lifetime = app.Services.GetRequiredService&lt;IHostApplicationLifetime&gt;();
+lifetime.ApplicationStopping.Register(() =>
+{
+    // Graceful shutdown: drain connections, flush buffers, return jobs to queue
+    Console.WriteLine("Graceful shutdown initiated...");
+});
+
+await app.RunAsync();</code></pre>
+        </section>
+
+        <!-- Factor X: Dev/Prod Parity -->
+        <section id="dev-prod-parity" role="article">
+          <h1>X. Dev/Prod Parity 🔁</h1>
+          <span class="badge">factor 10</span>
+          <span class="badge">environments</span>
+          <span class="badge">parity</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Keep development, staging, and production as similar as possible."</strong></p>
+          <p>Historically, there have been substantial gaps between development and production. These gaps manifest in three areas. The twelve-factor app is designed for <a href="http://avc.com/2011/02/continuous-deployment/" target="_blank">continuous deployment</a> by keeping the gap between development and production small.</p>
+
+          <h2>The Three Gaps</h2>
+          <table class="table table-striped">
+            <thead><tr><th>Gap</th><th>Traditional App</th><th>Twelve-Factor App</th></tr></thead>
+            <tbody>
+              <tr><td><strong>⏱️ Time gap</strong></td><td>Code takes weeks or months to reach production</td><td>Deploy in hours or even minutes</td></tr>
+              <tr><td><strong>👥 Personnel gap</strong></td><td>Developers write code, ops engineers deploy it</td><td>Developers who wrote code are closely involved in deploying and watching behavior in production</td></tr>
+              <tr><td><strong>🔧 Tools gap</strong></td><td>Developers use Nginx, SQLite, OS X; production uses Apache, MySQL, Linux</td><td>Keep development and production as similar as possible</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Backing Services: The Tools Gap in Practice</h2>
+          <p>Developers sometimes use a lightweight backing service locally while a more robust one runs in production (e.g., SQLite locally and PostgreSQL in production). The twelve-factor developer <strong>resists this urge</strong>, even when adapters theoretically abstract away differences.</p>
+
+          <div class="callout">
+            <strong>⚠️ Why This Matters:</strong> Differences between backing services mean tiny incompatibilities crop up — code that worked locally or in staging fails in production. This creates friction that disincentivizes continuous deployment. The cost over the lifetime of an application is extremely high.
+          </div>
+
+          <table class="table table-striped">
+            <thead><tr><th>Type</th><th>Language</th><th>Library</th><th>Adapters</th></tr></thead>
+            <tbody>
+              <tr><td>Database</td><td>Ruby/Rails</td><td>ActiveRecord</td><td>MySQL, PostgreSQL, SQLite</td></tr>
+              <tr><td>Queue</td><td>Python/Django</td><td>Celery</td><td>RabbitMQ, Beanstalkd, Redis</td></tr>
+              <tr><td>Cache</td><td>Ruby/Rails</td><td>ActiveSupport::Cache</td><td>Memory, filesystem, Memcached</td></tr>
+            </tbody>
+          </table>
+
+          <p>Adapters are still useful for porting to new backing services. But <strong>all deploys of the app</strong> (developer environments, staging, production) should be using the same <em>type and version</em> of each backing service.</p>
+
+          <h2>Modern Tools Make Parity Easy</h2>
+          <p>Modern backing services such as Memcached, PostgreSQL, and RabbitMQ are not difficult to install and run thanks to modern packaging systems and tooling:</p>
+          <ul>
+            <li><strong>Homebrew</strong>, <strong>apt-get</strong> — package managers for direct installation</li>
+            <li><strong>Docker</strong> + <strong>Docker Compose</strong> — run identical services locally</li>
+            <li><strong>Vagrant</strong>, <strong>Testcontainers</strong> — lightweight virtual environments that approximate production</li>
+            <li><strong>Chef</strong>, <strong>Puppet</strong> — declarative provisioning tools</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph LR
+    DEV["🖥️ Development
+    Postgres, Redis, RabbitMQ
+    (Docker Compose)"]
+    STAGING["🔬 Staging
+    Postgres, Redis, RabbitMQ
+    (same config)"]
+    PROD["🚀 Production
+    Postgres, Redis, RabbitMQ
+    (same backing services)"]
+    DEV --"same tools"--> STAGING --"same tools"--> PROD
+    style DEV fill:#dbeafe,stroke:#3b82f6
+    style STAGING fill:#dcfce7,stroke:#10b981
+    style PROD fill:#fce7f3,stroke:#ec4899
+          </div>
+        </section>
+
+        <!-- Factor XI: Logs -->
+        <section id="logs" role="article">
+          <h1>XI. Logs 📋</h1>
+          <span class="badge">factor 11</span>
+          <span class="badge">observability</span>
+          <span class="badge">streams</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Treat logs as event streams."</strong></p>
+          <p>Logs are the <strong>stream of aggregated, time-ordered events</strong> collected from the output streams of all running processes and backing services. Logs in their raw form are typically a text format with one event per line (though backtraces from exceptions may span multiple lines). Logs have <strong>no fixed beginning or end</strong>, but flow continuously as long as the app is operating.</p>
+
+          <h2>The 12-Factor Approach</h2>
+          <p>A twelve-factor app <strong>never concerns itself with routing or storage</strong> of its output stream. It should not attempt to write to or manage logfiles. Instead:</p>
+          <ul>
+            <li>Each running process writes its event stream, <strong>unbuffered</strong>, to <code>stdout</code></li>
+            <li>During local development, the developer views this stream in the terminal foreground to observe the app's behavior</li>
+            <li>In staging or production deploys, the execution environment captures each process' stream, collates all streams together, and routes to one or more final destinations for viewing and long-term archival</li>
+          </ul>
+
+          <div class="callout">
+            <strong>🔍 Key Insight:</strong> Log routing destinations are <strong>not visible to or configurable by the app</strong> — they are completely managed by the execution environment. The app writes to stdout and is done.
+          </div>
+
+          <h2>Logging Architecture</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph LR
+    APP["📱 App Process
+    writes to stdout/stderr"]
+    ROUTER["🔀 Log Router
+    (Fluentd, Logplex,
+    Azure Diagnostics)"]
+    STORAGE["🗄️ Log Storage
+    (Azure Monitor,
+    Elastic, Splunk)"]
+    ALERT["🚨 Alerts &
+    Dashboards"]
+    APP --> ROUTER --> STORAGE --> ALERT
+    style APP fill:#3b82f6,color:#fff
+    style ROUTER fill:#fef3c7,stroke:#f59e0b
+    style STORAGE fill:#dcfce7,stroke:#10b981
+    style ALERT fill:#fee2e2,stroke:#ef4444
+          </div>
+
+          <h2>Log Routers</h2>
+          <p>Open-source log routers available for this purpose include:</p>
+          <ul>
+            <li><strong>Logplex</strong> — Heroku's log router</li>
+            <li><strong>Fluentd</strong> — open-source data collector for unified logging</li>
+            <li><strong>Logstash</strong> — part of the ELK Stack</li>
+            <li><strong>Azure Monitor</strong>, <strong>AWS CloudWatch</strong>, <strong>GCP Cloud Logging</strong></li>
+          </ul>
+
+          <h2>What You Can Do Once Logs Are Streams</h2>
+          <ul>
+            <li>Route the event stream to a file, or watch via realtime <code>tail</code> in a terminal</li>
+            <li>Send to a log indexing and analysis system such as <strong>Splunk</strong></li>
+            <li>Send to a general-purpose data warehousing system such as <strong>Hadoop/Hive</strong></li>
+            <li><strong>Find specific events</strong> in the past</li>
+            <li><strong>Large-scale graphing of trends</strong> (e.g., requests per minute)</li>
+            <li><strong>Active alerting</strong> based on user-defined heuristics (e.g., alert when quantity of errors per minute exceeds a certain threshold)</li>
+          </ul>
+
+          <h2>What Good Logging Looks Like</h2>
+          <pre class="syntax-highlighted" data-language="json"><code>{
+  "timestamp": "2026-02-23T10:15:30.123Z",
+  "level": "INFO",
+  "service": "order-service",
+  "correlationId": "abc-123-def",
+  "message": "Order processed successfully",
+  "orderId": "ORD-9876",
+  "durationMs": 142
+}</code></pre>
+        </section>
+
+        <!-- Factor XII: Admin Processes -->
+        <section id="admin-processes" role="article">
+          <h1>XII. Admin Processes 🛠️</h1>
+          <span class="badge">factor 12</span>
+          <span class="badge">tasks</span>
+          <span class="badge">maintenance</span>
+
+          <h2>Core Principle</h2>
+          <p><strong>"Run admin/management tasks as one-off processes."</strong></p>
+          <p>The <strong>process formation</strong> is the array of processes used to do the app's regular business (such as handling web requests). Separately, developers will often wish to do one-off administrative or maintenance tasks, such as:</p>
+          <ul>
+            <li>Running <strong>database migrations</strong> (e.g., <code>manage.py migrate</code> in Django, <code>rake db:migrate</code> in Rails)</li>
+            <li>Running a <strong>console (REPL shell)</strong> to run arbitrary code or inspect the app's models against the live database (e.g., <code>python</code>, <code>irb</code> for Ruby, <code>rails console</code>)</li>
+            <li>Running <strong>one-time scripts</strong> committed into the app's repo (e.g., <code>php scripts/fix_bad_records.php</code>)</li>
+          </ul>
+
+          <h2>Same Environment, Same Release</h2>
+          <p>One-off admin processes should be run in an <strong>identical environment</strong> as the regular long-running processes of the app. They run against a <strong>release</strong>, using the same codebase and config as any process run against that release.</p>
+
+          <div class="callout">
+            <strong>🔑 Critical Rule:</strong> Admin code must <strong>ship with application code</strong> to avoid synchronization issues. Admin scripts are <em>not</em> separate, ad-hoc scripts maintained outside the application.
+          </div>
+
+          <h2>Same Dependency Isolation</h2>
+          <p>The same dependency isolation techniques should be used on all process types:</p>
+          <ul>
+            <li>If the Ruby web process uses <code>bundle exec thin start</code>, then a database migration should use <code>bundle exec rake db:migrate</code></li>
+            <li>A Python program using Virtualenv should use the vendored <code>bin/python</code> for running both the Tornado webserver and any <code>manage.py</code> admin processes</li>
+          </ul>
+
+          <h2>Admin Process Examples</h2>
+          <table class="table table-striped">
+            <thead><tr><th>Task Type</th><th>Example</th><th>Tool</th></tr></thead>
+            <tbody>
+              <tr><td>DB Migration</td><td>Apply schema changes</td><td><code>dotnet ef database update</code>, <code>flyway migrate</code></td></tr>
+              <tr><td>REPL Console</td><td>Inspect live database</td><td><code>rails console</code>, <code>python</code>, <code>irb</code></td></tr>
+              <tr><td>Data Seeding</td><td>Load reference data</td><td>Custom script in same codebase</td></tr>
+              <tr><td>Cleanup Job</td><td>Purge old records</td><td>CLI command run as Kubernetes Job</td></tr>
+            </tbody>
+          </table>
+
+          <h2>How to Run Admin Processes</h2>
+          <ul>
+            <li><strong>Local deploy:</strong> Invoke via a direct shell command inside the app's checkout directory</li>
+            <li><strong>Production deploy:</strong> Use <code>ssh</code> or other remote command execution mechanism provided by the deploy's execution environment</li>
+            <li><strong>Kubernetes:</strong> Use <code>kubectl exec</code> or Kubernetes Jobs</li>
+          </ul>
+
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph LR
+    RELEASE["📋 Same Release
+    (same code + config)"]
+    APP["▶️ Long-Running
+    App Processes"]
+    ADMIN["🛠️ One-Off
+    Admin Process
+    (db migrate, seed data)"]
+    RELEASE --> APP
+    RELEASE --> ADMIN
+    style RELEASE fill:#3b82f6,color:#fff
+    style ADMIN fill:#fef3c7,stroke:#f59e0b
+          </div>
+
+          <div class="callout">
+            <strong>💡 REPL Preference:</strong> Twelve-factor strongly favors languages which provide a REPL shell out of the box (<code>python</code>, <code>irb</code>, <code>node</code>), and which make it easy to run one-off scripts.
+          </div>
+        </section>
+
+        <!-- Anti-Patterns Section -->
+        <section id="anti-patterns" role="article">
+          <h1>🚫 Anti-Patterns</h1>
+          <span class="badge">violations</span>
+          <span class="badge">pitfalls</span>
+          <span class="badge">what not to do</span>
+
+          <h2>Common Violations Per Factor</h2>
+          <p>These are the most frequently observed real-world violations of the 12-factor methodology, and why they cause problems at scale.</p>
+
+          <table class="table table-striped">
+            <thead><tr><th>Factor</th><th>❌ Common Violation</th><th>💥 Why It Hurts</th><th>✅ Correct Approach</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>I. Codebase</strong></td>
+                <td>Multiple apps in one repo (monorepo deployed as one unit), or one app split across multiple repos</td>
+                <td>Coupled deployments; impossible to deploy apps independently</td>
+                <td>One codebase per deployable app; share code via libraries as packages</td>
+              </tr>
+              <tr>
+                <td><strong>II. Dependencies</strong></td>
+                <td>Relying on system-wide tools (<code>curl</code>, <code>ImageMagick</code>, <code>python</code>) being pre-installed</td>
+                <td>Works on developer's machine, fails in CI/CD or production</td>
+                <td>Vendor or declare all tools; use Docker to capture the full execution environment</td>
+              </tr>
+              <tr>
+                <td><strong>III. Config</strong></td>
+                <td>Hardcoding credentials, API keys, or URLs in source code, or using <code>config/dev.yml</code> / <code>config/prod.yml</code> files committed to the repo</td>
+                <td>Security breach risk; config-per-environment files explode with new environments</td>
+                <td>Env vars only (or a secrets manager like Azure Key Vault / AWS Secrets Manager)</td>
+              </tr>
+              <tr>
+                <td><strong>IV. Backing Services</strong></td>
+                <td>Hardcoding database connection strings or treating a local RabbitMQ as fundamentally different from a cloud-hosted one</td>
+                <td>Cannot swap services without code changes; tight coupling to infrastructure</td>
+                <td>All resources accessed via URLs/credentials in config — swappable with zero code changes</td>
+              </tr>
+              <tr>
+                <td><strong>V. Build/Release/Run</strong></td>
+                <td>SSH-ing into a production server and patching code directly (<em>cowboy deploy</em>); or building inside a running container</td>
+                <td>No audit trail; impossible to roll back; state drift between instances</td>
+                <td>Immutable releases via CI/CD pipeline; rollback by redeploying a previous release ID</td>
+              </tr>
+              <tr>
+                <td><strong>VI. Processes</strong></td>
+                <td>Storing session state in process memory (sticky sessions); caching user data on local disk</td>
+                <td>Breaks horizontal scaling; a restart loses all in-memory state</td>
+                <td>Store session in Redis/Cosmos DB; use distributed cache; all process instances are interchangeable</td>
+              </tr>
+              <tr>
+                <td><strong>VII. Port Binding</strong></td>
+                <td>App requires Tomcat/IIS/Apache to be separately installed in the environment</td>
+                <td>Environment coupling; harder to containerise; can't run locally without full app-server setup</td>
+                <td>Bundle the web server as a library dependency (Kestrel, Jetty, Gunicorn)</td>
+              </tr>
+              <tr>
+                <td><strong>VIII. Concurrency</strong></td>
+                <td>Handling all traffic with threads inside a single process; using PID files or daemonising</td>
+                <td>Single process can't scale horizontally; crashes take down all capacity</td>
+                <td>Use the process model: scale by adding more processes, managed by systemd/Kubernetes</td>
+              </tr>
+              <tr>
+                <td><strong>IX. Disposability</strong></td>
+                <td>Long startup times (30+ seconds); not handling <code>SIGTERM</code>; leaving jobs locked in a queue on crash</td>
+                <td>Slow scaling; data loss on crash; stuck queue messages</td>
+                <td>Fast startup; SIGTERM handlers; idempotent/reentrant jobs; robust queuing (Beanstalkd, Service Bus)</td>
+              </tr>
+              <tr>
+                <td><strong>X. Dev/Prod Parity</strong></td>
+                <td>SQLite in dev, PostgreSQL in prod; local in-memory cache vs. Memcached in prod</td>
+                <td>Bugs only appear in production; false confidence from green local tests</td>
+                <td>Docker Compose / Testcontainers to run the same backing services locally as production</td>
+              </tr>
+              <tr>
+                <td><strong>XI. Logs</strong></td>
+                <td>Writing logs to <code>/var/log/app.log</code>; rotating log files from within the app; suppressing logs in production</td>
+                <td>Logs lost on container restart; no central aggregation; blind in production</td>
+                <td>Write unbuffered to <code>stdout</code>; let the platform (Fluentd, Azure Monitor) handle routing and storage</td>
+              </tr>
+              <tr>
+                <td><strong>XII. Admin Processes</strong></td>
+                <td>Maintaining a separate maintenance scripts repo; running migrations from a dev laptop against production; ad-hoc SQL run directly on prod DB</td>
+                <td>Sync issues between app and scripts; untested in CI; no audit trail</td>
+                <td>Admin scripts in the same codebase; run as one-off processes using the same Docker image &amp; env vars</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Azure Alignment Section -->
+        <section id="azure-alignment" role="article">
+          <h1>☁️ Azure Alignment</h1>
+          <span class="badge">azure</span>
+          <span class="badge">cloud</span>
+          <span class="badge">services</span>
+
+          <h2>Mapping 12 Factors to Azure Services</h2>
+          <p>Azure provides first-class services that directly implement or enforce each of the 12 factors. This table maps each factor to the Azure services most relevant to implementing it.</p>
+
+          <table class="table table-striped">
+            <thead><tr><th>Factor</th><th>Azure Services / Tools</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>I. Codebase</strong></td>
+                <td>Azure DevOps Repos, GitHub (GitHub Actions)</td>
+                <td>One repo per microservice; trunk-based development</td>
+              </tr>
+              <tr>
+                <td><strong>II. Dependencies</strong></td>
+                <td>Azure Container Registry (ACR), Azure Artifacts (NuGet/npm)</td>
+                <td>Docker images capture full dependency tree; private package feeds for internal libraries</td>
+              </tr>
+              <tr>
+                <td><strong>III. Config</strong></td>
+                <td>Azure App Configuration, Azure Key Vault, Managed Identity</td>
+                <td>App Config for non-secrets; Key Vault for credentials; Managed Identity eliminates credential management entirely</td>
+              </tr>
+              <tr>
+                <td><strong>IV. Backing Services</strong></td>
+                <td>Azure SQL, Cosmos DB, Azure Cache for Redis, Azure Service Bus, Azure Blob Storage</td>
+                <td>All accessed via connection strings in config; swappable by environment with zero code changes</td>
+              </tr>
+              <tr>
+                <td><strong>V. Build/Release/Run</strong></td>
+                <td>Azure DevOps Pipelines, GitHub Actions, Azure Container Registry (tags = release IDs)</td>
+                <td>Pipeline builds image → tags with semantic version → deploys immutable image to target environment</td>
+              </tr>
+              <tr>
+                <td><strong>VI. Processes</strong></td>
+                <td>Azure Kubernetes Service (AKS), Azure Container Apps (ACA), Azure App Service</td>
+                <td>Stateless pods/containers; Redis Cache or Cosmos DB for shared session state</td>
+              </tr>
+              <tr>
+                <td><strong>VII. Port Binding</strong></td>
+                <td>Azure App Service (auto port-binding), AKS Services, Azure Container Apps ingress</td>
+                <td>App Service injects <code>PORT</code>/<code>WEBSITES_PORT</code>; AKS exposes via Service/Ingress; ACA handles ingress automatically</td>
+              </tr>
+              <tr>
+                <td><strong>VIII. Concurrency</strong></td>
+                <td>AKS Horizontal Pod Autoscaler (HPA), KEDA, Azure Container Apps scaling rules</td>
+                <td>Scale web and worker processes independently; KEDA enables event-driven scaling (Service Bus queue depth, HTTP traffic)</td>
+              </tr>
+              <tr>
+                <td><strong>IX. Disposability</strong></td>
+                <td>AKS liveness/readiness probes, Azure Container Apps health checks, SIGTERM handling</td>
+                <td>Kubernetes drains pods gracefully on <code>terminationGracePeriodSeconds</code>; readiness probes prevent traffic to starting pods</td>
+              </tr>
+              <tr>
+                <td><strong>X. Dev/Prod Parity</strong></td>
+                <td>Azure Container Registry, Docker Compose, Testcontainers, Dev Box, GitHub Codespaces</td>
+                <td>Same container image promoted across dev/staging/prod; Testcontainers spins up real PostgreSQL/Redis in CI</td>
+              </tr>
+              <tr>
+                <td><strong>XI. Logs</strong></td>
+                <td>Azure Monitor, Log Analytics Workspace, Application Insights, Fluentd/Fluent Bit</td>
+                <td>App writes to stdout; AKS/ACA routes to Log Analytics; Application Insights adds distributed tracing</td>
+              </tr>
+              <tr>
+                <td><strong>XII. Admin Processes</strong></td>
+                <td>AKS Jobs (<code>kubectl exec</code>), Azure Container Apps Jobs, Azure DevOps release gates</td>
+                <td>Run EF migrations as Kubernetes init-container or Job; same Docker image as app ensures environment parity</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Azure Cloud-Native Architecture</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "16px" }}%%
+graph TD
+    subgraph CICD["🔄 CI/CD — Factors I, V"]
+        REPO["GitHub / ADO Repos"]
+        PIPELINE["GitHub Actions / ADO Pipelines"]
+        ACR["Azure Container Registry"]
+        REPO --> PIPELINE --> ACR
+    end
+    subgraph CONFIG["⚙️ Config — Factors III, IV"]
+        APPCONFIG["Azure App Configuration"]
+        KV["Azure Key Vault"]
+        MI["Managed Identity"]
+        MI --> KV
+        MI --> APPCONFIG
+    end
+    subgraph COMPUTE["🚀 Compute — Factors VI, VII, VIII, IX"]
+        ACA["Azure Container Apps"]
+        AKS["AKS"]
+        KEDA["KEDA Autoscaler"]
+        ACA & AKS --> KEDA
+    end
+    subgraph BACKING["🗄️ Backing Services — Factor IV"]
+        SQL["Azure SQL"]
+        COSMOS["Cosmos DB"]
+        REDIS["Redis Cache"]
+        SB["Service Bus"]
+    end
+    subgraph OBS["📊 Observability — Factor XI"]
+        AI["Application Insights"]
+        LA["Log Analytics"]
+        MON["Azure Monitor"]
+    end
+    ACR --> COMPUTE
+    CONFIG --> COMPUTE
+    COMPUTE --> BACKING
+    COMPUTE --> OBS
+    style CICD fill:#dbeafe,stroke:#3b82f6
+    style CONFIG fill:#fce7f3,stroke:#ec4899
+    style COMPUTE fill:#dcfce7,stroke:#10b981
+    style BACKING fill:#fef3c7,stroke:#f59e0b
+    style OBS fill:#e9d5ff,stroke:#9333ea
+          </div>
+        </section>
+
+        <!-- Beyond 12 Factor Section -->
+        <section id="beyond-twelve" role="article">
+          <h1>🔄 Beyond 12-Factor</h1>
+          <span class="badge">evolution</span>
+          <span class="badge">cloud-native</span>
+          <span class="badge">15 factors</span>
+
+          <h2>The Evolution</h2>
+          <p>The original 12-factor methodology was published by Adam Wiggins in 2011, based on Heroku's experience with early SaaS applications. In 2016, Kevin Hoffman published <strong>"Beyond the 12-Factor App"</strong> (O'Reilly), updating the methodology for the cloud-native era of containers, microservices, and cloud-managed backing services.</p>
+
+          <div class="callout">
+            <strong>📅 Context Shift (2011 → 2016+):</strong> The original 12-factor predate Docker, Kubernetes, cloud-managed databases, and serverless. The "Beyond" additions reflect how the landscape evolved.
+          </div>
+
+          <h2>The Three Additional Factors</h2>
+          <table class="table table-striped">
+            <thead><tr><th>#</th><th>Factor</th><th>Core Idea</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>XIII</strong></td>
+                <td><strong>API First</strong></td>
+                <td>Design the API contract before implementation (API-first / contract-first). In a cloud-native system, services communicate over APIs. The API is the product. Use OpenAPI/Swagger, AsyncAPI, or gRPC contracts defined up front, enabling teams to build consumers and providers in parallel.</td>
+              </tr>
+              <tr>
+                <td><strong>XIV</strong></td>
+                <td><strong>Telemetry</strong></td>
+                <td>Every app should emit three signals: <strong>logs</strong> (events), <strong>metrics</strong> (counters/gauges/histograms), and <strong>traces</strong> (distributed spans). Factor XI covers logs — Telemetry extends this to the full observability triad: logs + metrics + traces (OpenTelemetry, Application Insights, Prometheus, Jaeger).</td>
+              </tr>
+              <tr>
+                <td><strong>XV</strong></td>
+                <td><strong>Authentication &amp; Authorization</strong></td>
+                <td>Security must be built in from the start, not bolted on. Every app in a cloud-native system must implement proper AuthN/AuthZ. In practice: use standards like OAuth 2.0 / OIDC, delegate to an identity provider (Azure Entra ID / Auth0), never roll your own auth, and ensure every inter-service call is authenticated.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>What Changed in Cloud-Native vs. 2011</h2>
+          <table class="table table-striped">
+            <thead><tr><th>Concern</th><th>2011 (Original 12-Factor)</th><th>2016+ (Beyond / Cloud-Native)</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Runtime</strong></td><td>Processes on VMs/bare metal</td><td>Containers (Docker) on orchestrators (Kubernetes)</td></tr>
+              <tr><td><strong>Dependencies</strong></td><td>Language package managers (Bundler, pip)</td><td>Docker images capture full OS-level dependency tree</td></tr>
+              <tr><td><strong>Config</strong></td><td>Environment variables</td><td>Kubernetes ConfigMaps, Secrets, cloud secret stores (Key Vault)</td></tr>
+              <tr><td><strong>Backing Services</strong></td><td>Self-managed databases and queues</td><td>Fully managed cloud services (Cosmos DB, Azure Service Bus, RDS)</td></tr>
+              <tr><td><strong>Scaling</strong></td><td>Horizontal process scaling</td><td>Event-driven autoscaling (KEDA, Knative), serverless</td></tr>
+              <tr><td><strong>Observability</strong></td><td>Logs to stdout</td><td>OpenTelemetry: logs + metrics + traces unified</td></tr>
+              <tr><td><strong>Security</strong></td><td>Not explicitly addressed</td><td>Zero-trust, OAuth2/OIDC, Managed Identity, mTLS (service mesh)</td></tr>
+            </tbody>
+          </table>
+
+          <h2>CNCF Cloud-Native Principles Alignment</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "16px" }}%%
+mindmap
+  root(("☁️ Cloud-Native"))
+    Containerisation
+      Docker
+      OCI Images
+      Immutable artifacts
+    Orchestration
+      Kubernetes
+      AKS / ACA
+      KEDA autoscaling
+    DevOps
+      CI/CD Pipelines
+      GitOps
+      Immutable releases
+    Observability
+      Logs  stdout
+      Metrics  Prometheus
+      Traces  OpenTelemetry
+    Security
+      OAuth2 OIDC
+      Managed Identity
+      Zero-Trust
+    API Design
+      OpenAPI Contracts
+      gRPC
+      AsyncAPI
+          </div>
+        </section>
+
+        <!-- Quick Reference Section -->
+        <section id="quick-reference" role="article">
+          <h1>📊 Quick Reference</h1>
+          <span class="badge">reference</span>
+          <span class="badge">summary</span>
+          <span class="badge">checklist</span>
+
+          <h2>Complete 12 Factors Checklist</h2>
+          <table class="table table-striped">
+            <thead><tr><th>#</th><th>Factor</th><th>Key Question</th><th>Common Tool</th></tr></thead>
+            <tbody>
+              <tr><td>I</td><td>Codebase</td><td>Is there one repo per app?</td><td>Git, GitHub, GitLab</td></tr>
+              <tr><td>II</td><td>Dependencies</td><td>Are all deps explicitly declared &amp; isolated?</td><td>npm, pip, NuGet</td></tr>
+              <tr><td>III</td><td>Config</td><td>Is config only in env vars / secret stores?</td><td>Azure App Config, Vault</td></tr>
+              <tr><td>IV</td><td>Backing Services</td><td>Are services swappable via config change?</td><td>PostgreSQL, Redis, Service Bus</td></tr>
+              <tr><td>V</td><td>Build/Release/Run</td><td>Are build &amp; run stages strictly separated?</td><td>Docker, CI/CD pipelines</td></tr>
+              <tr><td>VI</td><td>Processes</td><td>Are all processes stateless &amp; share-nothing?</td><td>Kubernetes pods, Azure Container Apps</td></tr>
+              <tr><td>VII</td><td>Port Binding</td><td>Does the app self-bind to a port?</td><td>Node/Express, ASP.NET Kestrel</td></tr>
+              <tr><td>VIII</td><td>Concurrency</td><td>Are workloads scaled via process count?</td><td>Kubernetes HPA, Azure KEDA</td></tr>
+              <tr><td>IX</td><td>Disposability</td><td>Is startup fast and shutdown graceful?</td><td>Health probes, SIGTERM handlers</td></tr>
+              <tr><td>X</td><td>Dev/Prod Parity</td><td>Are all envs using the same backing services?</td><td>Docker Compose, Testcontainers</td></tr>
+              <tr><td>XI</td><td>Logs</td><td>Are logs written to stdout as event streams?</td><td>Azure Monitor, ELK Stack</td></tr>
+              <tr><td>XII</td><td>Admin Processes</td><td>Are admin tasks run as one-off processes in same env?</td><td>kubectl exec, Kubernetes Jobs</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Factors vs. Cloud-Native Practices</h2>
+          <div class="mermaid">
+%%{ init: { "theme": "base", "fontFamily": "Segoe UI Semibold", "fontSize": "18px" }}%%
+graph TD
+    F1["I. Codebase"] --> DOCKER["🐳 Docker\nContainers"]
+    F2["II. Dependencies"] --> DOCKER
+    F5["V. Build/Release/Run"] --> CICD["🔄 CI/CD\nPipelines"]
+    F6["VI. Processes"] --> K8S["☸️ Kubernetes"]
+    F8["VIII. Concurrency"] --> K8S
+    F9["IX. Disposability"] --> K8S
+    F3["III. Config"] --> SECRETS["🔐 Secret\nManagement"]
+    F11["XI. Logs"] --> OBS["📊 Observability\nStack"]
+    style DOCKER fill:#dbeafe,stroke:#3b82f6
+    style CICD fill:#dcfce7,stroke:#10b981
+    style K8S fill:#e9d5ff,stroke:#9333ea
+    style SECRETS fill:#fce7f3,stroke:#ec4899
+    style OBS fill:#fef3c7,stroke:#f59e0b
+          </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" role="article">
+          <h1>📚 Resources</h1>
+          <span class="badge">docs</span>
+          <span class="badge">community</span>
+          <span class="badge">links</span>
+
+          <h2>Official &amp; Primary References</h2>
+          <ul>
+            <li><a href="https://12factor.net" target="_blank">12factor.net</a> — The original methodology by Adam Wiggins</li>
+            <li><a href="https://docs.microsoft.com/azure/architecture/guide/design-principles/scale-out" target="_blank">Azure Architecture Guide: Scale Out</a></li>
+            <li><a href="https://learn.microsoft.com/azure/architecture/patterns/" target="_blank">Azure Cloud Design Patterns</a></li>
+          </ul>
+
+          <h2>Related Topics</h2>
+          <ul>
+            <li>Cloud-Native Application Development</li>
+            <li>Microservices Architecture Patterns</li>
+            <li>Container Orchestration with Kubernetes</li>
+            <li>DevOps and CI/CD Pipelines</li>
+            <li>Observability: Logs, Metrics, and Traces</li>
+          </ul>
+
+          <hr />
+          <div class="document-footer">
+            <p>
+              <strong>Last Updated:</strong> February 2026 |
+              <strong>Curated by:</strong> Murthy Vepa with ❤️ | <strong>Powered by:</strong> GitHub Copilot
+            </p>
+          </div>
+        </section>
+
+        </div>
+      </main>
+    </div>
+    
+    <nav class="controls" role="navigation" aria-label="Pagination">
+      <div class="btn-group" role="group">
+        <button class="btn btn-outline-info btn-sm" id="prevBtn" title="Previous" aria-label="Previous concept">&nbsp;&lt;&nbsp;</button>
+        <button class="btn btn-outline-info btn-sm" id="nextBtn" title="Next" aria-label="Next concept">&nbsp;&gt;&nbsp;</button>
+      </div>
+    </nav>
+  </div>  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="sidebarLabel">Contents</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="list-group list-group-flush w-100" id="tocMobile"></ul>
+    </div>
+  </div>
+
+  <script>
+    // ---- Mermaid Initialization ----
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.mermaid) {
+        window.mermaid.contentLoaded();
+      }
+    });
+
+    // ---- Configuration ----
+    const sectionConfig = [
+      { id: "overview",          title: "📖 Overview",                  tags: ["intro", "overview", "methodology"] },
+      { id: "twelve-factors",    title: "🔢 The 12 Factors",            tags: ["all factors", "methodology", "saas"] },
+      { id: "codebase",          title: "I. Codebase",                  tags: ["factor 1", "git", "vcs"] },
+      { id: "dependencies",      title: "II. Dependencies",             tags: ["factor 2", "packages", "isolation"] },
+      { id: "config",            title: "III. Config",                  tags: ["factor 3", "environment", "configuration"] },
+      { id: "backing-services",  title: "IV. Backing Services",         tags: ["factor 4", "services", "resources"] },
+      { id: "build-release-run", title: "V. Build, Release, Run",       tags: ["factor 5", "ci/cd", "deployment"] },
+      { id: "processes",         title: "VI. Processes",                tags: ["factor 6", "stateless", "processes"] },
+      { id: "port-binding",      title: "VII. Port Binding",            tags: ["factor 7", "http", "self-contained"] },
+      { id: "concurrency",       title: "VIII. Concurrency",            tags: ["factor 8", "scaling", "process model"] },
+      { id: "disposability",     title: "IX. Disposability",            tags: ["factor 9", "startup", "shutdown"] },
+      { id: "dev-prod-parity",   title: "X. Dev/Prod Parity",          tags: ["factor 10", "environments", "parity"] },
+      { id: "logs",              title: "XI. Logs",                     tags: ["factor 11", "observability", "streams"] },
+      { id: "admin-processes",   title: "XII. Admin Processes",         tags: ["factor 12", "tasks", "maintenance"] },
+      { id: "anti-patterns",     title: "🚫 Anti-Patterns",             tags: ["violations", "pitfalls", "common mistakes"] },
+      { id: "azure-alignment",   title: "☁️ Azure Alignment",           tags: ["azure", "cloud", "services", "mapping"] },
+      { id: "beyond-twelve",     title: "🔄 Beyond 12-Factor",          tags: ["evolution", "cloud-native", "15 factors", "api-first", "telemetry"] },
+      { id: "quick-reference",   title: "📊 Quick Reference",           tags: ["reference", "summary", "checklist"] },
+      { id: "resources",         title: "📚 Resources",                 tags: ["docs", "community", "links"] }
+    ];
+
+    // ---- State & rendering ----
+    const state = {
+      index: 0,
+      filtered: sectionConfig.map((_, i) => i), // indices
+    };
+
+    const els = {
+      toc: document.getElementById('toc'),
+      tocMobile: document.getElementById('tocMobile'),
+      prev: document.getElementById('prevBtn'),
+      next: document.getElementById('nextBtn'),
+      toggleSidebar: document.getElementById('toggleSidebar'),
+      themeToggle: document.getElementById('themeToggle'),
+      main: document.getElementById('main'),
+      sidebar: document.querySelector('nav.sidebar'),
+      sidebarOffcanvas: document.getElementById('sidebarOffcanvas')
+    };
+
+    function buildTOC(){
+      // Clear both TOC lists
+      els.toc.innerHTML = '';
+      els.tocMobile.innerHTML = '';
+      
+      state.filtered.forEach((idx) => {
+        const s = sectionConfig[idx];
+        
+        // Check if this is a sub-item (the 12 individual factors)
+        const isSubItem = [
+          'codebase', 'dependencies', 'config', 'backing-services',
+          'build-release-run', 'processes', 'port-binding', 'concurrency',
+          'disposability', 'dev-prod-parity', 'logs', 'admin-processes'
+        ].includes(s.id);
+        
+        // Desktop sidebar
+        const liDesktop = document.createElement('li');
+        liDesktop.className = isSubItem ? 'list-group-sub-item' : 'list-group-item';
+        const aDesktop = document.createElement('a');
+        aDesktop.href = `#${s.id}`;
+        aDesktop.textContent = s.title;
+        aDesktop.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liDesktop.appendChild(aDesktop);
+        els.toc.appendChild(liDesktop);
+        
+        // Mobile offcanvas
+        const liMobile = document.createElement('li');
+        liMobile.className = isSubItem ? 'list-group-sub-item' : 'list-group-item';
+        const aMobile = document.createElement('a');
+        aMobile.href = `#${s.id}`;
+        aMobile.textContent = s.title;
+        aMobile.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToId(s.id);
+          closeSidebar();
+        });
+        liMobile.appendChild(aMobile);
+        els.tocMobile.appendChild(liMobile);
+      });
+      highlightActiveTOC();
+    }
+
+    function setActiveByIndex(i){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      const id = ids[i];
+      const active = document.getElementById(id);
+      if (active){
+        active.classList.add('active');
+        active.setAttribute('tabindex', '-1');
+        active.focus({preventScroll:true});
+      }
+      updateControls();
+      highlightActiveTOC();
+      updateURLHash(id);
+    }
+
+    function updateControls(){
+      const count = state.filtered.length;
+      els.prev.disabled = state.index <= 0;
+      els.next.disabled = state.index >= count - 1;
+    }
+
+    function filterTOC(query){
+      const q = query.trim().toLowerCase();
+      state.filtered = sectionConfig
+        .map((s, i) => ({s, i}))
+        .filter(({s}) => s.title.toLowerCase().includes(q) || s.tags.some(t => t.toLowerCase().includes(q)))
+        .map(({i}) => i);
+
+      state.index = Math.min(state.index, Math.max(0, state.filtered.length - 1));
+      buildTOC();
+      setActiveByIndex(state.index);
+    }
+
+    function navigate(delta){
+      const count = state.filtered.length;
+      const nextIndex = Math.min(Math.max(state.index + delta, 0), count - 1);
+      if (nextIndex !== state.index){
+        state.index = nextIndex;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      }
+    }
+
+    function navigateToId(id){
+      const idxInFiltered = state.filtered.findIndex(fi => sectionConfig[fi].id === id);
+      if (idxInFiltered !== -1){
+        state.index = idxInFiltered;
+        setActiveByIndex(state.index);
+        // Scroll content to top
+        const contentEl = document.querySelector('.content');
+        if (contentEl) contentEl.scrollTop = 0;
+      } else {
+        state.filtered = sectionConfig.map((_, i) => i);
+        buildTOC();
+        navigateToId(id);
+      }
+    }
+
+    function updateURLHash(id){
+      const url = new URL(window.location);
+      url.hash = id;
+      history.replaceState(null, '', url);
+    }
+
+    function highlightActiveTOC(){
+      const ids = state.filtered.map(idx => sectionConfig[idx].id);
+      const activeId = ids[state.index];
+      // Highlight desktop sidebar
+      els.toc.querySelectorAll('a').forEach(a => {
+        const isActive = a.getAttribute('href') === `#${activeId}`;
+        a.classList.toggle('active', isActive);
+        // Also toggle active on parent li for sub-items
+        if (a.parentElement.classList.contains('list-group-sub-item')) {
+          a.parentElement.classList.toggle('active', isActive);
+        }
+      });
+      // Highlight mobile offcanvas
+      els.tocMobile.querySelectorAll('a').forEach(a => {
+        const isActive = a.getAttribute('href') === `#${activeId}`;
+        a.classList.toggle('active', isActive);
+        // Also toggle active on parent li for sub-items
+        if (a.parentElement.classList.contains('list-group-sub-item')) {
+          a.parentElement.classList.toggle('active', isActive);
+        }
+      });
+    }
+
+    function openSidebar(){
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById('sidebarOffcanvas'));
+      offcanvas.show();
+    }
+    function closeSidebar(){
+      const offcanvasElement = document.getElementById('sidebarOffcanvas');
+      const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+      if(offcanvas) offcanvas.hide();
+    }
+
+    // ---- Events ----
+    els.prev.addEventListener('click', () => navigate(-1));
+    els.next.addEventListener('click', () => navigate(1));
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+      else if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Deep linking on load/hash change
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.replace('#','');
+      if (id) navigateToId(id);
+    });
+
+    // Sidebar toggle (mobile)
+    els.toggleSidebar.addEventListener('click', () => {
+      openSidebar();
+    });
+
+    // Restore theme
+    (function(){
+      try {
+        const saved = localStorage.getItem('concepts-theme');
+        if (saved) { 
+          document.documentElement.setAttribute('data-theme', saved);
+          els.themeToggle.textContent = saved === 'light' ? '🌗' : '🌙';
+        }
+      } catch {}
+    })();
+
+    // Initial render
+    buildTOC();
+    
+    // Navigate to hash if present, otherwise show first section
+    const initialId = location.hash.replace('#','');
+    if (initialId){ 
+    navigateToId(initialId); 
+    } else {
+    setActiveByIndex(0);
+    // Scroll content to top on initial load
+    const contentEl = document.querySelector('.content');
+    if (contentEl) contentEl.scrollTop = 0;
+    }
+
+  </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

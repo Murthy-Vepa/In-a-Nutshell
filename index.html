@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🌰</text></svg>" />
   <title>In a Nutshell - Knowledge Hub</title>
   <meta name="description" content="Comprehensive collection of technology guides and knowledge resources.">
   <!-- Bootstrap CSS -->
@@ -16,14 +17,80 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      background: #ffffff;
       min-height: 100vh;
       overflow-x: hidden;
+      padding-top: 65px;
+    }
+
+    /* Fixed Top Header */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 0.625rem 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header-content {
+      max-width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+
+    .top-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .header-divider {
+      height: 20px;
+      width: 1px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .top-header .subtitle {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      margin: 0;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .top-header .credit {
+      font-size: 0.75rem;
+      opacity: 0.75;
+      margin: 0;
+      line-height: 1;
+      font-weight: 400;
+      white-space: nowrap;
     }
 
     .main-wrapper {
       display: flex;
-      min-height: 100vh;
+      min-height: calc(100vh - 65px);
       max-width: 100%;
       margin: 0 0;
     }
@@ -31,92 +98,200 @@
     /* Left Sidebar */
     .sidebar {
       width: 280px;
-      background: white;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
       display: flex;
       flex-direction: column;
       position: sticky;
-      top: 0;
-      height: 100vh;
+      top: 65px;
+      height: calc(100vh - 65px);
       overflow-y: auto;
+      padding-top: 0;
+    }
+
+    /* Scrollbar */
+    .sidebar::-webkit-scrollbar { 
+      width: 6px; 
+    }
+    .sidebar::-webkit-scrollbar-track { 
+      background: rgba(0, 0, 0, 0.05); 
+    }
+    .sidebar::-webkit-scrollbar-thumb { 
+      background: rgba(0, 0, 0, 0.2); 
+      border-radius: 0px; 
+    }
+    .sidebar::-webkit-scrollbar-thumb:hover { 
+      background: rgba(0, 0, 0, 0.3); 
+    }
+
+    .main-content::-webkit-scrollbar { 
+      width: 8px; 
+    }
+    .main-content::-webkit-scrollbar-track { 
+      background: rgba(0, 0, 0, 0.05); 
+    }
+    .main-content::-webkit-scrollbar-thumb { 
+      background: rgba(0, 0, 0, 0.2); 
+      border-radius: 0px; 
+    }
+    .main-content::-webkit-scrollbar-thumb:hover { 
+      background: rgba(0, 0, 0, 0.3); 
     }
 
     .sidebar-header {
-      padding: 2rem 1.5rem;
-      border-bottom: 2px solid #e2e8f0;
-      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-      color: white;
-    }
-
-    .sidebar-header h1 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .sidebar-header p {
-      font-size: 0.875rem;
-      opacity: 0.95;
+      padding: 0.75rem 1rem;
+      border-bottom: 3px solid #3b82f6;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      font-weight: bold;
+      letter-spacing: 0px;
       margin: 0;
+      position: relative;
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+      text-shadow: none;
+      text-transform: none;
     }
 
     .category-menu {
       flex: 1;
-      padding: 1rem 0;
+      padding: 0rem 0;
+      background: transparent;
     }
 
     .menu-item {
-      padding: 1rem 1.5rem;
+      padding: 0;
+      margin: 0.25rem 0rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-      border-left: 4px solid transparent;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 3px solid transparent;
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      border-radius: 0rem;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      border-radius: 0;
+    }
+
+    .menu-item::after {
+      content: '▶';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) scale(0.7);
+      font-size: 0.7rem;
+      color: #9ca3af;
+      opacity: 0;
+      transition: all 0.3s ease;
     }
 
     .menu-item:hover {
-      background: #f8f9fa;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%);
+      border-left-color: transparent;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2), 0 2px 4px rgba(0, 0, 0, 0.08);
+      border-color: rgba(59, 130, 246, 0.2);
+    }
+
+    .menu-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .menu-item:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) scale(1);
+      color: #3b82f6;
     }
 
     .menu-item.active {
-      background: #f0f9ff;
-      border-left-color: #3b82f6;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(59, 130, 246, 0.12) 100%);
+      border-left-color: transparent;
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      border-color: rgba(59, 130, 246, 0.3);
     }
 
-    .menu-item.azure.active { border-left-color: #06b6d4; background: #ecfeff; }
-    .menu-item.dev.active { border-left-color: #10b981; background: #d1fae5; }
-    .menu-item.method.active { border-left-color: #f59e0b; background: #fef3c7; }
-    .menu-item.design.active { border-left-color: #8b5cf6; background: #f5f3ff; }
-    .menu-item.domain.active { border-left-color: #ec4899; background: #fce7f3; }
+    .menu-item.active::before {
+      transform: scaleY(1);
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      width: 5px;
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    }
+
+    .menu-item.active::after {
+      opacity: 1;
+      color: #2563eb;
+      transform: translateY(-50%) scale(1);
+    }
+
+    .menu-item.azure.active::before { background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%); }
+    .menu-item.ai.active::before { background: linear-gradient(180deg, #f97316 0%, #ea580c 100%); }
+    .menu-item.frontend.active::before { background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%); }
+    .menu-item.backend.active::before { background: linear-gradient(180deg, #10b981 0%, #059669 100%); }
+    .menu-item.database.active::before { background: linear-gradient(180deg, #14b8a6 0%, #0d9488 100%); }
+    .menu-item.devops.active::before { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); }
+    .menu-item.testing.active::before { background: linear-gradient(180deg, #84cc16 0%, #65a30d 100%); }
+    .menu-item.security.active::before { background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%); }
+    .menu-item.data.active::before { background: linear-gradient(180deg, #a855f7 0%, #9333ea 100%); }
+    .menu-item.method.active::before { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); }
+    .menu-item.design.active::before { background: linear-gradient(180deg, #8b5cf6 0%, #7c3aed 100%); }
 
     .menu-icon {
       font-size: 1.5rem;
+      margin-left: 0.85rem;
     }
 
     .menu-text {
       flex: 1;
+      padding: 0.85rem 1.25rem 0.85rem 0;
     }
 
     .menu-title {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #1e293b;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #1f2937;
       margin: 0;
     }
 
     .menu-count {
       font-size: 0.75rem;
-      color: #64748b;
-      margin: 0;
+      color: #9ca3af;
+      margin: 0.4rem 0 0 0;
+      font-weight: 400;
+      line-height: 1.4;
     }
 
     /* Main Content */
     .main-content {
       flex: 1;
-      padding: 1.5rem;
+      padding: 0;
       overflow-y: auto;
-      height: 100vh;
+      max-height: calc(100vh - 65px);
+      display: flex;
+      flex-direction: column;
     }
 
     .content-section {
@@ -135,42 +310,75 @@
 
     .category-content {
       background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-      margin-bottom: 2rem;
+      border-radius: 0;
+      padding: 1.5rem 1.5rem 2rem;
+      box-shadow: none;
+      margin: 0;
     }
 
     .category-header {
       display: flex;
       align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 3px solid #e2e8f0;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border-left: 5px solid #3b82f6;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .category-icon {
-      font-size: 2.5rem;
-      margin-right: 1rem;
+      font-size: 3rem;
+      margin-right: 1.25rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     }
 
     .category-title {
-      font-size: 2rem;
+      font-size: 2.25rem;
       font-weight: 700;
       margin: 0;
       color: #1e293b;
+      letter-spacing: -0.5px;
     }
 
-    .azure .category-title { color: #06b6d4; }
-    .dev .category-title { color: #10b981; }
-    .method .category-title { color: #f59e0b; }
-    .design .category-title { color: #8b5cf6; }
-    .domain .category-title { color: #ec4899; }
+    .azure .category-header { border-left-color: #06b6d4; background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); }
+    .azure .category-title { color: #0891b2; }
+    
+    .ai .category-header { border-left-color: #f97316; background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); }
+    .ai .category-title { color: #ea580c; }
+    
+    .frontend .category-header { border-left-color: #3b82f6; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+    .frontend .category-title { color: #2563eb; }
+    
+    .backend .category-header { border-left-color: #10b981; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); }
+    .backend .category-title { color: #059669; }
+    
+    .database .category-header { border-left-color: #14b8a6; background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%); }
+    .database .category-title { color: #0d9488; }
+    
+    .devops .category-header { border-left-color: #f59e0b; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+    .devops .category-title { color: #d97706; }
+    
+    .testing .category-header { border-left-color: #84cc16; background: linear-gradient(135deg, #ecfccb 0%, #d9f99d 100%); }
+    .testing .category-title { color: #65a30d; }
+    
+    .security .category-header { border-left-color: #ef4444; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); }
+    .security .category-title { color: #dc2626; }
+    
+    .data .category-header { border-left-color: #a855f7; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); }
+    .data .category-title { color: #9333ea; }
+    
+    .method .category-header { border-left-color: #f59e0b; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+    .method .category-title { color: #d97706; }
+    
+    .design .category-header { border-left-color: #8b5cf6; background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); }
+    .design .category-title { color: #7c3aed; }
 
     .guide-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.25rem;
+      margin-top: 1.5rem;
     }
 
     .guide-card {
@@ -195,9 +403,44 @@
       background: linear-gradient(135deg, #ffffff 0%, #ecfeff 100%);
     }
 
-    .dev .guide-card:hover {
+    .ai .guide-card:hover {
+      border-color: #f97316;
+      background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%);
+    }
+
+    .frontend .guide-card:hover {
+      border-color: #3b82f6;
+      background: linear-gradient(135deg, #ffffff 0%, #dbeafe 100%);
+    }
+
+    .backend .guide-card:hover {
       border-color: #10b981;
       background: linear-gradient(135deg, #ffffff 0%, #d1fae5 100%);
+    }
+
+    .database .guide-card:hover {
+      border-color: #14b8a6;
+      background: linear-gradient(135deg, #ffffff 0%, #ccfbf1 100%);
+    }
+
+    .devops .guide-card:hover {
+      border-color: #f59e0b;
+      background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+    }
+
+    .testing .guide-card:hover {
+      border-color: #84cc16;
+      background: linear-gradient(135deg, #ffffff 0%, #ecfccb 100%);
+    }
+
+    .security .guide-card:hover {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, #ffffff 0%, #fee2e2 100%);
+    }
+
+    .data .guide-card:hover {
+      border-color: #a855f7;
+      background: linear-gradient(135deg, #ffffff 0%, #f3e8ff 100%);
     }
 
     .method .guide-card:hover {
@@ -208,11 +451,6 @@
     .design .guide-card:hover {
       border-color: #8b5cf6;
       background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
-    }
-
-    .domain .guide-card:hover {
-      border-color: #ec4899;
-      background: linear-gradient(135deg, #ffffff 0%, #fce7f3 100%);
     }
 
     .guide-title {
@@ -229,6 +467,26 @@
       line-height: 1.5;
     }
 
+    .soon-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-left: 0.5rem;
+      box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+    }
+
+    .guide-card.soon {
+      opacity: 0.75;
+      cursor: default;
+      pointer-events: none;
+    }
+
     .footer {
       text-align: center;
       color: white;
@@ -239,6 +497,43 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
+      body {
+        padding-top: 100px;
+      }
+
+      .top-header {
+        padding: 0.75rem 1rem;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.35rem;
+        text-align: center;
+      }
+
+      .header-left {
+        flex-direction: column;
+        gap: 0.35rem;
+        align-items: center;
+      }
+
+      .header-divider {
+        display: none;
+      }
+
+      .top-header h1 {
+        font-size: 1.25rem;
+      }
+
+      .top-header .subtitle {
+        font-size: 0.8rem;
+      }
+
+      .top-header .credit {
+        font-size: 0.7rem;
+      }
+
       .main-wrapper {
         flex-direction: column;
       }
@@ -247,6 +542,7 @@
         width: 100%;
         height: auto;
         position: relative;
+        top: 0;
       }
 
       .main-content {
@@ -261,42 +557,98 @@
   </style>
 </head>
 <body>
+  <!-- Fixed Top Header -->
+  <div class="top-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h3>🌰</h3><h1>In a Nutshell</h1>
+      </div>
+      <div class="credit">Knowledge Hub Curated with ❤️ by Murthy Vepa</div>
+    </div>
+  </div>
+
   <div class="main-wrapper">
     <!-- Left Sidebar -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h1>In a Nutshell</h1> 
-        <h6>Knowledge 🌰 Hub</h6>
-        <br>
-        <p>Curated with ❤️ by Murthy Vepa</p>
+        <h2>📋 Categories</h2>
       </div>
       <div class="category-menu">
         <div class="menu-item azure active" onclick="showCategory('azure')">
           <span class="menu-icon">☁️</span>
           <div class="menu-text">
             <div class="menu-title">Azure Services</div>
+            <div class="menu-count">16 guides</div>
+          </div>
+        </div>
+        <div class="menu-item ai" onclick="showCategory('ai')">
+          <span class="menu-icon">🤖</span>
+          <div class="menu-text">
+            <div class="menu-title">AI & Copilot</div>
+            <div class="menu-count">11 guides</div>
+          </div>
+        </div>
+        <div class="menu-item frontend" onclick="showCategory('frontend')">
+          <span class="menu-icon">🎨</span>
+          <div class="menu-text">
+            <div class="menu-title">Frontend Dev</div>
+            <div class="menu-count">4 guides</div>
+          </div>
+        </div>
+        <div class="menu-item backend" onclick="showCategory('backend')">
+          <span class="menu-icon">⚙️</span>
+          <div class="menu-text">
+            <div class="menu-title">Backend Dev</div>
             <div class="menu-count">6 guides</div>
           </div>
         </div>
-        <div class="menu-item dev" onclick="showCategory('dev')">
-          <span class="menu-icon">💻</span>
+        <div class="menu-item database" onclick="showCategory('database')">
+          <span class="menu-icon">🗄️</span>
           <div class="menu-text">
-            <div class="menu-title">Dev Tools</div>
-            <div class="menu-count">8 guides</div>
+            <div class="menu-title">Databases</div>
+            <div class="menu-count">5 guides</div>
+          </div>
+        </div>
+        <div class="menu-item devops" onclick="showCategory('devops')">
+          <span class="menu-icon">🚀</span>
+          <div class="menu-text">
+            <div class="menu-title">DevOps & Infra</div>
+            <div class="menu-count">6 guides</div>
+          </div>
+        </div>
+        <div class="menu-item testing" onclick="showCategory('testing')">
+          <span class="menu-icon">🧪</span>
+          <div class="menu-text">
+            <div class="menu-title">Testing & QA</div>
+            <div class="menu-count">4 guides</div>
+          </div>
+        </div>
+        <div class="menu-item security" onclick="showCategory('security')">
+          <span class="menu-icon">🔐</span>
+          <div class="menu-text">
+            <div class="menu-title">Security</div>
+            <div class="menu-count">4 guides</div>
+          </div>
+        </div>
+        <div class="menu-item data" onclick="showCategory('data')">
+          <span class="menu-icon">📊</span>
+          <div class="menu-text">
+            <div class="menu-title">Data & Analytics</div>
+            <div class="menu-count">4 guides</div>
           </div>
         </div>
         <div class="menu-item method" onclick="showCategory('method')">
           <span class="menu-icon">🎯</span>
           <div class="menu-text">
             <div class="menu-title">Methodologies</div>
-            <div class="menu-count">4 guides</div>
+            <div class="menu-count">7 guides</div>
           </div>
         </div>
         <div class="menu-item design" onclick="showCategory('design')">
           <span class="menu-icon">🏗️</span>
           <div class="menu-text">
-            <div class="menu-title">Design & Architecture</div>
-            <div class="menu-count">3 guides</div>
+            <div class="menu-title">Design & Arch</div>
+            <div class="menu-count">11 guides</div>
           </div>
         </div>
       </div>
@@ -320,10 +672,6 @@
               <div class="guide-title">🚀 Azure App Services</div>
               <p class="guide-description">PaaS for building and hosting web apps, mobile backends, and RESTful APIs</p>
             </a>
-            <a href="Azure Cosmos DB - In a Nutshell.html" target="_blank" class="guide-card">
-              <div class="guide-title">🌍 Azure Cosmos DB</div>
-              <p class="guide-description">Globally distributed, multi-model database service</p>
-            </a>
             <a href="Azure Entra - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">🔐 Azure Entra (Identity)</div>
               <p class="guide-description">Identity and access management with SSO and multi-factor authentication</p>
@@ -336,38 +684,142 @@
               <div class="guide-title">📨 Azure Service Bus</div>
               <p class="guide-description">Enterprise messaging with queues, topics, and reliable delivery</p>
             </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🎯 Azure Kubernetes Service (AKS)<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Managed Kubernetes container orchestration for deploying and scaling apps</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">📦 Azure Container Apps<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Serverless containers without managing infrastructure</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🧠 Azure OpenAI Service<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">GPT-4, ChatGPT, and Azure AI models via REST APIs</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔧 Azure DevOps<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">End-to-end DevOps toolchain with pipelines, boards, and repos</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔑 Azure Key Vault<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Centralized secrets, keys, and certificate management</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">⚡ Azure Event Grid<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Event routing service for serverless architectures</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">📊 Azure Monitor<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Full-stack observability with metrics, logs, and Application Insights</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">💾 Azure Storage<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Blob, queue, table, and file storage for cloud applications</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔄 Azure Logic Apps<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Low-code workflow automation and enterprise integration</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🌐 Azure CDN<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Content delivery network for fast, global content distribution</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Development Tools & Frameworks -->
-      <div id="dev-section" class="content-section">
-        <div class="category-content dev">
+      <!-- AI & Copilot -->
+      <div id="ai-section" class="content-section">
+        <div class="category-content ai">
           <div class="category-header">
-            <span class="category-icon">💻</span>
-            <h2 class="category-title">Development Tools & Frameworks</h2>
+            <span class="category-icon">🤖</span>
+            <h2 class="category-title">AI & Copilot</h2>
           </div>
           <div class="guide-grid">
             <a href="GitHub Copilot - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">🤖 GitHub Copilot</div>
               <p class="guide-description">AI-powered coding assistant with completion, chat, and agent capabilities</p>
             </a>
+            <a href="GitHub Copilot CLI - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">⌨️ GitHub Copilot CLI</div>
+              <p class="guide-description">AI-powered command-line assistant for shell commands and scripts</p>
+            </a>
+            <a href="GitHub Copilot SDK - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🛠️ GitHub Copilot SDK</div>
+              <p class="guide-description">Software development kit for integrating Copilot into custom applications</p>
+            </a>
+            <a href="GitHub Copliot Agents - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🧠 GitHub Copilot Agents</div>
+              <p class="guide-description">Autonomous AI agents for complex development workflows and tasks</p>
+            </a>
+            <a href="Vector Databases - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🧮 Vector Databases</div>
+              <p class="guide-description">Specialized databases for storing and searching high-dimensional vectors for AI</p>
+            </a>
             <a href="GitHub SpecKit - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">📋 GitHub SpecKit</div>
               <p class="guide-description">Specification-driven development toolkit for building from requirements</p>
             </a>
+            <a href="Prompt Engineering - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">💡 Prompt Engineering</div>
+              <p class="guide-description">Best practices for crafting effective prompts for AI models</p>
+            </a>
+            <a href="Retrieval Augmented Generation - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔍 RAG (Retrieval-Augmented Generation)</div>
+              <p class="guide-description">Pattern for enhancing LLMs with external knowledge retrieval</p>
+            </a>
+            <a href="Model Context Protocol - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔌 Model Context Protocol (MCP)</div>
+              <p class="guide-description">Open standard for connecting AI assistants to data sources and tools</p>
+            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🏭 Azure AI Foundry<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Microsoft's unified platform for building AI applications</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🧩 Semantic Kernel<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Microsoft's SDK for orchestrating AI agents and plugins</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontend Development -->
+      <div id="frontend-section" class="content-section">
+        <div class="category-content frontend">
+          <div class="category-header">
+            <span class="category-icon">🎨</span>
+            <h2 class="category-title">Frontend Development</h2>
+          </div>
+          <div class="guide-grid">
             <a href="ReactJs - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">⚛️ React.js</div>
               <p class="guide-description">JavaScript library for building user interfaces with components</p>
             </a>
-            <a href="Playwright - In a Nutshell.html" target="_blank" class="guide-card">
-              <div class="guide-title">🎭 Playwright</div>
-              <p class="guide-description">End-to-end testing framework with cross-browser support</p>
+            <a href="Blazor - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔥 Blazor</div>
+              <p class="guide-description">.NET framework for building interactive web UIs using C# instead of JavaScript</p>
             </a>
-            <a href="Microsoft Power BI - In a Nutshell.html" target="_blank" class="guide-card">
-              <div class="guide-title">📊 Microsoft Power BI</div>
-              <p class="guide-description">Business analytics for data visualization and dashboards</p>
-            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">📘 TypeScript<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Strongly-typed superset of JavaScript for scalable applications</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🅰️ Angular<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">TypeScript-based framework for building enterprise web applications</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backend Development -->
+      <div id="backend-section" class="content-section">
+        <div class="category-content backend">
+          <div class="category-header">
+            <span class="category-icon">⚙️</span>
+            <h2 class="category-title">Backend Development</h2>
+          </div>
+          <div class="guide-grid">
             <a href="C Sharp - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">💠 C#</div>
               <p class="guide-description">Modern, object-oriented programming language for .NET development</p>
@@ -380,6 +832,170 @@
               <div class="guide-title">📚 Data Structures</div>
               <p class="guide-description">Essential data structures: arrays, lists, stacks, queues, trees, and graphs</p>
             </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🌐 ASP.NET Core<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Cross-platform framework for building modern web APIs and applications</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔌 REST API Design<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Best practices for designing RESTful APIs with OpenAPI/Swagger</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">📡 GraphQL<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Query language and runtime for flexible API data fetching</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Databases & Persistence -->
+      <div id="database-section" class="content-section">
+        <div class="category-content database">
+          <div class="category-header">
+            <span class="category-icon">🗄️</span>
+            <h2 class="category-title">Databases & Persistence</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Microsoft SQL Server - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🗄️ Microsoft SQL Server</div>
+              <p class="guide-description">Enterprise relational database management system from Microsoft</p>
+            </a>
+            <a href="Azure Cosmos DB - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🌍 Azure Cosmos DB</div>
+              <p class="guide-description">Globally distributed, multi-model NoSQL database service</p>
+            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">⚡ Redis<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">In-memory data store for caching and real-time applications</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">📐 Database Design & Normalization<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Principles of relational database design and data modeling</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔄 NoSQL Concepts<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Document, key-value, column-family, and graph databases</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DevOps & Infrastructure -->
+      <div id="devops-section" class="content-section">
+        <div class="category-content devops">
+          <div class="category-header">
+            <span class="category-icon">🚀</span>
+            <h2 class="category-title">DevOps & Infrastructure</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Terraform - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🏗️ Terraform</div>
+              <p class="guide-description">Infrastructure as code tool for building and managing cloud resources</p>
+            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🐳 Docker<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Platform for developing, shipping, and running containerized applications</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">☸️ Kubernetes<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Container orchestration platform for automating deployment and scaling</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔄 CI/CD Pipelines<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Continuous integration and deployment automation best practices</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🌊 GitOps<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Declarative infrastructure and application management via Git</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">📦 Git & GitHub<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Version control fundamentals and collaborative development workflows</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testing & Quality Assurance -->
+      <div id="testing-section" class="content-section">
+        <div class="category-content testing">
+          <div class="category-header">
+            <span class="category-icon">🧪</span>
+            <h2 class="category-title">Testing & Quality Assurance</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Playwright - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🎭 Playwright</div>
+              <p class="guide-description">End-to-end testing framework with cross-browser support</p>
+            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🔴 Test-Driven Development (TDD)<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Write tests first to drive design and ensure code quality</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">✅ Unit Testing Best Practices<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Effective strategies for writing maintainable unit tests</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">⚡ Performance & Load Testing<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Tools and techniques for testing application performance at scale</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security & Compliance -->
+      <div id="security-section" class="content-section">
+        <div class="category-content security">
+          <div class="category-header">
+            <span class="category-icon">🔐</span>
+            <h2 class="category-title">Security & Compliance</h2>
+          </div>
+          <div class="guide-grid">
+            <div class="guide-card soon">
+              <div class="guide-title">🔑 OAuth 2.0 & OpenID Connect<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Modern authentication and authorization protocols</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🛡️ Zero Trust Architecture<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Security model that assumes no implicit trust</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔒 API Security Best Practices<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Securing REST and GraphQL APIs against common vulnerabilities</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🚨 DevSecOps<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Integrating security practices into DevOps workflows</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data & Analytics -->
+      <div id="data-section" class="content-section">
+        <div class="category-content data">
+          <div class="category-header">
+            <span class="category-icon">📊</span>
+            <h2 class="category-title">Data & Analytics</h2>
+          </div>
+          <div class="guide-grid">
+            <a href="Microsoft Power BI - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📊 Microsoft Power BI</div>
+              <p class="guide-description">Business analytics for data visualization and dashboards</p>
+            </a>
+            <a href="Azure Databricks - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🔥 Azure Databricks</div>
+              <p class="guide-description">Apache Spark-based analytics platform for big data and machine learning</p>
+            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">⚙️ Data Engineering Fundamentals<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Core concepts of building and maintaining data pipelines</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🔄 ETL vs ELT<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Understanding data transformation patterns and when to use each</p>
+            </div>
           </div>
         </div>
       </div>
@@ -408,6 +1024,18 @@
               <div class="guide-title">🧠 Product Mindset</div>
               <p class="guide-description">Product thinking and customer-centric development approach</p>
             </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🔄 DevOps Practices<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Culture, practices, and tools for collaboration between Dev and Ops</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">📦 Domain-Driven Design (DDD)<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Strategic and tactical patterns for complex domain modeling</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🎯 Site Reliability Engineering (SRE)<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Google's approach to IT operations and service reliability</p>
+            </div>
           </div>
         </div>
       </div>
@@ -431,10 +1059,43 @@
             <a href="Cloud Design Patterns - In a Nutshell.html" target="_blank" class="guide-card">
               <div class="guide-title">☁️ Cloud Design Patterns</div>
               <p class="guide-description">Architectural patterns for scalable cloud applications</p>
-            </a>            
+            </a>
+            <a href="Software Architecture Patterns - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🏛️ Software Architecture Patterns</div>
+              <p class="guide-description">Common architectural patterns for software system design</p>
+            </a>
+            <a href="ArchiMate - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📊 ArchiMate</div>
+              <p class="guide-description">Enterprise architecture modeling language for business and IT alignment</p>
+            </a>
+            <a href="System Design Concepts - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">⚙️ System Design Concepts</div>
+              <p class="guide-description">Core principles and patterns for designing scalable distributed systems</p>
+            </a>
+            <a href="UML - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">📐 UML</div>
+              <p class="guide-description">Unified Modeling Language for visualizing software system design</p>
+            </a>
+            <a href="TwelveFactorApp - In a Nutshell.html" target="_blank" class="guide-card">
+              <div class="guide-title">🏗️ Twelve-Factor App</div>
+              <p class="guide-description">Methodology for building scalable, maintainable, cloud-native SaaS applications</p>
+            </a>
+            <div class="guide-card soon">
+              <div class="guide-title">🔷 Microservices Architecture<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Patterns and practices for building distributed microservices systems</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">⚡ Event-Driven Architecture<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Designing systems that react to events and messages</p>
+            </div>
+            <div class="guide-card soon">
+              <div class="guide-title">🧊 Clean Architecture<span class="soon-badge">Soon</span></div>
+              <p class="guide-description">Hexagonal architecture and dependency inversion principles</p>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 

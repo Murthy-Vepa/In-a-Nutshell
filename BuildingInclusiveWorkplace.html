@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Culture of Belonging</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤝</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-left: 240px;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 30px 60px 30px 30px;
+            position: relative;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .illustration {
+            font-size: 80px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Title Slide */
+        .title-slide {
+            background: radial-gradient(ellipse at bottom right, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+            linear-gradient(135deg, #0c1222 0%, #151d2f 50%, #1a2332 100%);
+            color: white;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            font-size: 4.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .title-slide h2 {
+            font-size: 2.4em;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .title-slide p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Behavior Slides */
+        .behavior-slide {
+            background: white;
+        }
+
+        .behavior-slide .slide-content {
+            flex-direction: row;
+            gap: 60px;
+        }
+
+        .behavior-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .behavior-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .behavior-number {
+            font-size: 8em;
+            font-weight: bold;
+            opacity: 0.15;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #0066b2;
+        }
+
+        .behavior-title {
+            font-size: 2.2em;
+            color: #b40128;
+            font-weight: bold;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .behavior-points {
+            list-style: none;
+        }
+
+        .behavior-points li {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-left: 40px;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .behavior-points li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0066b2;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        /* Summary Slide */
+        .summary-slide {
+            background: radial-gradient(ellipse at bottom right, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+            linear-gradient(135deg, #0c1222 0%, #151d2f 50%, #1a2332 100%);
+            color: white;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .summary-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding:5px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .summary-item h3 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .summary-item h3 .behavior-icon {
+            font-size: 1.8em;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .summary-number {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75em;
+            flex-shrink: 0;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 10px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(0, 102, 178, 0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #004a8f;
+            transform: scale(1.1);
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 10px;
+            left: 30px;
+            background: rgba(0, 102, 178, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Color variations for different behaviors */
+        .slide-1 .behavior-number,
+        .slide-1 .behavior-points li::before {
+            color: #0066b2;
+        }
+
+        .slide-2 .behavior-number,
+        .slide-2 .behavior-points li::before {
+            color: #004a8f;
+        }
+
+        .slide-3 .behavior-number,
+        .slide-3 .behavior-points li::before {
+            color: #003a70;
+        }
+
+        .slide-4 .behavior-number,
+        .slide-4 .behavior-points li::before {
+            color: #00897b;
+        }
+
+        .slide-5 .behavior-number,
+        .slide-5 .behavior-points li::before {
+            color: #00695c;
+        }
+
+        .slide-6 .behavior-number,
+        .slide-6 .behavior-points li::before {
+            color: #7b1fa2;
+        }
+
+        .slide-7 .behavior-number,
+        .slide-7 .behavior-points li::before {
+            color: #6a1b9a;
+        }
+
+        .slide-8 .behavior-number,
+        .slide-8 .behavior-points li::before {
+            color: #388e3c;
+        }
+
+        .slide-9 .behavior-number,
+        .slide-9 .behavior-points li::before {
+            color: #2e7d32;
+        }
+
+        .slide-10 .behavior-number,
+        .slide-10 .behavior-points li::before {
+            color: #3f51b5;
+        }
+
+        .slide-11 .behavior-number,
+        .slide-11 .behavior-points li::before {
+            color: #ff5722;
+        }
+
+        .fullscreen-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 102, 178, 0.9);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background: #004a8f;
+        }
+
+        .metlife-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 240px;
+            height: auto;
+            z-index: 1000;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .metlife-logo:hover {
+            opacity: 1;
+        }
+
+        /* Left Navigation Menu */
+        .left-menu {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            direction: rtl;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 0px 20px 20px 0px;
+            padding: 0px 10px 20px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .left-menu > *
+        {
+            direction: ltr !important;
+        }
+
+        .left-menu::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .left-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .left-menu::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.95);
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transform: translateX(5px);
+        }
+
+        .menu-icon {
+            font-size: 1.2em;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .menu-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .menu-section-header {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 15px 15px 8px 15px;
+            margin-top: 10px;
+        }
+
+        .menu-section-header:first-child {
+            margin-top: 0;
+            position: sticky;
+            top: 0;
+            background: rgba(90, 90, 90, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 10;
+            padding: 20px 15px 15px 15px;
+            margin-left: -10px;
+            margin-right: -10px;
+            margin-bottom: 10px;
+            border-radius: 0px 20px 0px 0px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 0: Title -->
+        <div class="slide title-slide active">
+            <div class="illustration">🤝</div>
+            <h1 style="text-align: center;font-size: 48px;">Building Inclusive Workplace <br />&<br /> Culture of Belonging</h1>
+            <p style="margin-top: 10px;color: #ffeb3b;font-weight: bold;font-size:28px; text-align: center;">Identity <br />Diversity, Equity & Inclusion<br /> Belonging<br /></p>
+            <h2 style="opacity: 0.2; margin-top:30px;font-size: 16px;padding:2px;border-bottom:1px dashed #ffeb3b">Murthy Vepa</h2>
+        </div>
+
+        <!-- Slide 1: Introduction -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🎯</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 30px;">Purpose</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); margin-bottom: 10px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 25px;">
+                        <strong style="color: #ffeb3b;">🧭 Understanding</strong> the foundational concepts of Identity, Diversity, Equity, Inclusion, and Belonging
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 25px;">
+                        <strong style="color: #ffeb3b;">🏗️ Exploring</strong> how these building blocks connect and support each other
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 25px;">
+                        <strong style="color: #ffeb3b;">💡 Learning</strong> 10 practical inclusive behaviors for daily practice
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🌟 Creating</strong> a workplace where everyone feels valued and thrives authentically
+                    </p>
+                </div>
+                <p style="font-size: 1.4em; font-style: italic; text-align: center; margin-top: 10px; color: #ffeb3b; font-weight: 600;">
+                    Together, we create belonging
+                </p>
+            </div>
+        </div>
+
+         <!-- Contextual Slide: Building Blocks -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🏗️</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">The Building Blocks</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">Identity</strong> is where it all begins—understanding ourselves
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">Diversity</strong> recognizes our collective differences
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">Equity</strong> ensures fairness in opportunities and access
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">Inclusion</strong> actively welcomes and values everyone
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">Belonging</strong> is the ultimate outcome - where we all thrive
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Each concept builds upon the last, creating a foundation for true belonging
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Identity -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🧑</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">IDENTITY</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🎯</strong> The unique combination of characteristics that define who we are
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">👁️</strong> Includes both visible and invisible aspects of ourselves
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">💭</strong> Encompasses personal values, beliefs, experiences, and culture
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🤝</strong> Forms the foundation for how we see ourselves and interact with others
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">✨</strong> Understanding identity helps us appreciate individual uniqueness
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    The foundation of who we are
+                </p>
+            </div>
+        </div>
+
+       
+
+        <!-- Slide 2: Diversity -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🌈</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">DIVERSITY</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🌍</strong> The presence of differences within a given setting
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">👥</strong> Includes race, ethnicity, gender, age, religion, disability, sexual orientation
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">💡</strong> Also encompasses diversity of thought, experience, and perspective
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🏢</strong> Creating a workforce that reflects the community we serve
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Celebrating our collective differences
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Equity -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">⚖️</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">EQUITY</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">✅</strong> Ensuring fair treatment, access, and opportunities for all
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🚧</strong> Identifying and removing barriers that prevent participation
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔍</strong> Recognizing that different people have different needs
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🎁</strong> Providing resources and support based on individual circumstances
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Fairness in opportunities and access
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Inclusion -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🫱🏽‍🫲🏻</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">INCLUSION</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🏡</strong> Creating an environment where everyone feels welcomed and valued
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">📢</strong> Ensuring all voices are heard and respected
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">💚</strong> Fostering a sense of belonging for every individual
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🤲</strong> Actively involving everyone in processes and decision-making
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Welcoming and valuing everyone
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 16: Belonging -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🏠</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">BELONGING</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">😊</strong> Feeling valued, accepted, and comfortable being your authentic self
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🫂</strong> Having a sense of connection and community with colleagues
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🛡️</strong> Experiencing psychological safety to share ideas and take risks
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">⭐</strong> Being seen as an integral part of the team's success
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🎖️</strong> Knowing your unique contributions are recognized and appreciated
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Where we all thrive authentically
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Section Divider -->
+        <div class="slide title-slide">
+            <div class="illustration">🌟</div>
+            <h1>Inclusive Behaviors</h1>
+            <p style="margin-top: 30px; font-size: 1.3em; color: #ffeb3b;">Practical Actions for Daily Inclusion</p>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">Adapted from the 12 Inclusive Behaviors by
+                Marjane Jensen</p>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🔍</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Examine your assumptions</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">❓</strong> Ask yourself what assumptions you have made
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">✓</strong> Do you know that they are true?
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🔎</strong> How could you find out?
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #1
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">❓</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Make a habit of asking questions</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">💬</strong> Ask people when you aren't sure about their thoughts or feelings
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔄</strong> Make a habit of asking
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">📝</strong> Ask people for feedback
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🤝</strong> Ask how you can work together more effectively
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #2
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🤝</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Address misunderstandings & disagreements</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">⚙️</strong> Develop team mechanisms to address disagreements
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">👥</strong> Seek a third party to mediate
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">📚</strong> Use disagreements as a catalyst for learning
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #3
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">📢</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Ensure all voices are heard</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">📧</strong> Send follow-up emails if you didn't get to share
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">✋</strong> Intervene when someone is being ignored
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">👂</strong> Listen fully to everyone
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #4
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">👂</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Listen carefully to the person speaking until they feel understood</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🎧</strong> Listen until the person feels understood
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔄</strong> Paraphrase before you respond
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">💎</strong> Recognize all ideas add value
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🏗️</strong> Build on others' thoughts and ideas
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #5
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">💭</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">If you have a strong reaction to someone, ask yourself why</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">⏸️</strong> If you have a strong reaction to someone, pause
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">💚</strong> Assume positive intent
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🎯</strong> Consider if they share your goals
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #6
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 12 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🧘</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Take action to reduce stressful situations</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">⏰</strong> Relieve time pressures when possible
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔕</strong> Eliminate distractions
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">⏸️</strong> Pause before you speak
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">😌</strong> Keep a calm demeanor
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #7
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 13 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">🌐</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Include & seek input from people with a wide variety of backgrounds</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">📣</strong> Solicit diverse input actively
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🙋</strong> Invite quiet members to contribute
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔀</strong> Vary processes for sharing ideas
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🌍</strong> Seek input from varied backgrounds
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #8
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 14 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">⭐</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Understand each person's contribution</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">👤</strong> Ensure everyone understands each person's essential role
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🎯</strong> Align individual contributions with team goals
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">🏢</strong> Connect to organizational mission
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #9
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 15 -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #6a1b9a 0%, #4a148c 100%);">
+            <div class="illustration">💪</div>
+            <h1 style="font-size: 2.4em; margin-bottom: 10px;">Be brave</h1>
+            <div style="text-align: left; max-width: 1000px; margin: 0 auto;">
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px); margin-bottom: 20px;">
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔍</strong> Examine micro-behaviors for hidden biases
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6; margin-bottom: 15px;">
+                        <strong style="color: #ffeb3b;">🔧</strong> Adjust behaviors to be more inclusive
+                    </p>
+                    <p style="font-size: 1.4em; line-height: 1.6;">
+                        <strong style="color: #ffeb3b;">📖</strong> Accept mistakes as part of learning
+                    </p>
+                </div>
+                <p style="font-size: 1.3em; font-style: italic; text-align: center; margin-top: 25px; color: #ffeb3b;">
+                    Behavior #10
+                </p>
+            </div>
+        </div>
+
+        
+
+        <!-- Slide 17: Summary -->
+        <div class="slide summary-slide">
+            <h2 style="font-size: 3em; text-align: center; margin-bottom: 40px;">10 Inclusive Behaviors</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">🔍</span> <span class="summary-number">1</span> Examine your Assumptions</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">💭</span> <span class="summary-number">6</span> If you have a strong reaction to someone, ask yourself why
+                    </h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">❓</span> <span class="summary-number">2</span> Make a habit of asking questions</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">🧘</span> <span class="summary-number">7</span> Take action to reduce stressful situations</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">🤝</span> <span class="summary-number">3</span> Address misunderstandings and resolve disagreements</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">🌐</span> <span class="summary-number">8</span> Include & seek input from people with a wide variety of
+                        backgrounds</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">📢</span> <span class="summary-number">4</span> Ensure all voices heard</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">⭐</span> <span class="summary-number">9</span> Understand each person's contributions</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">👂</span> <span class="summary-number">5</span> Listen carefully to the person speaking until they feel
+                        understood</h3>
+                </div>
+                <div class="summary-item">
+                    <h3><span class="behavior-icon">💪</span> <span class="summary-number">10</span> Be brave</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: DEI & Belonging Summary -->
+        <div class="slide title-slide" style="background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);">
+            <div class="illustration">🌱</div>
+            <h2 style="font-size: 2.5m; margin-bottom: 10px;">Diversity + Equity + Inclusion = Belonging</h2>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 1000px;">
+                <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3 style="font-size: 2em; margin-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 15px;">
+                        🌈 <span>Diversity</span>
+                    </h3>
+                    <p style="font-size: 1.3em; line-height: 1.4;">Invites everyone to the party</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3 style="font-size: 2em; margin-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 15px;">
+                        ⚖️ <span>Equity</span>
+                    </h3>
+                    <p style="font-size: 1.3em; line-height: 1.4;">Ensures everyone has a seat</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3 style="font-size: 2em; margin-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 15px;">
+                        🤝 <span>Inclusion</span>
+                    </h3>
+                    <p style="font-size: 1.3em; line-height: 1.4;">Asks everyone to dance</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.15); padding: 20px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <h3 style="font-size: 2em; margin-bottom: 10px; color: #fff; display: flex; align-items: center; gap: 15px;">
+                        🏠 <span>Belonging</span>
+                    </h3>
+                    <p style="font-size: 1.3em; line-height: 1.4;">Makes us come up to dance</p>
+                </div>
+            </div>
+            <p style="margin-top: 20px; font-size: 1.4em; font-weight: 600; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);color: #ffeb3b;">Creating environments where everyone thrives authentically</p>
+        </div>
+
+        <!-- Final Slide -->
+        <div class="slide title-slide">
+            <div class="illustration">🌟</div>
+            <h2>Together We Create</h2>
+            <h2 style="color: #ffeb3b;text-align: center;font-size: 2.4em;">A Culture of Belonging & An Inclusive Workplace</h2>
+            <p style="margin-top: 40px; font-size: 1.3em;">Thank You</p>
+        </div>
+    </div>
+
+    <!-- Left Navigation Menu -->
+    <nav class="left-menu">
+        <div class="menu-section-header" style="direction: ltr !important;">Contents</div>
+        <div class="menu-item active" data-slide="0">
+            <span class="menu-icon">👋</span>
+            <span class="menu-text">Welcome</span>
+        </div>
+        <div class="menu-item" data-slide="1">
+            <span class="menu-icon">🎯</span>
+            <span class="menu-text">Purpose</span>
+        </div>
+        
+        <div class="menu-section-header">Building Blocks</div>
+        <div class="menu-item" data-slide="2">
+            <span class="menu-icon">🏗️</span>
+            <span class="menu-text">Overview</span>
+        </div>
+        <div class="menu-item" data-slide="3">
+            <span class="menu-icon">🧑</span>
+            <span class="menu-text">Identity</span>
+        </div>
+        <div class="menu-item" data-slide="4">
+            <span class="menu-icon">🌈</span>
+            <span class="menu-text">Diversity</span>
+        </div>
+        <div class="menu-item" data-slide="5">
+            <span class="menu-icon">⚖️</span>
+            <span class="menu-text">Equity</span>
+        </div>
+        <div class="menu-item" data-slide="6">
+            <span class="menu-icon">🫱🏽‍🫲🏻</span>
+            <span class="menu-text">Inclusion</span>
+        </div>
+        <div class="menu-item" data-slide="7">
+            <span class="menu-icon">🏠</span>
+            <span class="menu-text">Belonging</span>
+        </div>
+        
+        <div class="menu-section-header">Behaviors</div>
+        <div class="menu-item" data-slide="8">
+            <span class="menu-icon">🌟</span>
+            <span class="menu-text">Section Intro</span>
+        </div>
+        <div class="menu-item" data-slide="9">
+            <span class="menu-icon">1</span>
+            <span class="menu-text">Examine Assumptions</span>
+        </div>
+        <div class="menu-item" data-slide="10">
+            <span class="menu-icon">2</span>
+            <span class="menu-text">Ask Questions</span>
+        </div>
+        <div class="menu-item" data-slide="11">
+            <span class="menu-icon">3</span>
+            <span class="menu-text">Address Disagreements</span>
+        </div>
+        <div class="menu-item" data-slide="12">
+            <span class="menu-icon">4</span>
+            <span class="menu-text">All Voices Heard</span>
+        </div>
+        <div class="menu-item" data-slide="13">
+            <span class="menu-icon">5</span>
+            <span class="menu-text">Listen Carefully</span>
+        </div>
+        <div class="menu-item" data-slide="14">
+            <span class="menu-icon">6</span>
+            <span class="menu-text">Check Reactions</span>
+        </div>
+        <div class="menu-item" data-slide="15">
+            <span class="menu-icon">7</span>
+            <span class="menu-text">Reduce Stress</span>
+        </div>
+        <div class="menu-item" data-slide="16">
+            <span class="menu-icon">8</span>
+            <span class="menu-text">Seek Diverse Input</span>
+        </div>
+        <div class="menu-item" data-slide="17">
+            <span class="menu-icon">9</span>
+            <span class="menu-text">Value Contributions</span>
+        </div>
+        <div class="menu-item" data-slide="18">
+            <span class="menu-icon">10</span>
+            <span class="menu-text">Be Brave</span>
+        </div>
+        
+        <div class="menu-section-header">Summary</div>
+        <div class="menu-item" data-slide="19">
+            <span class="menu-icon">📋</span>
+            <span class="menu-text">Inclusive Behaviors</span>
+        </div>
+        <div class="menu-item" data-slide="20">
+            <span class="menu-icon">🌱</span>
+            <span class="menu-text">DEI Formula</span>
+        </div>
+        <div class="menu-item" data-slide="21">
+            <span class="menu-icon">✨</span>
+            <span class="menu-text">Thank You</span>
+        </div>
+    </nav>
+
+    <div class="slide-counter"><span id="current">1</span> / <span id="total">21</span></div>
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">‹</button>
+        <button class="nav-btn" onclick="nextSlide()">›</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        document.getElementById('total').textContent = totalSlides;
+
+        function updateMenuHighlight() {
+            const leftMenu = document.querySelector('.left-menu');
+            let activeMenuItem = null;
+            
+            menuItems.forEach(item => {
+                const slideIndex = parseInt(item.getAttribute('data-slide'));
+                if (slideIndex === currentSlide) {
+                    item.classList.add('active');
+                    activeMenuItem = item;
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Auto-scroll the menu to show the active item
+            if (activeMenuItem && leftMenu) {
+                const menuRect = leftMenu.getBoundingClientRect();
+                const itemRect = activeMenuItem.getBoundingClientRect();
+                const menuScrollTop = leftMenu.scrollTop;
+                
+                // Check if item is above the visible area
+                if (itemRect.top < menuRect.top) {
+                    leftMenu.scrollTop = menuScrollTop - (menuRect.top - itemRect.top) - 20;
+                }
+                // Check if item is below the visible area
+                else if (itemRect.bottom > menuRect.bottom) {
+                    leftMenu.scrollTop = menuScrollTop + (itemRect.bottom - menuRect.bottom) + 20;
+                }
+            }
+        }
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current').textContent = currentSlide + 1;
+            updateMenuHighlight();
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+        });
+
+        // Menu item click navigation
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const slideIndex = parseInt(item.getAttribute('data-slide'));
+                showSlide(slideIndex);
+            });
+        });
+
+        // Initialize menu highlight
+        updateMenuHighlight();
+    </script>
+</body>
+
+</html>

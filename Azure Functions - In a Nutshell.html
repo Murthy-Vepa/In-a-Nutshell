@@ -832,6 +832,7 @@
         theme: 'base',
         securityLevel: 'loose',
         logLevel: 'error',
+        fontFamily: 'Segoe UI Semibold',
         flowchart: {
           useMaxWidth: true,
           htmlLabels: true,
@@ -1309,7 +1310,7 @@ flowchart TB
           <h2>Architecture Patterns</h2>
 
           <h3>Simple Function Pattern</h3>
-          <pre class="syntax-highlighted" data-language="csharp"><code>// HTTP trigger with Queue output binding
+          <pre class="syntax-highlighted" data-language="C#"><code>// HTTP trigger with Queue output binding
 [FunctionName("ProcessOrder")]
 public static async Task&lt;IActionResult&gt; Run(
     [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
@@ -1322,7 +1323,7 @@ public static async Task&lt;IActionResult&gt; Run(
 }</code></pre>
 
           <h3>Fan-Out/Fan-In Pattern</h3>
-          <pre class="syntax-highlighted" data-language="csharp"><code>// Queue trigger processing with parallel execution
+          <pre class="syntax-highlighted" data-language="C#"><code>// Queue trigger processing with parallel execution
 [FunctionName("ProcessBatch")]
 public static async Task Run(
     [QueueTrigger("batch-items")] string item,
@@ -1773,7 +1774,7 @@ host.Run();</code></pre>
 
           <h3>HTTP Trigger</h3>
           <p>Invoke functions via HTTP requests—perfect for APIs and webhooks.</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("HttpExample")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("HttpExample")]
 public static async Task&lt;IActionResult&gt; Run(
     [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req,
     ILogger log)
@@ -1784,7 +1785,7 @@ public static async Task&lt;IActionResult&gt; Run(
 
           <h3>Timer Trigger</h3>
           <p>Schedule function execution using cron expressions.</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>// Runs every day at 2:00 AM
+          <pre class="syntax-highlighted" data-language="C#"><code>// Runs every day at 2:00 AM
 [FunctionName("DailyCleanup")]
 public static void Run(
     [TimerTrigger("0 0 2 * * *")] TimerInfo myTimer,
@@ -1823,7 +1824,7 @@ public static void Run(
 
           <h3>Queue Trigger</h3>
           <p>Process messages from Azure Storage Queues or Service Bus Queues.</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("QueueProcessor")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("QueueProcessor")]
 public static void Run(
     [QueueTrigger("orders", Connection = "AzureWebJobsStorage")] string myQueueItem,
     ILogger log)
@@ -1833,7 +1834,7 @@ public static void Run(
 
           <h3>Blob Trigger</h3>
           <p>React to new or updated blobs in Azure Blob Storage.</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("ImageProcessor")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("ImageProcessor")]
 public static void Run(
     [BlobTrigger("images/{name}", Connection = "AzureWebJobsStorage")] Stream imageBlob,
     string name,
@@ -1844,7 +1845,7 @@ public static void Run(
 
           <h3>Cosmos DB Trigger</h3>
           <p>React to changes in Cosmos DB using the change feed.</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("CosmosDBProcessor")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("CosmosDBProcessor")]
 public static void Run(
     [CosmosDBTrigger(
         databaseName: "MyDatabase",
@@ -1861,7 +1862,7 @@ public static void Run(
 
           <h3>Event Hubs Trigger</h3>
           <p>Process high-throughput event streams from Azure Event Hubs.</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("EventHubProcessor")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("EventHubProcessor")]
 public static void Run(
     [EventHubTrigger("telemetry", Connection = "EventHubConnection")] EventData[] events,
     ILogger log)
@@ -1879,7 +1880,7 @@ public static void Run(
           <p>Read data from external sources and pass it to your function.</p>
 
           <h4>Blob Input Binding</h4>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("BlobReader")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("BlobReader")]
 public static void Run(
     [QueueTrigger("requests")] string requestId,
     [Blob("data/{requestId}.json", FileAccess.Read)] string blobContent,
@@ -1889,7 +1890,7 @@ public static void Run(
 }</code></pre>
 
           <h4>Cosmos DB Input Binding</h4>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("GetUser")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("GetUser")]
 public static IActionResult Run(
     [HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req,
     [CosmosDB(
@@ -1909,7 +1910,7 @@ public static IActionResult Run(
           <p>Write data to external destinations without connection code.</p>
 
           <h4>Queue Output Binding</h4>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("EnqueueMessage")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("EnqueueMessage")]
 public static void Run(
     [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
     [Queue("notifications")] out string queueMessage,
@@ -1919,7 +1920,7 @@ public static void Run(
 }</code></pre>
 
           <h4>Table Output Binding</h4>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("SaveLog")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("SaveLog")]
 public static void Run(
     [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
     [Table("LogTable")] out LogEntry logEntry,
@@ -1934,7 +1935,7 @@ public static void Run(
 }</code></pre>
 
           <h4>Cosmos DB Output Binding</h4>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("SaveDocument")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("SaveDocument")]
 public static void Run(
     [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
     [CosmosDB(
@@ -1948,7 +1949,7 @@ public static void Run(
 
           <h2>Multiple Bindings Example</h2>
           <p>Functions can have multiple input and output bindings:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("ProcessOrder")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("ProcessOrder")]
 public static void Run(
     [QueueTrigger("orders")] Order order,
     [Blob("receipts/{rand-guid}.pdf", FileAccess.Write)] Stream receiptBlob,
@@ -2108,7 +2109,7 @@ public static void Run(
 
           <h3>Orchestrator Functions</h3>
           <p>Orchestrator functions define the workflow logic and coordinate other functions:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("OrderOrchestrator")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("OrderOrchestrator")]
 public static async Task&lt;string&gt; RunOrchestrator(
     [OrchestrationTrigger] IDurableOrchestrationContext context)
 {
@@ -2124,7 +2125,7 @@ public static async Task&lt;string&gt; RunOrchestrator(
 
           <h3>Activity Functions</h3>
           <p>Activity functions contain the actual work to be performed:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("ProcessPayment")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("ProcessPayment")]
 public static async Task ProcessPayment([ActivityTrigger] Order order, ILogger log)
 {
     log.LogInformation($"Processing payment for order {order.Id}");
@@ -2133,7 +2134,7 @@ public static async Task ProcessPayment([ActivityTrigger] Order order, ILogger l
 
           <h3>Client Functions</h3>
           <p>Start and monitor orchestrations:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>[FunctionName("StartOrchestration")]
+          <pre class="syntax-highlighted" data-language="C#"><code>[FunctionName("StartOrchestration")]
 public static async Task&lt;IActionResult&gt; Start(
     [HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req,
     [DurableClient] IDurableOrchestrationClient client)
@@ -2159,7 +2160,7 @@ flowchart LR
     style Start fill:#10b981,color:#fff
     style End fill:#3b82f6,color:#fff
           </div>
-          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task&lt;object&gt; Run(IDurableOrchestrationContext context)
+          <pre class="syntax-highlighted" data-language="C#"><code>public static async Task&lt;object&gt; Run(IDurableOrchestrationContext context)
 {
     var x = await context.CallActivityAsync&lt;object&gt;("F1", null);
     var y = await context.CallActivityAsync&lt;object&gt;("F2", x);
@@ -2183,7 +2184,7 @@ flowchart TB
     style Start fill:#10b981,color:#fff
     style End fill:#3b82f6,color:#fff
           </div>
-          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task&lt;long&gt; Run(IDurableOrchestrationContext context)
+          <pre class="syntax-highlighted" data-language="C#"><code>public static async Task&lt;long&gt; Run(IDurableOrchestrationContext context)
 {
     var tasks = new List&lt;Task&lt;int&gt;&gt;();
     for (int i = 0; i < 100; i++)
@@ -2197,7 +2198,7 @@ flowchart TB
 
           <h3>3. Async HTTP APIs</h3>
           <p>Long-running HTTP operations with status polling:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>// Start long-running operation
+          <pre class="syntax-highlighted" data-language="C#"><code>// Start long-running operation
 [FunctionName("StartLongOperation")]
 public static async Task&lt;IActionResult&gt; Start(
     [HttpTrigger] HttpRequest req,
@@ -2216,7 +2217,7 @@ public static async Task&lt;IActionResult&gt; Start(
 
           <h3>4. Monitoring Pattern</h3>
           <p>Periodic monitoring with conditional logic:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task Run(IDurableOrchestrationContext context)
+          <pre class="syntax-highlighted" data-language="C#"><code>public static async Task Run(IDurableOrchestrationContext context)
 {
     var jobId = context.GetInput&lt;string&gt;();
     DateTime expiryTime = context.CurrentUtcDateTime.AddMinutes(30);
@@ -2235,7 +2236,7 @@ public static async Task&lt;IActionResult&gt; Start(
 
           <h3>5. Human Interaction</h3>
           <p>Wait for external events or approvals:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task&lt;bool&gt; Run(IDurableOrchestrationContext context)
+          <pre class="syntax-highlighted" data-language="C#"><code>public static async Task&lt;bool&gt; Run(IDurableOrchestrationContext context)
 {
     var approvalTask = context.WaitForExternalEvent&lt;bool&gt;("ApprovalEvent");
     var timeoutTask = context.CreateTimer(context.CurrentUtcDateTime.AddDays(3), CancellationToken.None);
@@ -2252,7 +2253,7 @@ public static async Task&lt;IActionResult&gt; Start(
 
           <h3>Eternal Orchestrations</h3>
           <p>Infinite loops with <code>ContinueAsNew</code>:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task Run(IDurableOrchestrationContext context)
+          <pre class="syntax-highlighted" data-language="C#"><code>public static async Task Run(IDurableOrchestrationContext context)
 {
     var counter = context.GetInput&lt;int&gt;();
     
@@ -2263,7 +2264,7 @@ public static async Task&lt;IActionResult&gt; Start(
 
           <h3>Sub-Orchestrations</h3>
           <p>Call orchestrations from within orchestrations:</p>
-          <pre class="syntax-highlighted" data-language="csharp"><code>public static async Task Run(IDurableOrchestrationContext context)
+          <pre class="syntax-highlighted" data-language="C#"><code>public static async Task Run(IDurableOrchestrationContext context)
 {
     var results = new List&lt;string&gt;();
     
